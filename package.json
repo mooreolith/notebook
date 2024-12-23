@@ -1,0 +1,24 @@
+{
+  "name": "notebook",
+  "version": "3.0.0",
+  "description": "A simple notebook project",
+  "scripts": {
+    "start": "parcel src/index.html -p 3000 --open",
+    "build:parcel": "parcel build ./src/index.html --public-url ./ --no-source-maps --no-optimize",
+    "build": "npm run clean && npm run build:parcel",
+    "clean": "rm -rf dist/*",
+    "watch": "parcel watch src/index.html"
+  },
+  "author": "Joshua M. Moore <mooreolith@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@codemirror/commands": "^6.7.1",
+    "@codemirror/lang-javascript": "^6.2.2",
+    "@codemirror/state": "^6.5.0",
+    "@codemirror/view": "^6.36.1",
+    "codemirror": "^6.0.1"
+  },
+  "devDependencies": {
+    "process": "^0.11.10"
+  }
+}

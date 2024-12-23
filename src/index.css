@@ -1,0 +1,93 @@
+html, body {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  --nb-width: 750px;
+  font-size: 14px;
+}
+
+.app-buttons {
+  width: var(--nb-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.notebooks {
+  width: 100%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+.notebook {
+  width: var(--nb-width);
+  border: 1px solid steelblue;
+  background: white;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cell {
+  width: 100%;
+  height: 100%;
+  border: 1px solid gray;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.output {
+  padding-left: 30px;
+}
+
+.output.error {
+  color: red;
+}
+
+.cell-buttons {
+  display: flex;
+  gap: 20px;
+  align-items: flex-end;
+}
+
+.notebook-buttons {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+button {
+  border-radius: 0;
+  box-shadow: none;
+  border: 1px steelblue;
+  font-size: 20px;
+  background-color: lightgray;
+}
+
+.console > .line {
+  padding-left: 30px;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  width: calc(100% - 30px);
+  overflow-wrap: break-word;
+}
+
+.console {
+  width: 100%;
+}
+
+.log {
+  color: black;
+}
+
+.debug {
+  color: tomato;
+}
+
+.warn {
+  color: orange;
+}
+
+.info {
+  color: blue;
+}
