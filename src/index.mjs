@@ -345,18 +345,20 @@ function closeNotebook(notebook){
   notebook.remove();
 }
 
-function openNotebook(json){
-  if(!confirm("Close Notebook")) return;
-
+function openNotebook(json, filename){
   // get a reference to .notebooks
   const notebooks = document.querySelector('.notebooks');
-  
+
   // close notebook if one is open
+  if(notebooks.children.length && !confirm("Close Notebook")) return;
   let notebook = notebooks.querySelector('.notebook');
   if(notebooks.children.length) closeNotebook(notebook);
 
   // instantiate a notebook template
   notebook = notebookTemplate.content.cloneNode(true);
+
+  // set notebook title
+  notebook.querySelector('.title').innerText = filename;
   
   // wire up notebook buttons
   const addCellButton = notebook.querySelector('button.add-cell');
@@ -418,10 +420,11 @@ openNotebookButton.onclick = function(){
 notebookInput.onchange = function(){
   if(notebookInput.files.length){
     const file = notebookInput.files[0];
+    const fileName = file.name.slice(0, file.name.length - '.ipynb'.length);
     const reader = new FileReader();
     reader.addEventListener('load', (event) => {
       const result = event.target.result;
-      openNotebook(JSON.parse(result));
+      openNotebook(JSON.parse(result), fileName);
     });
 
     reader.readAsText(file);
