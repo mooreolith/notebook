@@ -353,7 +353,10 @@ function storeNotebook(e){
 
 function closeIfPristine(notebook){
   const cell = notebook.querySelector('.cell');
-  if(cell.dataset.execution_count === undefined && notebook.querySelectorAll('.cell').length === 1){
+  if(
+    cell.dataset.execution_count === undefined 
+    && notebook.querySelectorAll('.cell').length === 1
+    && notebook.querySelector('.title').textContent === 'Notebook Title'){
     closeNotebook(notebook)
   }
 }

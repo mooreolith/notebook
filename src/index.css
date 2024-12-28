@@ -62,16 +62,6 @@
     font-size: 20px;
     background-color: lightgray;
   }
-
-  .console > .line {
-    padding-left: 30px;
-    padding-top: 0;
-    padding-bottom: 0;
-    margin-top: 0;
-    margin-bottom: 0;
-    width: calc(100% - 30px);
-    overflow-wrap: break-word;
-  }
 }
 
 @media screen  and (max-width: 800px) {
@@ -96,6 +86,16 @@
   .notebook-buttons {
     padding-top: 10px;
   }
+}
+
+.console > .line {
+  padding-left: 30px;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  width: calc(100% - 30px);
+  overflow-wrap: break-word;
 }
 
 .console {

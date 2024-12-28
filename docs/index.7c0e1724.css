@@ -62,16 +62,6 @@
     border-radius: 0;
     font-size: 20px;
   }
-
-  .console > .line {
-    overflow-wrap: break-word;
-    width: calc(100% - 30px);
-    margin-top: 0;
-    margin-bottom: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    padding-left: 30px;
-  }
 }
 
 @media screen and (width <= 800px) {
@@ -98,6 +88,16 @@
   }
 }
 
+.console > .line {
+  overflow-wrap: break-word;
+  width: calc(100% - 30px);
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 30px;
+}
+
 .console {
   width: 100%;
 }
@@ -117,4 +117,4 @@
 .info {
   color: #00f;
 }
-/*# sourceMappingURL=index.b0b6a252.css.map */
+/*# sourceMappingURL=index.7c0e1724.css.map */

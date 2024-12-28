@@ -28704,7 +28704,7 @@ function $30732a08c2749711$var$storeNotebook(e) {
 }
 function $30732a08c2749711$var$closeIfPristine(notebook) {
     const cell = notebook.querySelector('.cell');
-    if (cell.dataset.execution_count === undefined && notebook.querySelectorAll('.cell').length === 1) $30732a08c2749711$var$closeNotebook(notebook);
+    if (cell.dataset.execution_count === undefined && notebook.querySelectorAll('.cell').length === 1 && notebook.querySelector('.title').textContent === 'Notebook Title') $30732a08c2749711$var$closeNotebook(notebook);
 }
 function $30732a08c2749711$var$loadNotebook(e) {
     document.querySelectorAll('.notebook').forEach($30732a08c2749711$var$closeIfPristine);
@@ -28859,4 +28859,4 @@ $30732a08c2749711$var$addNotebookButton.onclick = $30732a08c2749711$var$addNoteb
 $30732a08c2749711$var$addNotebook();
 
 
-//# sourceMappingURL=index.745db5f2.js.map
+//# sourceMappingURL=index.2f1b60b2.js.map
