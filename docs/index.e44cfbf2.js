@@ -28693,21 +28693,22 @@ function $30732a08c2749711$var$saveNotebook(e) {
 function $30732a08c2749711$var$storeNotebook(e) {
     const notebook = e.target.closest('.notebook');
     let { text: text, title: title } = $30732a08c2749711$var$notebookToJSON(notebook);
+    let filename;
     if (!title) {
         title = prompt("Notebook Name: ");
-        title = title.endsWith('.ipynb') ? title : `${title}.ipynb`;
+        filename = title.endsWith('.ipynb') ? title : `${title}.ipynb`;
     }
-    localStorage.setItem(title, text);
-    localStorage.setItem('lastItem', title);
+    localStorage.setItem(filename, text);
+    localStorage.setItem('lastItem', filename);
 }
 function $30732a08c2749711$var$loadNotebook(e) {
     const lastItem = localStorage.getItem('lastItem');
-    let title;
+    let title, filename;
     if (lastItem) title = prompt("Noteobook Name: ", lastItem);
     else title = prompt("Notebook Name: ");
     if (!title) return;
-    title = title.endsWith('.ipynb') ? title : `${title}.ipynb`;
-    const text = localStorage.getItem(title);
+    filename = title.endsWith('.ipynb') ? title : `${title}.ipynb`;
+    const text = localStorage.getItem(filename);
     if (!text) return;
     let json;
     try {
@@ -28719,28 +28720,6 @@ function $30732a08c2749711$var$loadNotebook(e) {
         $30732a08c2749711$var$openNotebook(json, title);
     } catch (e) {
         alert("Error opening notebook");
-    }
-}
-function $30732a08c2749711$var$loadNotebook(e) {
-    const lastItem = localStorage.getItem('lastItem');
-    let title;
-    if (lastItem) title = prompt("Notebook Name: ", lastItem);
-    else title = prompt("Notebook Name: ");
-    if (!title) return;
-    let text = localStorage.getItem(title);
-    if (text === null) text = localStorage.getItem(`${title}.ipynb`);
-    if (!text) return;
-    let json;
-    try {
-        json = JSON.parse(text);
-    } catch (e) {
-        alert("Error reading JSON");
-    }
-    try {
-        $30732a08c2749711$var$openNotebook(json, title);
-    } catch (e) {
-        alert("Error opening notebook");
-        console.debug(e);
     }
 }
 /*
@@ -28872,4 +28851,4 @@ $30732a08c2749711$var$addNotebookButton.onclick = $30732a08c2749711$var$addNoteb
 $30732a08c2749711$var$addNotebook();
 
 
-//# sourceMappingURL=index.fa75d5c2.js.map
+//# sourceMappingURL=index.e44cfbf2.js.map
