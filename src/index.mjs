@@ -1,12 +1,28 @@
+/*
+  mooreolith.github.io/notebook
+
+  Joshua M. Moore
+  December 23rd, 2024
+
+  This is my third attempt at writing a Jupyter Notebook compatible Javascript Notebook.
+  vscode is able to open my Jupyter file, although holes still exist. Right now I deal 
+  with nothing but Code files, but saving and opening works.
+*/
+
+// imports
 import {basicSetup, EditorView} from 'codemirror';
 import {EditorState, Compartment} from '@codemirror/state';
 import {javascript} from "@codemirror/lang-javascript";
 let language = new Compartment, tabSize = new Compartment;
 
+// UI elements
 const notebookTemplate = document.querySelector('template.notebook-template');
 const cellTemplate = document.querySelector('template.cell-template');
 const addNotebookButton = document.querySelector('button.add-notebook');
 const openNotebookButton = document.querySelector('button.open-notebook');
+const loadNotebookButton = document.querySelector('button.load-notebook');
+
+// program data
 let newCellId = 0;
 const cellEditors = new Map([]);
 const scope = {eval};
@@ -15,6 +31,7 @@ const notebooks = document.querySelector('.notebooks');
 /*
   Cell Inputs and Outputs
 */
+// Get a cell's input
 function getCellInputs(cell){
   const cellId = cell.dataset.cellId;
   const editor = cellEditors.get(cellId);
@@ -24,11 +41,13 @@ function getCellInputs(cell){
   return input;
 }
 
+// Retrieve output from a cell (as opposed to logs)
 function getCellOutput(cell){
   const output = cell.querySelector('.output');
   return output.value;
 }
 
+// Set a cell to an input
 function setCellInput(cell, values){
   const cellId = cell.dataset.cellId;
   const editor = cellEditors.get(cellId);
@@ -41,6 +60,7 @@ function setCellInput(cell, values){
   });
 }
 
+// Given a cell, return its log lines
 function getCellLogs(cell){
   const cellConsole = cell.querySelector('.console');
   return [...cellConsole.querySelectorAll('.line')].map(line => line.innerText);
@@ -52,7 +72,10 @@ function getCellLogs(cell){
 */
 let cellConsole = null;
 scope.console = console;
+scope.cellLogs = null;
+scope.cellOutput = null;
 
+// Rebound log function
 const log = console.log.bind(console);
 scope.console.log = function(){
   log(...arguments);
@@ -65,6 +88,7 @@ scope.console.log = function(){
   }
 };
 
+// Rebound warn function
 const warn = console.warn.bind(console);
 scope.console.warn = function(){
   warn(...arguments);
@@ -77,6 +101,7 @@ scope.console.warn = function(){
   }
 };
 
+// Rebound info function
 const info = console.info.bind(console);
 scope.console.info = function(){
   info(...arguments);
@@ -89,6 +114,7 @@ scope.console.info = function(){
   }
 };
 
+// Rebound debug function
 const debug = console.debug.bind(console);
 scope.console.debug = function(){
   debug(...arguments);
@@ -101,7 +127,9 @@ scope.console.debug = function(){
   }
 };
 
-
+/*
+  Execute a code cell
+*/
 function runCell(e){
   const cell = e.target.closest('.cell');
   if(!cell.dataset.execution_count){
@@ -109,11 +137,15 @@ function runCell(e){
   }
   cell.dataset.execution_count = parseInt(cell.dataset.execution_count) + 1;
 
+  // Get references to logs and outputs
   cellConsole = cell.querySelector('.console');
   const output = cell.querySelector('.output');
   
+  // get cell input
   const texts = getCellInputs(cell);
-  try{    
+
+  // try and run cell with input
+  try{
     // clear previous outputs
     cellConsole.innerHTML = "";
     output.innerHTML = "";
@@ -136,18 +168,32 @@ function runCell(e){
 /*
   Cell Functions
 */
+
+// Remove a cell from a notebook
 function removeCell(e){
+  // Get reference to cell
   const cell = e.target.closest('.cell');
+
+  // Get cell's cellid
   const cellId = cell.dataset.cellId;
+
+  // Remove the cell
   cell.remove();
+
+  // Remove the saved editor for that cell
   cellEditors.delete(cellId);
 }
 
+// Setup a text editor for a cell
 function setupEditor(cell){
+  // Get a unique id for the cell
   const cellId = (++newCellId).toString();
   cell.dataset.cellId = cellId;
+
+  // Get a place into which to stick a codemirror editor
   const inputContainer = cell.querySelector('.input-container');
 
+  // Create an EditorState and use it to construct a EditorView
   let state = EditorState.create({
     extensions: [
       basicSetup,
@@ -157,26 +203,31 @@ function setupEditor(cell){
   });
 
   const editor = new EditorView({state, parent: inputContainer});
+
+  // Save editor for later reference
   cellEditors.set(cellId, editor);
 }
 
+// Setup button evens for the cell
 function setupButtonEvents(cell){
+  // execute a cell and print its logs and output
   const runCellButton = cell.querySelector('button.run-cell');
   runCellButton.onclick = runCell;
 
+  // remove a cell, including its logs and outputs
   const removeCellButton = cell.querySelector('button.remove-cell');
   removeCellButton.onclick = removeCell;
 
+  // clone a cell and add it to the notebook
   const copyCellButton = cell.querySelector('button.copy-cell');
-  copyCellButton.onclick = copyCell;
-}
+  copyCellButton.onclick = copyCell;}
 
+// Create and add a clone of a cell
 function copyCell(e){
   const notebook = e.target.closest('.notebook');
   const cells = notebook.querySelector('.cells');
   const originalCell = e.target.closest('.cell');
-  const copiedCell = cellTemplate.content.cloneNode(true);
-  copiedCell
+  const copiedCell = cellTemplate.content.cloneNode(true).querySelector('.cell');
 
   setupButtonEvents(copiedCell);
   setupEditor(copiedCell);
@@ -193,6 +244,8 @@ function copyCell(e){
 /*
   Notebook Functions
 */
+
+// Add a cell to a notebook
 function addCell(e){
   const notebook = e.target.closest('.notebook');
   const cells = notebook.querySelector('.cells');
@@ -203,6 +256,7 @@ function addCell(e){
   cells.appendChild(cell);
 }
 
+// Remove a notebook from the app
 function removeNotebook(e){
   const notebook = e.target.closest('.notebook');
   notebook.remove();
@@ -211,8 +265,7 @@ function removeNotebook(e){
 /*
   Save a notebook to json and write it to a downloadable file
 */
-function saveNotebook(e){ 
-  const notebook = e.target.closest('.notebook');
+function notebookToJSON(notebook) {
   let title = notebook.querySelector('.title').innerText.trim();
 
   const json = {
@@ -236,9 +289,9 @@ function saveNotebook(e){
             "output_type": "execute_result"
           }
         ],
-        "source": getCellInputs(cell),          
+        "source": getCellInputs(cell),
       };
-      
+
       return cellOutput;
     }),
     "metadata": {
@@ -260,9 +313,15 @@ function saveNotebook(e){
     },
     "nbformat": 4,
     "nbformat_minor": 2,
-  }
+  };
 
   const text = JSON.stringify(json);
+  return { text, title };
+}
+
+function saveNotebook(e){ 
+  const notebook = e.target.closest('.notebook');
+  var { text, title } = notebookToJSON(notebook);
   const blob = new Blob([text], {type: "application/json"});
   const url = URL.createObjectURL(blob);
 
@@ -273,6 +332,55 @@ function saveNotebook(e){
   link.click();
   link.remove();
 }
+
+function storeNotebook(e){
+  const notebook = e.target.closest('.notebook');
+  const {text, title} = notebookToJSON(notebook);
+  let filename;
+  if(filename = prompt("Notebook Title: ", `${title}.ipynb`)){
+    localStorage.setItem(filename, text);
+  }
+
+  if(!filename.endsWith('.ipynb')){
+    filename = filename.concat('.ipynb');
+  }
+
+  localStorage.setItem('lastItem', filename);
+}
+
+function loadNotebook(e){
+  const lastItem = localStorage.getItem('lastItem');
+
+  let title;
+  if(lastItem){
+    title = prompt('Notebook Name: ', lastItem);
+  }else{
+    title = prompt("Notebook Name: ");
+  }
+
+  if(!title){ 
+    console.alert("No title entered");
+    return;
+   }
+
+  let filename = title;
+  if(!filename.endsWith('.ipynb')){
+    filename = filename.concat('.ipynb');
+  }
+
+  const text = localStorage.getItem(filename);
+  if(text){
+    try{
+      const json = JSON.parse(text);
+      openNotebook(json, filename);
+    }catch(e){
+      alert(e);
+    }
+  }else{
+    alert(`No file by that name: ${filename}`)
+  }
+}
+
 
 /*
   App Functions
@@ -286,7 +394,7 @@ function addNotebook(e){
   const addCellButton = notebook.querySelector('button.add-cell');
   addCellButton.onclick = addCell;
 
-    // open at least one cell
+  // open at least one cell
   notebook.querySelector('button.add-cell').click();
 
   const removeCellButton = notebook.querySelector('button.remove-notebook');
@@ -295,8 +403,13 @@ function addNotebook(e){
   const removeNotebookButton = notebook.querySelector('button.remove-notebook');
   removeNotebookButton.onclick = removeNotebook;
 
+  // download as file
   const saveNotebookButton = notebook.querySelector('button.save-notebook');
   saveNotebookButton.onclick = saveNotebook;
+
+  // store to browser
+  const storeNotebookButton = notebook.querySelector('button.store-notebook');
+  storeNotebookButton.onclick = storeNotebook;
 
   // add notebook to page
   notebooks.appendChild(notebook);
@@ -340,11 +453,13 @@ function openCell(notebook, json){
   }
 }
 
+// Remove a notebook and clear the app's cellEditors 
 function closeNotebook(notebook){
   cellEditors.clear();
   notebook.remove();
 }
 
+// Construct a notebook given json and a filename
 function openNotebook(json, filename){
   // get a reference to .notebooks
   const notebooks = document.querySelector('.notebooks');
@@ -374,6 +489,7 @@ function openNotebook(json, filename){
   saveNotebookButton.onclick = saveNotebook;
 
   // add cells
+  // for the sake of simplicity, I'm dealing only with code cells. 
   const cells = notebook.querySelector('.cells');
 
   for(let cellSource of json.cells){
@@ -412,11 +528,13 @@ function openNotebook(json, filename){
   notebooks.appendChild(notebook);
 }
 
+// Hidden file input, triggered by other button click
 const notebookInput = document.querySelector('input.notebook-input');
 openNotebookButton.onclick = function(){
   notebookInput.click();
 }
 
+// Read the file and call openNotebook
 notebookInput.onchange = function(){
   if(notebookInput.files.length){
     const file = notebookInput.files[0];
@@ -431,9 +549,10 @@ notebookInput.onchange = function(){
   }
 }
 
+loadNotebookButton.onclick = loadNotebook;
 
-// add a notebook upon button click
+// Add a notebook upon button click
 addNotebookButton.onclick = addNotebook;
 
-// open at least one notebook
+// Open at least one notebook
 addNotebook();
