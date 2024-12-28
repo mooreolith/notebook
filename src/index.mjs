@@ -267,6 +267,7 @@ function removeNotebook(e){
 */
 function notebookToJSON(notebook) {
   let title = notebook.querySelector('.title').innerText.trim();
+  if(!title.endsWith('.ipynb')) title = `${title}.ipynb`;
 
   const json = {
     "cells": [...notebook.querySelectorAll('.cell')].map(cell => {
@@ -322,14 +323,13 @@ function notebookToJSON(notebook) {
 function saveNotebook(e){ 
   const notebook = e.target.closest('.notebook');
   let { text, title } = notebookToJSON(notebook);
-  if(!title.endsWith('.ipynb')) title = `${[title]}.ipynb`;
 
   const blob = new Blob([text], {type: "application/json"});
   const url = URL.createObjectURL(blob);
 
   const link = document.createElement('a');
   link.href = url;
-  link.setAttribute('download', `${title}.ipynb`);
+  link.setAttribute('download', title);
   document.body.appendChild(link);
   link.click();
   link.remove();
@@ -341,14 +341,35 @@ function storeNotebook(e){
 
   if(!title){
     title = prompt("Notebook Name: ");
-  }
-
-  if(!title.endsWith('.ipynb')){
-    title = title.concat('.ipynb');
+    title = title.endsWith('.ipynb') ? title : `${title}.ipynb`;
   }
 
   localStorage.setItem(title, text);
   localStorage.setItem('lastItem', title);
+}
+
+function loadNotebook(e){
+  const lastItem = localStorage.getItem('lastItem');
+  let title;
+  if(lastItem) title = prompt("Noteobook Name: ", lastItem);
+  else title = prompt("Notebook Name: ");
+  if(!title) return;
+  title = title.endsWith('.ipynb') ? title : `${title}.ipynb`;
+
+  const text = localStorage.getItem(title);
+  if(!text) return;
+  let json;
+  try{
+    json = JSON.parse(text);
+  }catch(e){
+    alert("Error parsing json");
+  }
+
+  try{
+    openNotebook(json, title);
+  }catch(e){
+    alert("Error opening notebook");
+  }
 }
 
 function loadNotebook(e){
@@ -388,7 +409,7 @@ function loadNotebook(e){
 function addNotebook(e){
   // fetch us some elements
   const notebooks = document.querySelector('.notebooks')
-  const notebook = notebookTemplate.content.cloneNode(true);
+  const notebook = notebookTemplate.content.cloneNode(true).querySelector('.notebook');
 
   // wire up notebook buttons
   const addCellButton = notebook.querySelector('button.add-cell');
@@ -472,9 +493,12 @@ function openNotebook(json, filename){
   */
 
   // instantiate a notebook template
-  notebook = notebookTemplate.content.cloneNode(true);
+  const notebook = notebookTemplate.content.cloneNode(true).querySelector('.notebook');
 
   // set notebook title
+  if(filename.endsWith('.ipynb')){
+    filename = filename.slice(0, filename.length - '.ipynb'.length)
+  }
   notebook.querySelector('.title').innerText = filename;
   
   // wire up notebook buttons

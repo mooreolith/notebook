@@ -28585,8 +28585,8 @@ function $ad161f9bb6853d42$var$setupButtonEvents(cell) {
 }
 // Create and add a clone of a cell
 function $ad161f9bb6853d42$var$copyCell(e) {
-    const notebook1 = e.target.closest('.notebook');
-    const cells = notebook1.querySelector('.cells');
+    const notebook = e.target.closest('.notebook');
+    const cells = notebook.querySelector('.cells');
     const originalCell = e.target.closest('.cell');
     const copiedCell = $ad161f9bb6853d42$var$cellTemplate.content.cloneNode(true).querySelector('.cell');
     $ad161f9bb6853d42$var$setupButtonEvents(copiedCell);
@@ -28601,8 +28601,8 @@ function $ad161f9bb6853d42$var$copyCell(e) {
   Notebook Functions
 */ // Add a cell to a notebook
 function $ad161f9bb6853d42$var$addCell(e) {
-    const notebook1 = e.target.closest('.notebook');
-    const cells = notebook1.querySelector('.cells');
+    const notebook = e.target.closest('.notebook');
+    const cells = notebook.querySelector('.cells');
     const cell = $ad161f9bb6853d42$var$cellTemplate.content.cloneNode(true).querySelector('.cell');
     $ad161f9bb6853d42$var$setupButtonEvents(cell);
     $ad161f9bb6853d42$var$setupEditor(cell);
@@ -28610,16 +28610,17 @@ function $ad161f9bb6853d42$var$addCell(e) {
 }
 // Remove a notebook from the app
 function $ad161f9bb6853d42$var$removeNotebook(e) {
-    const notebook1 = e.target.closest('.notebook');
-    notebook1.remove();
+    const notebook = e.target.closest('.notebook');
+    notebook.remove();
 }
 /*
   Save a notebook to json and write it to a downloadable file
-*/ function $ad161f9bb6853d42$var$notebookToJSON(notebook1) {
-    let title = notebook1.querySelector('.title').innerText.trim();
+*/ function $ad161f9bb6853d42$var$notebookToJSON(notebook) {
+    let title = notebook.querySelector('.title').innerText.trim();
+    if (!title.endsWith('.ipynb')) title = `${title}.ipynb`;
     const json = {
         "cells": [
-            ...notebook1.querySelectorAll('.cell')
+            ...notebook.querySelectorAll('.cell')
         ].map((cell)=>{
             // this is one cell
             const cellOutput = {
@@ -28674,11 +28675,8 @@ function $ad161f9bb6853d42$var$removeNotebook(e) {
     };
 }
 function $ad161f9bb6853d42$var$saveNotebook(e) {
-    const notebook1 = e.target.closest('.notebook');
-    let { text: text, title: title } = $ad161f9bb6853d42$var$notebookToJSON(notebook1);
-    if (!title.endsWith('.ipynb')) title = `${[
-        title
-    ]}.ipynb`;
+    const notebook = e.target.closest('.notebook');
+    let { text: text, title: title } = $ad161f9bb6853d42$var$notebookToJSON(notebook);
     const blob = new Blob([
         text
     ], {
@@ -28687,18 +28685,41 @@ function $ad161f9bb6853d42$var$saveNotebook(e) {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', `${title}.ipynb`);
+    link.setAttribute('download', title);
     document.body.appendChild(link);
     link.click();
     link.remove();
 }
 function $ad161f9bb6853d42$var$storeNotebook(e) {
-    const notebook1 = e.target.closest('.notebook');
-    let { text: text, title: title } = $ad161f9bb6853d42$var$notebookToJSON(notebook1);
-    if (!title) title = prompt("Notebook Name: ");
-    if (!title.endsWith('.ipynb')) title = title.concat('.ipynb');
+    const notebook = e.target.closest('.notebook');
+    let { text: text, title: title } = $ad161f9bb6853d42$var$notebookToJSON(notebook);
+    if (!title) {
+        title = prompt("Notebook Name: ");
+        title = title.endsWith('.ipynb') ? title : `${title}.ipynb`;
+    }
     localStorage.setItem(title, text);
     localStorage.setItem('lastItem', title);
+}
+function $ad161f9bb6853d42$var$loadNotebook(e) {
+    const lastItem = localStorage.getItem('lastItem');
+    let title;
+    if (lastItem) title = prompt("Noteobook Name: ", lastItem);
+    else title = prompt("Notebook Name: ");
+    if (!title) return;
+    title = title.endsWith('.ipynb') ? title : `${title}.ipynb`;
+    const text = localStorage.getItem(title);
+    if (!text) return;
+    let json;
+    try {
+        json = JSON.parse(text);
+    } catch (e) {
+        alert("Error parsing json");
+    }
+    try {
+        $ad161f9bb6853d42$var$openNotebook(json, title);
+    } catch (e) {
+        alert("Error opening notebook");
+    }
 }
 function $ad161f9bb6853d42$var$loadNotebook(e) {
     const lastItem = localStorage.getItem('lastItem');
@@ -28727,29 +28748,29 @@ function $ad161f9bb6853d42$var$loadNotebook(e) {
 */ function $ad161f9bb6853d42$var$addNotebook(e) {
     // fetch us some elements
     const notebooks = document.querySelector('.notebooks');
-    const notebook1 = $ad161f9bb6853d42$var$notebookTemplate.content.cloneNode(true);
+    const notebook = $ad161f9bb6853d42$var$notebookTemplate.content.cloneNode(true).querySelector('.notebook');
     // wire up notebook buttons
-    const addCellButton = notebook1.querySelector('button.add-cell');
+    const addCellButton = notebook.querySelector('button.add-cell');
     addCellButton.onclick = $ad161f9bb6853d42$var$addCell;
     // open at least one cell
-    notebook1.querySelector('button.add-cell').click();
-    const removeCellButton = notebook1.querySelector('button.remove-notebook');
+    notebook.querySelector('button.add-cell').click();
+    const removeCellButton = notebook.querySelector('button.remove-notebook');
     removeCellButton.onclick = $ad161f9bb6853d42$var$removeCell;
-    const removeNotebookButton = notebook1.querySelector('button.remove-notebook');
+    const removeNotebookButton = notebook.querySelector('button.remove-notebook');
     removeNotebookButton.onclick = $ad161f9bb6853d42$var$removeNotebook;
     // download as file
-    const saveNotebookButton = notebook1.querySelector('button.save-notebook');
+    const saveNotebookButton = notebook.querySelector('button.save-notebook');
     saveNotebookButton.onclick = $ad161f9bb6853d42$var$saveNotebook;
     // store to browser
-    const storeNotebookButton = notebook1.querySelector('button.store-notebook');
+    const storeNotebookButton = notebook.querySelector('button.store-notebook');
     storeNotebookButton.onclick = $ad161f9bb6853d42$var$storeNotebook;
     // add notebook to page
-    notebooks.appendChild(notebook1);
+    notebooks.appendChild(notebook);
 }
 /*
   Open a notebook from json and add it to the screen
-*/ function $ad161f9bb6853d42$var$openCell(notebook1, json) {
-    const cells = notebook1.querySelector('.cells');
+*/ function $ad161f9bb6853d42$var$openCell(notebook, json) {
+    const cells = notebook.querySelector('.cells');
     for (let cellSource of json.cells){
         let cell = $ad161f9bb6853d42$var$cellTemplate.content.cloneNode(true).querySelector('.cell');
         $ad161f9bb6853d42$var$cellConsole = cell.querySelector('.console');
@@ -28770,9 +28791,9 @@ function $ad161f9bb6853d42$var$loadNotebook(e) {
     }
 }
 // Remove a notebook and clear the app's cellEditors 
-function $ad161f9bb6853d42$var$closeNotebook(notebook1) {
+function $ad161f9bb6853d42$var$closeNotebook(notebook) {
     $ad161f9bb6853d42$var$cellEditors.clear();
-    notebook1.remove();
+    notebook.remove();
 }
 // Construct a notebook given json and a filename
 function $ad161f9bb6853d42$var$openNotebook(json, filename) {
@@ -28784,8 +28805,9 @@ function $ad161f9bb6853d42$var$openNotebook(json, filename) {
   let notebook = notebooks.querySelector('.notebook');
   if(notebooks.children.length) closeNotebook(notebook);
   */ // instantiate a notebook template
-    notebook = $ad161f9bb6853d42$var$notebookTemplate.content.cloneNode(true);
+    const notebook = $ad161f9bb6853d42$var$notebookTemplate.content.cloneNode(true).querySelector('.notebook');
     // set notebook title
+    if (filename.endsWith('.ipynb')) filename = filename.slice(0, filename.length - 6);
     notebook.querySelector('.title').innerText = filename;
     // wire up notebook buttons
     const addCellButton = notebook.querySelector('button.add-cell');
