@@ -5,8 +5,8 @@
   "scripts": {
     "start": "parcel src/index.html -p 3000 --open",
     "build:parcel": "parcel build ./src/index.html --public-url /notebook/ --no-source-maps --no-optimize",
-    "build": "npm run clean && npm run build:parcel",
-    "clean": "rm -rf dist/*",
+    "build": "npm run clean && npm run build:parcel && mv dist docs",
+    "clean": "rm -rf dist/* && rm -rf docs",
     "watch": "parcel watch src/index.html"
   },
   "author": "Joshua M. Moore <mooreolith@gmail.com>",

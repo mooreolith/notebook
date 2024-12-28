@@ -321,7 +321,9 @@ function notebookToJSON(notebook) {
 
 function saveNotebook(e){ 
   const notebook = e.target.closest('.notebook');
-  var { text, title } = notebookToJSON(notebook);
+  let { text, title } = notebookToJSON(notebook);
+  if(!title.endsWith('.ipynb')) title = `${[title]}.ipynb`;
+
   const blob = new Blob([text], {type: "application/json"});
   const url = URL.createObjectURL(blob);
 

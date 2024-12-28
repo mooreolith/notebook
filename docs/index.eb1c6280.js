@@ -28675,7 +28675,10 @@ function $ad161f9bb6853d42$var$removeNotebook(e) {
 }
 function $ad161f9bb6853d42$var$saveNotebook(e) {
     const notebook1 = e.target.closest('.notebook');
-    var { text: text, title: title } = $ad161f9bb6853d42$var$notebookToJSON(notebook1);
+    let { text: text, title: title } = $ad161f9bb6853d42$var$notebookToJSON(notebook1);
+    if (!title.endsWith('.ipynb')) title = `${[
+        title
+    ]}.ipynb`;
     const blob = new Blob([
         text
     ], {
