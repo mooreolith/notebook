@@ -335,52 +335,50 @@ function saveNotebook(e){
 
 function storeNotebook(e){
   const notebook = e.target.closest('.notebook');
-  const {text, title} = notebookToJSON(notebook);
-  let filename;
-  if(filename = prompt("Notebook Title: ", `${title}.ipynb`)){
-    localStorage.setItem(filename, text);
+  let {text, title} = notebookToJSON(notebook);
+
+  if(!title){
+    title = prompt("Notebook Name: ");
   }
 
-  if(!filename.endsWith('.ipynb')){
-    filename = filename.concat('.ipynb');
+  if(!title.endsWith('.ipynb')){
+    title = title.concat('.ipynb');
   }
 
-  localStorage.setItem('lastItem', filename);
+  localStorage.setItem(title, text);
+  localStorage.setItem('lastItem', title);
 }
 
 function loadNotebook(e){
   const lastItem = localStorage.getItem('lastItem');
-
   let title;
   if(lastItem){
-    title = prompt('Notebook Name: ', lastItem);
+    title = prompt("Notebook Name: ", lastItem);
   }else{
     title = prompt("Notebook Name: ");
   }
+  if(!title) return;
 
-  if(!title){ 
-    console.alert("No title entered");
-    return;
-   }
+  let text = localStorage.getItem(title);
+  if(text === null){
+    text = localStorage.getItem(`${title}.ipynb`);
+  }
+  if(!text) return;
 
-  let filename = title;
-  if(!filename.endsWith('.ipynb')){
-    filename = filename.concat('.ipynb');
+  let json;
+  try{
+    json = JSON.parse(text);
+  }catch(e){
+    alert("Error reading JSON");
   }
 
-  const text = localStorage.getItem(filename);
-  if(text){
-    try{
-      const json = JSON.parse(text);
-      openNotebook(json, filename);
-    }catch(e){
-      alert(e);
-    }
-  }else{
-    alert(`No file by that name: ${filename}`)
+  try{
+    openNotebook(json, title);
+  }catch(e){
+    alert("Error opening notebook");
+    console.debug(e)
   }
 }
-
 
 /*
   App Functions
@@ -464,10 +462,12 @@ function openNotebook(json, filename){
   // get a reference to .notebooks
   const notebooks = document.querySelector('.notebooks');
 
+  /*
   // close notebook if one is open
   if(notebooks.children.length && !confirm("Close Notebook")) return;
   let notebook = notebooks.querySelector('.notebook');
   if(notebooks.children.length) closeNotebook(notebook);
+  */
 
   // instantiate a notebook template
   notebook = notebookTemplate.content.cloneNode(true);
