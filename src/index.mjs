@@ -320,6 +320,8 @@ function notebookToJSON(notebook) {
   return { text, title };
 }
 
+window.notebookToJSON = notebookToJSON;
+
 function saveNotebook(e){ 
   const notebook = e.target.closest('.notebook');
   let { text, title } = notebookToJSON(notebook);
@@ -349,7 +351,16 @@ function storeNotebook(e){
   localStorage.setItem('lastItem', filename);
 }
 
+function closeIfPristine(notebook){
+  const cell = notebook.querySelector('.cell');
+  if(cell.dataset.execution_count === undefined && notebook.querySelectorAll('.cell').length === 1){
+    closeNotebook(notebook)
+  }
+}
+
 function loadNotebook(e){
+  document.querySelectorAll('.notebook').forEach(closeIfPristine);
+
   const lastItem = localStorage.getItem('lastItem');
   let title, filename;
   if(lastItem) title = prompt("Noteobook Name: ", lastItem);
@@ -452,6 +463,9 @@ function closeNotebook(notebook){
 
 // Construct a notebook given json and a filename
 function openNotebook(json, filename){
+  // close any opened pristine notebook
+  document.querySelectorAll('.notebook').forEach(closeIfPristine);
+
   // get a reference to .notebooks
   const notebooks = document.querySelector('.notebooks');
 

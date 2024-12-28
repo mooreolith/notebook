@@ -28674,6 +28674,7 @@ function $30732a08c2749711$var$removeNotebook(e) {
         title: title
     };
 }
+window.notebookToJSON = $30732a08c2749711$var$notebookToJSON;
 function $30732a08c2749711$var$saveNotebook(e) {
     const notebook = e.target.closest('.notebook');
     let { text: text, title: title } = $30732a08c2749711$var$notebookToJSON(notebook);
@@ -28701,7 +28702,12 @@ function $30732a08c2749711$var$storeNotebook(e) {
     localStorage.setItem(filename, text);
     localStorage.setItem('lastItem', filename);
 }
+function $30732a08c2749711$var$closeIfPristine(notebook) {
+    const cell = notebook.querySelector('.cell');
+    if (cell.dataset.execution_count === undefined && notebook.querySelectorAll('.cell').length === 1) $30732a08c2749711$var$closeNotebook(notebook);
+}
 function $30732a08c2749711$var$loadNotebook(e) {
+    document.querySelectorAll('.notebook').forEach($30732a08c2749711$var$closeIfPristine);
     const lastItem = localStorage.getItem('lastItem');
     let title, filename;
     if (lastItem) title = prompt("Noteobook Name: ", lastItem);
@@ -28776,6 +28782,8 @@ function $30732a08c2749711$var$closeNotebook(notebook) {
 }
 // Construct a notebook given json and a filename
 function $30732a08c2749711$var$openNotebook(json, filename) {
+    // close any opened pristine notebook
+    document.querySelectorAll('.notebook').forEach($30732a08c2749711$var$closeIfPristine);
     // get a reference to .notebooks
     const notebooks = document.querySelector('.notebooks');
     /*
@@ -28851,4 +28859,4 @@ $30732a08c2749711$var$addNotebookButton.onclick = $30732a08c2749711$var$addNoteb
 $30732a08c2749711$var$addNotebook();
 
 
-//# sourceMappingURL=index.e44cfbf2.js.map
+//# sourceMappingURL=index.745db5f2.js.map
