@@ -28525,7 +28525,9 @@ $30732a08c2749711$var$scope.console.debug = function() {
         $30732a08c2749711$var$cellConsole.innerHTML = "";
         output.innerHTML = "";
         // begin calculation
+        window.cell = cell;
         const result = $30732a08c2749711$var$scope.eval(texts.join(''));
+        window.cell = undefined;
         if (output.classList.contains("error")) output.classList.remove('error');
         // display final output value, if any
         output.value = JSON.stringify(result, null, 2);
@@ -28859,4 +28861,4 @@ $30732a08c2749711$var$addNotebookButton.onclick = $30732a08c2749711$var$addNoteb
 $30732a08c2749711$var$addNotebook();
 
 
-//# sourceMappingURL=index.2f1b60b2.js.map
+//# sourceMappingURL=index.1305ad7d.js.map

@@ -151,7 +151,9 @@ function runCell(e){
     output.innerHTML = "";
 
     // begin calculation
-    const result = scope.eval(texts.join(''));    
+    window.cell = cell;
+    const result = scope.eval(texts.join(''));
+    window.cell = undefined;    
     if(output.classList.contains("error")) output.classList.remove('error');
     
     // display final output value, if any
@@ -339,7 +341,7 @@ function saveNotebook(e){
 
 function storeNotebook(e){
   const notebook = e.target.closest('.notebook');
-  let {text, title} = notebookToJSON(notebook);
+  let { text, title } = notebookToJSON(notebook);
   let filename;
 
   if(!title){
