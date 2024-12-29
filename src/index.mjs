@@ -211,7 +211,7 @@ function setupEditor(cell){
 }
 
 // Setup button evens for the cell
-function setupCellButtonEvents(cell){
+function setupCellButtons(cell){
   // execute a cell and print its logs and output
   const runCellButton = cell.querySelector('button.run-cell');
   runCellButton.onclick = runCell;
@@ -231,7 +231,7 @@ function copyCell(e){
   const originalCell = e.target.closest('.cell');
   const copiedCell = cellTemplate.content.cloneNode(true).querySelector('.cell');
 
-  setupCellButtonEvents(copiedCell);
+  setupCellButtons(copiedCell);
   setupEditor(copiedCell);
   
   const originalInputs = getCellInputs(originalCell);
@@ -253,7 +253,7 @@ function addCell(e){
   const cells = notebook.querySelector('.cells');
   const cell = cellTemplate.content.cloneNode(true).querySelector('.cell');
 
-  setupCellButtonEvents(cell);
+  setupCellButtons(cell);
   setupEditor(cell);
   cells.appendChild(cell);
 }
@@ -404,8 +404,8 @@ function addNotebook(e){
 }
 
 function setupNotebookButtons(notebook) {
-  const removeCellButton = notebook.querySelector('button.remove-notebook');
-  removeCellButton.onclick = removeCell;
+  const addCellButton = notebook.querySelector('button.add-cell');
+  addCellButton.onclick = addCell;
 
   const removeNotebookButton = notebook.querySelector('button.remove-notebook');
   removeNotebookButton.onclick = removeNotebook;
@@ -431,7 +431,7 @@ function openCell(notebook, json){
     const cellOutput = cell.querySelector('.output');
 
     // setup cell button event handlers
-    setupCellButtonEvents(cell);
+    setupCellButtons(cell);
 
     // setup codemirror editor
     setupEditor(cell);
@@ -497,7 +497,7 @@ function openNotebook(json, filename){
     const cell = cellTemplate.content.cloneNode(true).querySelector('.cell');
 
     // wire up cell buttons
-    setupCellButtonEvents(cell);
+    setupCellButtons(cell);
 
     // set up codemirror editor
     setupEditor(cell);

@@ -28574,7 +28574,7 @@ function $30732a08c2749711$var$setupEditor(cell) {
     $30732a08c2749711$var$cellEditors.set(cellId, editor);
 }
 // Setup button evens for the cell
-function $30732a08c2749711$var$setupCellButtonEvents(cell) {
+function $30732a08c2749711$var$setupCellButtons(cell) {
     // execute a cell and print its logs and output
     const runCellButton = cell.querySelector('button.run-cell');
     runCellButton.onclick = $30732a08c2749711$var$runCell;
@@ -28591,7 +28591,7 @@ function $30732a08c2749711$var$copyCell(e) {
     const cells = notebook.querySelector('.cells');
     const originalCell = e.target.closest('.cell');
     const copiedCell = $30732a08c2749711$var$cellTemplate.content.cloneNode(true).querySelector('.cell');
-    $30732a08c2749711$var$setupCellButtonEvents(copiedCell);
+    $30732a08c2749711$var$setupCellButtons(copiedCell);
     $30732a08c2749711$var$setupEditor(copiedCell);
     const originalInputs = $30732a08c2749711$var$getCellInputs(originalCell);
     const originalOutput = originalCell.querySelector('.output').value;
@@ -28606,7 +28606,7 @@ function $30732a08c2749711$var$addCell(e) {
     const notebook = e.target.closest('.notebook');
     const cells = notebook.querySelector('.cells');
     const cell = $30732a08c2749711$var$cellTemplate.content.cloneNode(true).querySelector('.cell');
-    $30732a08c2749711$var$setupCellButtonEvents(cell);
+    $30732a08c2749711$var$setupCellButtons(cell);
     $30732a08c2749711$var$setupEditor(cell);
     cells.appendChild(cell);
 }
@@ -28741,8 +28741,8 @@ function $30732a08c2749711$var$loadNotebook(e) {
     notebooks.appendChild(notebook);
 }
 function $30732a08c2749711$var$setupNotebookButtons(notebook) {
-    const removeCellButton = notebook.querySelector('button.remove-notebook');
-    removeCellButton.onclick = $30732a08c2749711$var$removeCell;
+    const addCellButton = notebook.querySelector('button.add-cell');
+    addCellButton.onclick = $30732a08c2749711$var$addCell;
     const removeNotebookButton = notebook.querySelector('button.remove-notebook');
     removeNotebookButton.onclick = $30732a08c2749711$var$removeNotebook;
     // download as file
@@ -28761,7 +28761,7 @@ function $30732a08c2749711$var$setupNotebookButtons(notebook) {
         $30732a08c2749711$var$cellConsole = cell.querySelector('.console');
         const cellOutput = cell.querySelector('.output');
         // setup cell button event handlers
-        $30732a08c2749711$var$setupCellButtonEvents(cell);
+        $30732a08c2749711$var$setupCellButtons(cell);
         // setup codemirror editor
         $30732a08c2749711$var$setupEditor(cell);
         // set cell execution count
@@ -28803,7 +28803,7 @@ function $30732a08c2749711$var$openNotebook(json, filename) {
     for (let cellSource of json.cells){
         const cell = $30732a08c2749711$var$cellTemplate.content.cloneNode(true).querySelector('.cell');
         // wire up cell buttons
-        $30732a08c2749711$var$setupCellButtonEvents(cell);
+        $30732a08c2749711$var$setupCellButtons(cell);
         // set up codemirror editor
         $30732a08c2749711$var$setupEditor(cell);
         // set cell input
@@ -28851,4 +28851,4 @@ $30732a08c2749711$var$addNotebookButton.onclick = $30732a08c2749711$var$addNoteb
 $30732a08c2749711$var$addNotebook();
 
 
-//# sourceMappingURL=index.571cdab6.js.map
+//# sourceMappingURL=index.458309c8.js.map
