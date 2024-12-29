@@ -28618,8 +28618,8 @@ function $30732a08c2749711$var$removeNotebook(e) {
 /*
   Save a notebook to json and write it to a downloadable file
 */ function $30732a08c2749711$var$notebookToJSON(notebook) {
-    let title = notebook.querySelector('.title').innerText.trim();
-    if (!title.endsWith('.ipynb')) title = `${title}.ipynb`;
+    let title = notebook.querySelector('.title').innerHTML.trim();
+    title = title.endsWith('.ipynb') ? title : `${title}.ipynb`;
     const json = {
         "cells": [
             ...notebook.querySelectorAll('.cell')
@@ -28696,13 +28696,8 @@ function $30732a08c2749711$var$saveNotebook(e) {
 function $30732a08c2749711$var$storeNotebook(e) {
     const notebook = e.target.closest('.notebook');
     let { text: text, title: title } = $30732a08c2749711$var$notebookToJSON(notebook);
-    let filename;
-    if (!title) {
-        title = prompt("Notebook Name: ");
-        filename = title.endsWith('.ipynb') ? title : `${title}.ipynb`;
-    }
-    localStorage.setItem(filename, text);
-    localStorage.setItem('lastItem', filename);
+    localStorage.setItem(title, text);
+    localStorage.setItem('lastItem', title);
 }
 function $30732a08c2749711$var$closeIfPristine(notebook) {
     const cell = notebook.querySelector('.cell');
@@ -28861,4 +28856,4 @@ $30732a08c2749711$var$addNotebookButton.onclick = $30732a08c2749711$var$addNoteb
 $30732a08c2749711$var$addNotebook();
 
 
-//# sourceMappingURL=index.1305ad7d.js.map
+//# sourceMappingURL=index.f3299a5c.js.map
