@@ -28574,7 +28574,7 @@ function $30732a08c2749711$var$setupEditor(cell) {
     $30732a08c2749711$var$cellEditors.set(cellId, editor);
 }
 // Setup button evens for the cell
-function $30732a08c2749711$var$setupButtonEvents(cell) {
+function $30732a08c2749711$var$setupCellButtonEvents(cell) {
     // execute a cell and print its logs and output
     const runCellButton = cell.querySelector('button.run-cell');
     runCellButton.onclick = $30732a08c2749711$var$runCell;
@@ -28591,7 +28591,7 @@ function $30732a08c2749711$var$copyCell(e) {
     const cells = notebook.querySelector('.cells');
     const originalCell = e.target.closest('.cell');
     const copiedCell = $30732a08c2749711$var$cellTemplate.content.cloneNode(true).querySelector('.cell');
-    $30732a08c2749711$var$setupButtonEvents(copiedCell);
+    $30732a08c2749711$var$setupCellButtonEvents(copiedCell);
     $30732a08c2749711$var$setupEditor(copiedCell);
     const originalInputs = $30732a08c2749711$var$getCellInputs(originalCell);
     const originalOutput = originalCell.querySelector('.output').value;
@@ -28606,7 +28606,7 @@ function $30732a08c2749711$var$addCell(e) {
     const notebook = e.target.closest('.notebook');
     const cells = notebook.querySelector('.cells');
     const cell = $30732a08c2749711$var$cellTemplate.content.cloneNode(true).querySelector('.cell');
-    $30732a08c2749711$var$setupButtonEvents(cell);
+    $30732a08c2749711$var$setupCellButtonEvents(cell);
     $30732a08c2749711$var$setupEditor(cell);
     cells.appendChild(cell);
 }
@@ -28620,6 +28620,7 @@ function $30732a08c2749711$var$removeNotebook(e) {
 */ function $30732a08c2749711$var$notebookToJSON(notebook) {
     let title = notebook.querySelector('.title').innerText.replace('<br>', '').trim();
     title = title.endsWith('.ipynb') ? title : `${title}.ipynb`;
+    console.info('title', title);
     const json = {
         "cells": [
             ...notebook.querySelectorAll('.cell')
@@ -28676,7 +28677,6 @@ function $30732a08c2749711$var$removeNotebook(e) {
         title: title
     };
 }
-window.notebookToJSON = $30732a08c2749711$var$notebookToJSON;
 function $30732a08c2749711$var$saveNotebook(e) {
     const notebook = e.target.closest('.notebook');
     let { text: text, title: title } = $30732a08c2749711$var$notebookToJSON(notebook);
@@ -28736,6 +28736,11 @@ function $30732a08c2749711$var$loadNotebook(e) {
     addCellButton.onclick = $30732a08c2749711$var$addCell;
     // open at least one cell
     notebook.querySelector('button.add-cell').click();
+    $30732a08c2749711$var$setupNotebookButtons(notebook);
+    // add notebook to page
+    notebooks.appendChild(notebook);
+}
+function $30732a08c2749711$var$setupNotebookButtons(notebook) {
     const removeCellButton = notebook.querySelector('button.remove-notebook');
     removeCellButton.onclick = $30732a08c2749711$var$removeCell;
     const removeNotebookButton = notebook.querySelector('button.remove-notebook');
@@ -28746,8 +28751,6 @@ function $30732a08c2749711$var$loadNotebook(e) {
     // store to browser
     const storeNotebookButton = notebook.querySelector('button.store-notebook');
     storeNotebookButton.onclick = $30732a08c2749711$var$storeNotebook;
-    // add notebook to page
-    notebooks.appendChild(notebook);
 }
 /*
   Open a notebook from json and add it to the screen
@@ -28758,7 +28761,7 @@ function $30732a08c2749711$var$loadNotebook(e) {
         $30732a08c2749711$var$cellConsole = cell.querySelector('.console');
         const cellOutput = cell.querySelector('.output');
         // setup cell button event handlers
-        $30732a08c2749711$var$setupButtonEvents(cell);
+        $30732a08c2749711$var$setupCellButtonEvents(cell);
         // setup codemirror editor
         $30732a08c2749711$var$setupEditor(cell);
         // set cell execution count
@@ -28793,22 +28796,14 @@ function $30732a08c2749711$var$openNotebook(json, filename) {
     // set notebook title
     if (filename.endsWith('.ipynb')) filename = filename.slice(0, filename.length - 6);
     notebook.querySelector('.title').innerText = filename;
-    // wire up notebook buttons
-    const addCellButton = notebook.querySelector('button.add-cell');
-    addCellButton.onclick = $30732a08c2749711$var$addCell;
-    const removeCellButton = notebook.querySelector('button.remove-notebook');
-    removeCellButton.onclick = $30732a08c2749711$var$removeCell;
-    const removeNotebookButton = notebook.querySelector('button.remove-notebook');
-    removeNotebookButton.onclick = $30732a08c2749711$var$removeNotebook;
-    const saveNotebookButton = notebook.querySelector('button.save-notebook');
-    saveNotebookButton.onclick = $30732a08c2749711$var$saveNotebook;
+    $30732a08c2749711$var$setupNotebookButtons(notebook);
     // add cells
     // for the sake of simplicity, I'm dealing only with code cells. 
     const cells = notebook.querySelector('.cells');
     for (let cellSource of json.cells){
         const cell = $30732a08c2749711$var$cellTemplate.content.cloneNode(true).querySelector('.cell');
         // wire up cell buttons
-        $30732a08c2749711$var$setupButtonEvents(cell);
+        $30732a08c2749711$var$setupCellButtonEvents(cell);
         // set up codemirror editor
         $30732a08c2749711$var$setupEditor(cell);
         // set cell input
@@ -28856,4 +28851,4 @@ $30732a08c2749711$var$addNotebookButton.onclick = $30732a08c2749711$var$addNoteb
 $30732a08c2749711$var$addNotebook();
 
 
-//# sourceMappingURL=index.6ea059b2.js.map
+//# sourceMappingURL=index.571cdab6.js.map

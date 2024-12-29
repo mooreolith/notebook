@@ -211,7 +211,7 @@ function setupEditor(cell){
 }
 
 // Setup button evens for the cell
-function setupButtonEvents(cell){
+function setupCellButtonEvents(cell){
   // execute a cell and print its logs and output
   const runCellButton = cell.querySelector('button.run-cell');
   runCellButton.onclick = runCell;
@@ -231,7 +231,7 @@ function copyCell(e){
   const originalCell = e.target.closest('.cell');
   const copiedCell = cellTemplate.content.cloneNode(true).querySelector('.cell');
 
-  setupButtonEvents(copiedCell);
+  setupCellButtonEvents(copiedCell);
   setupEditor(copiedCell);
   
   const originalInputs = getCellInputs(originalCell);
@@ -253,7 +253,7 @@ function addCell(e){
   const cells = notebook.querySelector('.cells');
   const cell = cellTemplate.content.cloneNode(true).querySelector('.cell');
 
-  setupButtonEvents(cell);
+  setupCellButtonEvents(cell);
   setupEditor(cell);
   cells.appendChild(cell);
 }
@@ -269,7 +269,8 @@ function removeNotebook(e){
 */
 function notebookToJSON(notebook) {
   let title = notebook.querySelector('.title').innerText.replace('<br>', '').trim();
-  title = title.endsWith('.ipynb') ? title : `${title}.ipynb`
+  title = title.endsWith('.ipynb') ? title : `${title}.ipynb`;
+  console.info('title', title);
 
   const json = {
     "cells": [...notebook.querySelectorAll('.cell')].map(cell => {
@@ -321,8 +322,6 @@ function notebookToJSON(notebook) {
   const text = JSON.stringify(json);
   return { text, title };
 }
-
-window.notebookToJSON = notebookToJSON;
 
 function saveNotebook(e){ 
   const notebook = e.target.closest('.notebook');
@@ -398,6 +397,13 @@ function addNotebook(e){
   // open at least one cell
   notebook.querySelector('button.add-cell').click();
 
+  setupNotebookButtons(notebook);
+
+  // add notebook to page
+  notebooks.appendChild(notebook);
+}
+
+function setupNotebookButtons(notebook) {
   const removeCellButton = notebook.querySelector('button.remove-notebook');
   removeCellButton.onclick = removeCell;
 
@@ -411,9 +417,6 @@ function addNotebook(e){
   // store to browser
   const storeNotebookButton = notebook.querySelector('button.store-notebook');
   storeNotebookButton.onclick = storeNotebook;
-
-  // add notebook to page
-  notebooks.appendChild(notebook);
 }
 
 /*
@@ -428,7 +431,7 @@ function openCell(notebook, json){
     const cellOutput = cell.querySelector('.output');
 
     // setup cell button event handlers
-    setupButtonEvents(cell);
+    setupCellButtonEvents(cell);
 
     // setup codemirror editor
     setupEditor(cell);
@@ -484,18 +487,7 @@ function openNotebook(json, filename){
   }
   notebook.querySelector('.title').innerText = filename;
   
-  // wire up notebook buttons
-  const addCellButton = notebook.querySelector('button.add-cell');
-  addCellButton.onclick = addCell;
-
-  const removeCellButton = notebook.querySelector('button.remove-notebook');
-  removeCellButton.onclick = removeCell;
-
-  const removeNotebookButton = notebook.querySelector('button.remove-notebook');
-  removeNotebookButton.onclick = removeNotebook;
-
-  const saveNotebookButton = notebook.querySelector('button.save-notebook');
-  saveNotebookButton.onclick = saveNotebook;
+  setupNotebookButtons(notebook);
 
   // add cells
   // for the sake of simplicity, I'm dealing only with code cells. 
@@ -505,7 +497,7 @@ function openNotebook(json, filename){
     const cell = cellTemplate.content.cloneNode(true).querySelector('.cell');
 
     // wire up cell buttons
-    setupButtonEvents(cell);
+    setupCellButtonEvents(cell);
 
     // set up codemirror editor
     setupEditor(cell);
