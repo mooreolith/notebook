@@ -38,18 +38,18 @@
   .output.error {
     color: red;
   }
+}
 
-  .cell-buttons {
-    display: flex;
-    gap: 20px;
-    align-items: flex-end;
-  }
+.cell-buttons {
+  display: flex;
+  gap: 20px;
+  align-items: flex-end;
+}
 
-  .notebook-buttons {
-    display: flex;
-    gap: 20px;
-    align-items: flex-start;
-  }
+.notebook-buttons {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
 }
 
 @media screen  and (max-width: 800px) {

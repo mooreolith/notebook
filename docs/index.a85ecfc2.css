@@ -38,18 +38,18 @@
   .output.error {
     color: red;
   }
+}
 
-  .cell-buttons {
-    align-items: flex-end;
-    gap: 20px;
-    display: flex;
-  }
+.cell-buttons {
+  align-items: flex-end;
+  gap: 20px;
+  display: flex;
+}
 
-  .notebook-buttons {
-    align-items: flex-start;
-    gap: 20px;
-    display: flex;
-  }
+.notebook-buttons {
+  align-items: flex-start;
+  gap: 20px;
+  display: flex;
 }
 
 @media screen and (width <= 800px) {
@@ -113,4 +113,4 @@ button {
 .notebook {
   border: 1px solid gray;
 }
-/*# sourceMappingURL=index.d1707483.css.map */
+/*# sourceMappingURL=index.a85ecfc2.css.map */

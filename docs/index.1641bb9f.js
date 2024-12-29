@@ -28618,7 +28618,7 @@ function $30732a08c2749711$var$removeNotebook(e) {
 /*
   Save a notebook to json and write it to a downloadable file
 */ function $30732a08c2749711$var$notebookToJSON(notebook) {
-    let title = notebook.querySelector('.title').innerHTML.trim();
+    let title = notebook.querySelector('.title').innerHTML.replace('<br>', '').trim();
     title = title.endsWith('.ipynb') ? title : `${title}.ipynb`;
     const json = {
         "cells": [
@@ -28856,4 +28856,4 @@ $30732a08c2749711$var$addNotebookButton.onclick = $30732a08c2749711$var$addNoteb
 $30732a08c2749711$var$addNotebook();
 
 
-//# sourceMappingURL=index.f3299a5c.js.map
+//# sourceMappingURL=index.1641bb9f.js.map

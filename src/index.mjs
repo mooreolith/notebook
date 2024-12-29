@@ -268,7 +268,7 @@ function removeNotebook(e){
   Save a notebook to json and write it to a downloadable file
 */
 function notebookToJSON(notebook) {
-  let title = notebook.querySelector('.title').innerHTML.trim();
+  let title = notebook.querySelector('.title').innerHTML.replace('<br>', '').trim();
   title = title.endsWith('.ipynb') ? title : `${title}.ipynb`
 
   const json = {
