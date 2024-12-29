@@ -268,8 +268,8 @@ function removeNotebook(e){
   Save a notebook to json and write it to a downloadable file
 */
 function notebookToJSON(notebook) {
-  let title = notebook.querySelector('.title').innerText.trim();
-  if(!title.endsWith('.ipynb')) title = `${title}.ipynb`;
+  let title = notebook.querySelector('.title').innerHTML.trim();
+  title = title.endsWith('.ipynb') ? title : `${title}.ipynb`
 
   const json = {
     "cells": [...notebook.querySelectorAll('.cell')].map(cell => {
@@ -342,15 +342,9 @@ function saveNotebook(e){
 function storeNotebook(e){
   const notebook = e.target.closest('.notebook');
   let { text, title } = notebookToJSON(notebook);
-  let filename;
 
-  if(!title){
-    title = prompt("Notebook Name: ");
-    filename = title.endsWith('.ipynb') ? title : `${title}.ipynb`;
-  }
-
-  localStorage.setItem(filename, text);
-  localStorage.setItem('lastItem', filename);
+  localStorage.setItem(title, text);
+  localStorage.setItem('lastItem', title);
 }
 
 function closeIfPristine(notebook){
