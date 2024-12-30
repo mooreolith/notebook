@@ -130,6 +130,7 @@ scope.console.debug = function(){
 /*
   Execute a code cell
 */
+let __EVAL = s => eval(`void (__EVAL = ${__EVAL.toString()}); ${s}`);
 function runCell(e){
   const cell = e.target.closest('.cell');
   if(!cell.dataset.execution_count){
@@ -152,7 +153,13 @@ function runCell(e){
 
     // begin calculation
     window.cell = cell;
-    const result = scope.eval(texts.join(''));
+    //const result = scope.eval(texts.join(''));
+    let result;
+    try{
+      result = __EVAL(texts.join(''));
+    }catch(err){
+      console.error(expr, 'ERROR:', err.message);
+    }
     window.cell = undefined;    
     if(output.classList.contains("error")) output.classList.remove('error');
     
