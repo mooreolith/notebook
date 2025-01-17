@@ -40,15 +40,24 @@
   }
 }
 
+button {
+  color: #000;
+  background-color: #fff;
+  padding: 15px;
+}
+
+button:hover {
+  color: #fff;
+  background-color: #000;
+}
+
 .cell-buttons {
   align-items: flex-end;
-  gap: 20px;
   display: flex;
 }
 
 .notebook-buttons {
   align-items: flex-start;
-  gap: 20px;
   display: flex;
 }
 
@@ -70,8 +79,8 @@
 
 button {
   box-shadow: none;
-  background-color: #d3d3d3;
-  border: 1px #4682b4;
+  background-color: #fff;
+  border: none;
   border-radius: 0;
   font-size: 20px;
 }
@@ -112,5 +121,6 @@ button {
 
 .notebook {
   border: 1px solid gray;
+  margin-bottom: 50px;
 }
-/*# sourceMappingURL=index.a85ecfc2.css.map */
+/*# sourceMappingURL=index.77522fd9.css.map */

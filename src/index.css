@@ -40,15 +40,24 @@
   }
 }
 
+button {
+  background-color: white;
+  color: black;
+  padding: 15px;
+}
+
+button:hover {
+  background-color: black;
+  color: white;
+}
+
 .cell-buttons {
   display: flex;
-  gap: 20px;
   align-items: flex-end;
 }
 
 .notebook-buttons {
   display: flex;
-  gap: 20px;
   align-items: flex-start;
 }
 
@@ -77,9 +86,9 @@
 button {
   border-radius: 0;
   box-shadow: none;
-  border: 1px steelblue;
+  border: none;
   font-size: 20px;
-  background-color: lightgray;
+  background-color: white;
 }
 
 .output {
@@ -118,4 +127,5 @@ button {
 
 .notebook {
   border: 1px solid gray;
+  margin-bottom: 50px;
 }
