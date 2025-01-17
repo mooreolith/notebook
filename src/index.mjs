@@ -388,7 +388,6 @@ async function open(_){
   }
 
   // open notebook with json and title
-  console.debug('open', json, title)
   try{
     openNotebook(json, title);
   }catch(err){
