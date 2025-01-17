@@ -385,12 +385,8 @@ async function open(_){
     // parse json
     const response = await fetch(url);
     if(!response.ok) return alert("Error loading notebook!");
-    text = await response.text();
-    try{
-      json = JSON.parse(text);
-    }catch(err){
-      return alert("Error parsing notebook!");
-    }
+    json = await response.json();
+    console.info(json);
   }
 
   // open notebook with json and title
