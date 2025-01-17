@@ -19,8 +19,9 @@ let language = new Compartment, tabSize = new Compartment;
 const notebookTemplate = document.querySelector('template.notebook-template');
 const cellTemplate = document.querySelector('template.cell-template');
 const addNotebookButton = document.querySelector('button.add-notebook');
+const uploadNotebookButton = document.querySelector('button.upload-notebook');
 const openNotebookButton = document.querySelector('button.open-notebook');
-const loadNotebookButton = document.querySelector('button.load-notebook');
+// todo const loadNotebookButton = document.querySelector('button.load-notebook');
 
 // program data
 let newCellId = 0;
@@ -358,7 +359,50 @@ function closeIfPristine(notebook){
   }
 }
 
-function loadNotebook(e){
+async function open(_){
+  document.querySelectorAll('.notebook').forEach(closeIfPristine);
+  const lastItem = localStorage.getItem('lastItem');
+  let title, filename, text, json;
+
+  if(lastItem) title = prompt("Notebook Name: ", lastItem);
+  else title = prompt("Notebook Name: ");
+  if(!title) return;
+  filename = title.endsWith('.ipynb') ? title : `${title}.ipynb`;
+  const url = URL.parse(filename);
+
+  if(url === null){
+    text = localStorage.getItem(filename);
+    if(!text) return;
+    try{
+      json = JSON.parse(text);
+    }catch(err){
+      return alert("Error parsing notebook!");
+    }
+  }else{
+    const response = await fetch(url);
+    if(!response.ok) return alert("Error loading notebook!");
+    text = await response.json();
+    const parts = title.split('/');
+    title = parts[parts.length - 1];
+  }
+
+  // open notebook with json and title
+  try{
+    openNotebook(json, title);
+  }catch(err){
+    alert("Error opening notebook!")
+  }
+}
+
+/*
+function loadNotebookFromFileURL(e){
+  document.querySelectorAll('.notebook').forEach(closeIfPristine);
+  const lastItem = localStorage.getItem('lastItem');
+
+
+}
+
+function loadNotebookFromLocalStorage(e){
   document.querySelectorAll('.notebook').forEach(closeIfPristine);
 
   const lastItem = localStorage.getItem('lastItem');
@@ -383,6 +427,7 @@ function loadNotebook(e){
     alert("Error opening notebook");
   }
 }
+*/
 
 /*
   App Functions
@@ -424,6 +469,7 @@ function setupNotebookButtons(notebook) {
 /*
   Open a notebook from json and add it to the screen
 */
+/*
 function openCell(notebook, json){
   const cells = notebook.querySelector('.cells');
 
@@ -458,6 +504,7 @@ function openCell(notebook, json){
       .data['text/plain'];
   }
 }
+*/
 
 // Remove a notebook and clear the app's cellEditors 
 function closeNotebook(notebook){
@@ -468,7 +515,7 @@ function closeNotebook(notebook){
 // Construct a notebook given json and a filename
 function openNotebook(json, filename){
   // close any opened pristine notebook
-  document.querySelectorAll('.notebook').forEach(closeIfPristine);
+  // todo document.querySelectorAll('.notebook').forEach(closeIfPristine);
 
   // get a reference to .notebooks
   const notebooks = document.querySelector('.notebooks');
@@ -532,12 +579,10 @@ function openNotebook(json, filename){
 }
 
 // Hidden file input, triggered by other button click
-const notebookInput = document.querySelector('input.notebook-input');
-openNotebookButton.onclick = function(){
-  notebookInput.click();
-}
 
 // Read the file and call openNotebook
+const notebookInput = document.querySelector('input.notebook-input');
+
 notebookInput.onchange = function(){
   if(notebookInput.files.length){
     const file = notebookInput.files[0];
@@ -552,7 +597,11 @@ notebookInput.onchange = function(){
   }
 }
 
-loadNotebookButton.onclick = loadNotebook;
+uploadNotebookButton.onclick = function(){
+  notebookInput.click();
+}
+
+openNotebookButton.onclick = open;
 
 // Add a notebook upon button click
 addNotebookButton.onclick = addNotebook;

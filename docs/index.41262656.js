@@ -28403,8 +28403,9 @@ let $30732a08c2749711$var$language = new (0, $8fc44fe4551a8c09$export$d51c0172eb
 const $30732a08c2749711$var$notebookTemplate = document.querySelector('template.notebook-template');
 const $30732a08c2749711$var$cellTemplate = document.querySelector('template.cell-template');
 const $30732a08c2749711$var$addNotebookButton = document.querySelector('button.add-notebook');
+const $30732a08c2749711$var$uploadNotebookButton = document.querySelector('button.upload-notebook');
 const $30732a08c2749711$var$openNotebookButton = document.querySelector('button.open-notebook');
-const $30732a08c2749711$var$loadNotebookButton = document.querySelector('button.load-notebook');
+// todo const loadNotebookButton = document.querySelector('button.load-notebook');
 // program data
 let $30732a08c2749711$var$newCellId = 0;
 const $30732a08c2749711$var$cellEditors = new Map([]);
@@ -28702,29 +28703,71 @@ function $30732a08c2749711$var$closeIfPristine(notebook) {
     const cell = notebook.querySelector('.cell');
     if (cell.dataset.execution_count === undefined && notebook.querySelectorAll('.cell').length === 1 && notebook.querySelector('.title').textContent === 'Notebook Title') $30732a08c2749711$var$closeNotebook(notebook);
 }
-function $30732a08c2749711$var$loadNotebook(e) {
+async function $30732a08c2749711$var$open(_) {
     document.querySelectorAll('.notebook').forEach($30732a08c2749711$var$closeIfPristine);
     const lastItem = localStorage.getItem('lastItem');
-    let title, filename;
-    if (lastItem) title = prompt("Noteobook Name: ", lastItem);
+    let title, filename, text, json;
+    if (lastItem) title = prompt("Notebook Name: ", lastItem);
     else title = prompt("Notebook Name: ");
     if (!title) return;
     filename = title.endsWith('.ipynb') ? title : `${title}.ipynb`;
-    const text = localStorage.getItem(filename);
-    if (!text) return;
-    let json;
-    try {
-        json = JSON.parse(text);
-    } catch (e) {
-        alert("Error parsing json");
+    const url = URL.parse(filename);
+    if (url === null) {
+        text = localStorage.getItem(filename);
+        if (!text) return;
+        try {
+            json = JSON.parse(text);
+        } catch (err) {
+            return alert("Error parsing notebook!");
+        }
+    } else {
+        const response = await fetch(url);
+        if (!response.ok) return alert("Error loading notebook!");
+        text = await response.json();
+        const parts = title.split('/');
+        title = parts[parts.length - 1];
     }
+    // open notebook with json and title
     try {
         $30732a08c2749711$var$openNotebook(json, title);
-    } catch (e) {
-        alert("Error opening notebook");
+    } catch (err) {
+        alert("Error opening notebook!");
     }
 }
 /*
+function loadNotebookFromFileURL(e){
+  document.querySelectorAll('.notebook').forEach(closeIfPristine);
+  const lastItem = localStorage.getItem('lastItem');
+
+
+}
+
+function loadNotebookFromLocalStorage(e){
+  document.querySelectorAll('.notebook').forEach(closeIfPristine);
+
+  const lastItem = localStorage.getItem('lastItem');
+  let title, filename;
+  if(lastItem) title = prompt("Noteobook Name: ", lastItem);
+  else title = prompt("Notebook Name: ");
+  if(!title) return;
+  filename = title.endsWith('.ipynb') ? title : `${title}.ipynb`;
+
+  const text = localStorage.getItem(filename);
+  if(!text) return;
+  let json;
+  try{
+    json = JSON.parse(text);
+  }catch(e){
+    alert("Error parsing json");
+  }
+
+  try{
+    openNotebook(json, title);
+  }catch(e){
+    alert("Error opening notebook");
+  }
+}
+*/ /*
   App Functions
 */ function $30732a08c2749711$var$addNotebook(e) {
     // fetch us some elements
@@ -28753,28 +28796,42 @@ function $30732a08c2749711$var$setupNotebookButtons(notebook) {
 }
 /*
   Open a notebook from json and add it to the screen
-*/ function $30732a08c2749711$var$openCell(notebook, json) {
-    const cells = notebook.querySelector('.cells');
-    for (let cellSource of json.cells){
-        let cell = $30732a08c2749711$var$cellTemplate.content.cloneNode(true).querySelector('.cell');
-        $30732a08c2749711$var$cellConsole = cell.querySelector('.console');
-        const cellOutput = cell.querySelector('.output');
-        // setup cell button event handlers
-        $30732a08c2749711$var$setupCellButtons(cell);
-        // setup codemirror editor
-        $30732a08c2749711$var$setupEditor(cell);
-        // set cell execution count
-        cell.dataset.execution_count = 0;
-        // set cell input
-        const originalInputs = cellSource.source;
-        $30732a08c2749711$var$setCellInput(cell, originalInputs);
-        // set cell logs
-        cellSource.outputs.filter((output)=>output?.outputs?.output_type === 'stdout').map((output)=>output.text).map($30732a08c2749711$var$log);
-        // set cell log
-        cellOutput.value = cellSource.outputs.filter((output)=>output?.outputs.output_type === 'execute_result')[0].data['text/plain'];
-    }
+*/ /*
+function openCell(notebook, json){
+  const cells = notebook.querySelector('.cells');
+
+  for(let cellSource of json.cells){
+    let cell = cellTemplate.content.cloneNode(true).querySelector('.cell');
+    cellConsole = cell.querySelector('.console');
+    const cellOutput = cell.querySelector('.output');
+
+    // setup cell button event handlers
+    setupCellButtons(cell);
+
+    // setup codemirror editor
+    setupEditor(cell);
+
+    // set cell execution count
+    cell.dataset.execution_count = 0;
+
+    // set cell input
+    const originalInputs = cellSource.source;
+    setCellInput(cell, originalInputs);
+
+    // set cell logs
+    cellSource.outputs
+      .filter(output => output?.outputs?.output_type === 'stdout')
+      .map(output => output.text)
+      .map(log);
+    
+    // set cell log
+    cellOutput.value = cellSource.outputs
+      .filter(output => output?.outputs.output_type === 'execute_result')
+      [0]
+      .data['text/plain'];
+  }
 }
-// Remove a notebook and clear the app's cellEditors 
+*/ // Remove a notebook and clear the app's cellEditors 
 function $30732a08c2749711$var$closeNotebook(notebook) {
     $30732a08c2749711$var$cellEditors.clear();
     notebook.remove();
@@ -28782,7 +28839,7 @@ function $30732a08c2749711$var$closeNotebook(notebook) {
 // Construct a notebook given json and a filename
 function $30732a08c2749711$var$openNotebook(json, filename) {
     // close any opened pristine notebook
-    document.querySelectorAll('.notebook').forEach($30732a08c2749711$var$closeIfPristine);
+    // todo document.querySelectorAll('.notebook').forEach(closeIfPristine);
     // get a reference to .notebooks
     const notebooks = document.querySelector('.notebooks');
     /*
@@ -28826,11 +28883,8 @@ function $30732a08c2749711$var$openNotebook(json, filename) {
     notebooks.appendChild(notebook);
 }
 // Hidden file input, triggered by other button click
-const $30732a08c2749711$var$notebookInput = document.querySelector('input.notebook-input');
-$30732a08c2749711$var$openNotebookButton.onclick = function() {
-    $30732a08c2749711$var$notebookInput.click();
-};
 // Read the file and call openNotebook
+const $30732a08c2749711$var$notebookInput = document.querySelector('input.notebook-input');
 $30732a08c2749711$var$notebookInput.onchange = function() {
     if ($30732a08c2749711$var$notebookInput.files.length) {
         const file = $30732a08c2749711$var$notebookInput.files[0];
@@ -28843,11 +28897,14 @@ $30732a08c2749711$var$notebookInput.onchange = function() {
         reader.readAsText(file);
     }
 };
-$30732a08c2749711$var$loadNotebookButton.onclick = $30732a08c2749711$var$loadNotebook;
+$30732a08c2749711$var$uploadNotebookButton.onclick = function() {
+    $30732a08c2749711$var$notebookInput.click();
+};
+$30732a08c2749711$var$openNotebookButton.onclick = $30732a08c2749711$var$open;
 // Add a notebook upon button click
 $30732a08c2749711$var$addNotebookButton.onclick = $30732a08c2749711$var$addNotebook;
 // Open at least one notebook
 $30732a08c2749711$var$addNotebook();
 
 
-//# sourceMappingURL=index.7b8fdbf2.js.map
+//# sourceMappingURL=index.41262656.js.map
