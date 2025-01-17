@@ -21,7 +21,6 @@ const cellTemplate = document.querySelector('template.cell-template');
 const addNotebookButton = document.querySelector('button.add-notebook');
 const uploadNotebookButton = document.querySelector('button.upload-notebook');
 const openNotebookButton = document.querySelector('button.open-notebook');
-// todo const loadNotebookButton = document.querySelector('button.load-notebook');
 
 // program data
 let newCellId = 0;
@@ -69,7 +68,6 @@ function getCellLogs(cell){
   const cellConsole = cell.querySelector('.console');
   return [...cellConsole.querySelectorAll('.line')].map(line => line.innerText);
 }
-
 
 /*
  Console Magic
@@ -226,7 +224,8 @@ function setupCellButtons(cell){
 
   // clone a cell and add it to the notebook
   const copyCellButton = cell.querySelector('button.copy-cell');
-  copyCellButton.onclick = copyCell;}
+  copyCellButton.onclick = copyCell;
+}
 
 // Create and add a clone of a cell
 function copyCell(e){
@@ -381,53 +380,19 @@ async function open(_){
   }else{
     const response = await fetch(url);
     if(!response.ok) return alert("Error loading notebook!");
-    text = await response.json();
+    json = await response.json();
     const parts = title.split('/');
     title = parts[parts.length - 1];
   }
 
   // open notebook with json and title
+  console.debug('open', json, title)
   try{
     openNotebook(json, title);
   }catch(err){
     alert("Error opening notebook!")
   }
 }
-
-/*
-function loadNotebookFromFileURL(e){
-  document.querySelectorAll('.notebook').forEach(closeIfPristine);
-  const lastItem = localStorage.getItem('lastItem');
-
-
-}
-
-function loadNotebookFromLocalStorage(e){
-  document.querySelectorAll('.notebook').forEach(closeIfPristine);
-
-  const lastItem = localStorage.getItem('lastItem');
-  let title, filename;
-  if(lastItem) title = prompt("Noteobook Name: ", lastItem);
-  else title = prompt("Notebook Name: ");
-  if(!title) return;
-  filename = title.endsWith('.ipynb') ? title : `${title}.ipynb`;
-
-  const text = localStorage.getItem(filename);
-  if(!text) return;
-  let json;
-  try{
-    json = JSON.parse(text);
-  }catch(e){
-    alert("Error parsing json");
-  }
-
-  try{
-    openNotebook(json, title);
-  }catch(e){
-    alert("Error opening notebook");
-  }
-}
-*/
 
 /*
   App Functions
@@ -466,46 +431,6 @@ function setupNotebookButtons(notebook) {
   storeNotebookButton.onclick = storeNotebook;
 }
 
-/*
-  Open a notebook from json and add it to the screen
-*/
-/*
-function openCell(notebook, json){
-  const cells = notebook.querySelector('.cells');
-
-  for(let cellSource of json.cells){
-    let cell = cellTemplate.content.cloneNode(true).querySelector('.cell');
-    cellConsole = cell.querySelector('.console');
-    const cellOutput = cell.querySelector('.output');
-
-    // setup cell button event handlers
-    setupCellButtons(cell);
-
-    // setup codemirror editor
-    setupEditor(cell);
-
-    // set cell execution count
-    cell.dataset.execution_count = 0;
-
-    // set cell input
-    const originalInputs = cellSource.source;
-    setCellInput(cell, originalInputs);
-
-    // set cell logs
-    cellSource.outputs
-      .filter(output => output?.outputs?.output_type === 'stdout')
-      .map(output => output.text)
-      .map(log);
-    
-    // set cell log
-    cellOutput.value = cellSource.outputs
-      .filter(output => output?.outputs.output_type === 'execute_result')
-      [0]
-      .data['text/plain'];
-  }
-}
-*/
-
 // Remove a notebook and clear the app's cellEditors 
 function closeNotebook(notebook){
   cellEditors.clear();
@@ -515,17 +440,10 @@ function closeNotebook(notebook){
 // Construct a notebook given json and a filename
 function openNotebook(json, filename){
   // close any opened pristine notebook
-  // todo document.querySelectorAll('.notebook').forEach(closeIfPristine);
+  document.querySelectorAll('.notebook').forEach(closeIfPristine);
 
   // get a reference to .notebooks
   const notebooks = document.querySelector('.notebooks');
-
-  /*
-  // close notebook if one is open
-  if(notebooks.children.length && !confirm("Close Notebook")) return;
-  let notebook = notebooks.querySelector('.notebook');
-  if(notebooks.children.length) closeNotebook(notebook);
-  */
 
   // instantiate a notebook template
   const notebook = notebookTemplate.content.cloneNode(true).querySelector('.notebook');

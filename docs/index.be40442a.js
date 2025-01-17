@@ -28728,6 +28728,7 @@ async function $30732a08c2749711$var$open(_) {
         title = parts[parts.length - 1];
     }
     // open notebook with json and title
+    console.debug('open', json, title);
     try {
         $30732a08c2749711$var$openNotebook(json, title);
     } catch (err) {
@@ -28907,4 +28908,4 @@ $30732a08c2749711$var$addNotebookButton.onclick = $30732a08c2749711$var$addNoteb
 $30732a08c2749711$var$addNotebook();
 
 
-//# sourceMappingURL=index.41262656.js.map
+//# sourceMappingURL=index.be40442a.js.map

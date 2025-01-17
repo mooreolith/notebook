@@ -939,6 +939,7 @@ async function open(_) {
         title = parts[parts.length - 1];
     }
     // open notebook with json and title
+    console.debug('open', json, title);
     try {
         openNotebook(json, title);
     } catch (err) {
