@@ -40,6 +40,10 @@
   }
 }
 
+h2 {
+  padding-left: 15px;
+}
+
 button {
   background-color: white;
   color: black;

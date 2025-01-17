@@ -40,6 +40,10 @@
   }
 }
 
+h2 {
+  padding-left: 15px;
+}
+
 button {
   color: #000;
   background-color: #fff;
@@ -123,4 +127,4 @@ button {
   border: 1px solid gray;
   margin-bottom: 50px;
 }
-/*# sourceMappingURL=index.77522fd9.css.map */
+/*# sourceMappingURL=index.77ca5ebb.css.map */
