@@ -37,7 +37,10 @@ function getCellInputs(cell){
   const editor = cellEditors.get(cellId);
   
   // It's one string. It includes newlines on most line ends
-  const input = editor.state.doc.toString().split('\n').map(text => text.concat('\n'));
+  const input = editor.state.doc.toString().trim()
+    .split('\n')
+    .map(text => text.concat('\n'));
+
   return input;
 }
 
@@ -55,7 +58,7 @@ function setCellInput(cell, values){
     changes: {
       from: 0,
       to: editor.state.doc.length,
-      insert: values.join('')
+      insert: values.join('').trim()
     }
   });
 }
@@ -130,7 +133,6 @@ scope.console.debug = function(){
 /*
   Execute a code cell
 */
-let __EVAL = s => eval(`void (__EVAL = ${__EVAL.toString()}); ${s}`);
 function runCell(e){
   const cell = e.target.closest('.cell');
   if(!cell.dataset.execution_count){
@@ -153,13 +155,7 @@ function runCell(e){
 
     // begin calculation
     window.cell = cell;
-    //const result = scope.eval(texts.join(''));
-    let result;
-    try{
-      result = __EVAL(texts.join(''));
-    }catch(err){
-      console.error(expr, 'ERROR:', err.message);
-    }
+    const result = scope.eval(texts.join(''));
     window.cell = undefined;    
     if(output.classList.contains("error")) output.classList.remove('error');
     
@@ -168,7 +164,7 @@ function runCell(e){
   }catch(e){
     // show error message
     output.classList.add('error');
-    output.value = `${e.name}, Line: ${e.lineNumber}: ${e.message}`
+    output.value = `${e.name}, Line: ${e.lineNumber}: ${e.message}`;
   }
 
   return true;
