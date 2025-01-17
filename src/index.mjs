@@ -378,11 +378,19 @@ async function open(_){
       return alert("Error parsing notebook!");
     }
   }else{
-    const response = await fetch(url);
-    if(!response.ok) return alert("Error loading notebook!");
-    json = await response.json();
+    // parse title
     const parts = title.split('/');
     title = parts[parts.length - 1];
+
+    // parse json
+    const response = await fetch(url);
+    if(!response.ok) return alert("Error loading notebook!");
+    text = await response.text();
+    try{
+      json = JSON.parse(text);
+    }catch(err){
+      return alert("Error parsing notebook!");
+    }
   }
 
   // open notebook with json and title
