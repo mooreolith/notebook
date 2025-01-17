@@ -361,16 +361,16 @@ function closeIfPristine(notebook){
 async function open(_){
   document.querySelectorAll('.notebook').forEach(closeIfPristine);
   const lastItem = localStorage.getItem('lastItem');
-  let title, filename, text, json;
+  let title, json;
 
   if(lastItem) title = prompt("Notebook Name: ", lastItem);
   else title = prompt("Notebook Name: ");
   if(!title) return;
-  filename = title.endsWith('.ipynb') ? title : `${title}.ipynb`;
+  const filename = title.endsWith('.ipynb') ? title : `${title}.ipynb`;
   const url = URL.parse(filename);
 
   if(url === null){
-    text = localStorage.getItem(filename);
+    const text = localStorage.getItem(filename);
     if(!text) return;
     try{
       json = JSON.parse(text);
@@ -382,11 +382,9 @@ async function open(_){
     const parts = title.split('/');
     title = parts[parts.length - 1];
 
-    // parse json
+    // fetch file and parse json
     const response = await fetch(url);
-    if(!response.ok) return alert("Error loading notebook!");
     json = await response.json();
-    console.info(json);
   }
 
   // open notebook with json and title

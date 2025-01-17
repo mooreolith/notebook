@@ -28405,7 +28405,6 @@ const $30732a08c2749711$var$cellTemplate = document.querySelector('template.cell
 const $30732a08c2749711$var$addNotebookButton = document.querySelector('button.add-notebook');
 const $30732a08c2749711$var$uploadNotebookButton = document.querySelector('button.upload-notebook');
 const $30732a08c2749711$var$openNotebookButton = document.querySelector('button.open-notebook');
-// todo const loadNotebookButton = document.querySelector('button.load-notebook');
 // program data
 let $30732a08c2749711$var$newCellId = 0;
 const $30732a08c2749711$var$cellEditors = new Map([]);
@@ -28706,14 +28705,14 @@ function $30732a08c2749711$var$closeIfPristine(notebook) {
 async function $30732a08c2749711$var$open(_) {
     document.querySelectorAll('.notebook').forEach($30732a08c2749711$var$closeIfPristine);
     const lastItem = localStorage.getItem('lastItem');
-    let title, filename, text, json;
+    let title, json;
     if (lastItem) title = prompt("Notebook Name: ", lastItem);
     else title = prompt("Notebook Name: ");
     if (!title) return;
-    filename = title.endsWith('.ipynb') ? title : `${title}.ipynb`;
+    const filename = title.endsWith('.ipynb') ? title : `${title}.ipynb`;
     const url = URL.parse(filename);
     if (url === null) {
-        text = localStorage.getItem(filename);
+        const text = localStorage.getItem(filename);
         if (!text) return;
         try {
             json = JSON.parse(text);
@@ -28721,11 +28720,12 @@ async function $30732a08c2749711$var$open(_) {
             return alert("Error parsing notebook!");
         }
     } else {
-        const response = await fetch(url);
-        if (!response.ok) return alert("Error loading notebook!");
-        text = await response.json();
+        // parse title
         const parts = title.split('/');
         title = parts[parts.length - 1];
+        // fetch file and parse json
+        const response = await fetch(url);
+        json = await response.json();
     }
     // open notebook with json and title
     console.debug('open', json, title);
@@ -28736,39 +28736,6 @@ async function $30732a08c2749711$var$open(_) {
     }
 }
 /*
-function loadNotebookFromFileURL(e){
-  document.querySelectorAll('.notebook').forEach(closeIfPristine);
-  const lastItem = localStorage.getItem('lastItem');
-
-
-}
-
-function loadNotebookFromLocalStorage(e){
-  document.querySelectorAll('.notebook').forEach(closeIfPristine);
-
-  const lastItem = localStorage.getItem('lastItem');
-  let title, filename;
-  if(lastItem) title = prompt("Noteobook Name: ", lastItem);
-  else title = prompt("Notebook Name: ");
-  if(!title) return;
-  filename = title.endsWith('.ipynb') ? title : `${title}.ipynb`;
-
-  const text = localStorage.getItem(filename);
-  if(!text) return;
-  let json;
-  try{
-    json = JSON.parse(text);
-  }catch(e){
-    alert("Error parsing json");
-  }
-
-  try{
-    openNotebook(json, title);
-  }catch(e){
-    alert("Error opening notebook");
-  }
-}
-*/ /*
   App Functions
 */ function $30732a08c2749711$var$addNotebook(e) {
     // fetch us some elements
@@ -28795,44 +28762,7 @@ function $30732a08c2749711$var$setupNotebookButtons(notebook) {
     const storeNotebookButton = notebook.querySelector('button.store-notebook');
     storeNotebookButton.onclick = $30732a08c2749711$var$storeNotebook;
 }
-/*
-  Open a notebook from json and add it to the screen
-*/ /*
-function openCell(notebook, json){
-  const cells = notebook.querySelector('.cells');
-
-  for(let cellSource of json.cells){
-    let cell = cellTemplate.content.cloneNode(true).querySelector('.cell');
-    cellConsole = cell.querySelector('.console');
-    const cellOutput = cell.querySelector('.output');
-
-    // setup cell button event handlers
-    setupCellButtons(cell);
-
-    // setup codemirror editor
-    setupEditor(cell);
-
-    // set cell execution count
-    cell.dataset.execution_count = 0;
-
-    // set cell input
-    const originalInputs = cellSource.source;
-    setCellInput(cell, originalInputs);
-
-    // set cell logs
-    cellSource.outputs
-      .filter(output => output?.outputs?.output_type === 'stdout')
-      .map(output => output.text)
-      .map(log);
-    
-    // set cell log
-    cellOutput.value = cellSource.outputs
-      .filter(output => output?.outputs.output_type === 'execute_result')
-      [0]
-      .data['text/plain'];
-  }
-}
-*/ // Remove a notebook and clear the app's cellEditors 
+// Remove a notebook and clear the app's cellEditors 
 function $30732a08c2749711$var$closeNotebook(notebook) {
     $30732a08c2749711$var$cellEditors.clear();
     notebook.remove();
@@ -28840,15 +28770,10 @@ function $30732a08c2749711$var$closeNotebook(notebook) {
 // Construct a notebook given json and a filename
 function $30732a08c2749711$var$openNotebook(json, filename) {
     // close any opened pristine notebook
-    // todo document.querySelectorAll('.notebook').forEach(closeIfPristine);
+    document.querySelectorAll('.notebook').forEach($30732a08c2749711$var$closeIfPristine);
     // get a reference to .notebooks
     const notebooks = document.querySelector('.notebooks');
-    /*
-  // close notebook if one is open
-  if(notebooks.children.length && !confirm("Close Notebook")) return;
-  let notebook = notebooks.querySelector('.notebook');
-  if(notebooks.children.length) closeNotebook(notebook);
-  */ // instantiate a notebook template
+    // instantiate a notebook template
     const notebook = $30732a08c2749711$var$notebookTemplate.content.cloneNode(true).querySelector('.notebook');
     // set notebook title
     if (filename.endsWith('.ipynb')) filename = filename.slice(0, filename.length - 6);
@@ -28908,4 +28833,4 @@ $30732a08c2749711$var$addNotebookButton.onclick = $30732a08c2749711$var$addNoteb
 $30732a08c2749711$var$addNotebook();
 
 
-//# sourceMappingURL=index.be40442a.js.map
+//# sourceMappingURL=index.b2d1e800.js.map
