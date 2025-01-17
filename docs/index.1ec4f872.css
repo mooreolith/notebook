@@ -44,6 +44,16 @@ h2 {
   padding-left: 15px;
 }
 
+h2[contenteditable], h2[contenteditable]:focus {
+  border: none;
+  outline: none;
+}
+
+h2::selection {
+  color: #fff;
+  background-color: #000;
+}
+
 button {
   color: #000;
   background-color: #fff;
@@ -127,4 +137,4 @@ button {
   border: 1px solid gray;
   margin-bottom: 50px;
 }
-/*# sourceMappingURL=index.77ca5ebb.css.map */
+/*# sourceMappingURL=index.1ec4f872.css.map */
