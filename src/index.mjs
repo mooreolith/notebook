@@ -273,7 +273,6 @@ function removeNotebook(e){
 function notebookToJSON(notebook) {
   let title = notebook.querySelector('.title').innerText.replace('<br>', '').trim();
   title = title.endsWith('.ipynb') ? title : `${title}.ipynb`;
-  console.info('title', title);
 
   const json = {
     "cells": [...notebook.querySelectorAll('.cell')].map(cell => {

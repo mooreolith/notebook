@@ -28620,7 +28620,6 @@ function $30732a08c2749711$var$removeNotebook(e) {
 */ function $30732a08c2749711$var$notebookToJSON(notebook) {
     let title = notebook.querySelector('.title').innerText.replace('<br>', '').trim();
     title = title.endsWith('.ipynb') ? title : `${title}.ipynb`;
-    console.info('title', title);
     const json = {
         "cells": [
             ...notebook.querySelectorAll('.cell')
@@ -28851,4 +28850,4 @@ $30732a08c2749711$var$addNotebookButton.onclick = $30732a08c2749711$var$addNoteb
 $30732a08c2749711$var$addNotebook();
 
 
-//# sourceMappingURL=index.c2b20bec.js.map
+//# sourceMappingURL=index.7b8fdbf2.js.map
