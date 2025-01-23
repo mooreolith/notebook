@@ -25632,7 +25632,6 @@ style](https://codemirror.net/6/docs/ref/#language.defaultHighlightStyle).
 
 
 
-
 var $361a76e6ea33591f$exports = {};
 // shim for using process in browser
 var $361a76e6ea33591f$var$process = $361a76e6ea33591f$exports = {};
@@ -28400,6 +28399,7 @@ function $23a0421883e6f921$var$translateDiagnostic(input, doc, offset) {
 }
 
 
+
 let $30732a08c2749711$var$language = new (0, $8fc44fe4551a8c09$export$d51c0172eb2c2431), $30732a08c2749711$var$tabSize = new (0, $8fc44fe4551a8c09$export$d51c0172eb2c2431);
 // UI elements
 const $30732a08c2749711$var$notebookTemplate = document.querySelector('template.notebook-template');
@@ -28837,4 +28837,4 @@ $30732a08c2749711$var$addNotebookButton.onclick = $30732a08c2749711$var$addNoteb
 $30732a08c2749711$var$addNotebook();
 
 
-//# sourceMappingURL=index.1f194487.js.map
+//# sourceMappingURL=index.efaa1713.js.map
