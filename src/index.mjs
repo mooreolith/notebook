@@ -228,6 +228,12 @@ function setupCellButtons(cell){
   // clone a cell and add it to the notebook
   const copyCellButton = cell.querySelector('button.copy-cell');
   copyCellButton.onclick = copyCell;
+
+  cell.addEventListener('keydown', handleCtrlEnter);
+}
+
+function handleCtrlEnter(e){
+  if(e.ctrlKey && e.key === 'Enter') runCell(e);
 }
 
 // Create and add a clone of a cell
