@@ -28589,6 +28589,10 @@ function $30732a08c2749711$var$setupCellButtons(cell) {
     // clone a cell and add it to the notebook
     const copyCellButton = cell.querySelector('button.copy-cell');
     copyCellButton.onclick = $30732a08c2749711$var$copyCell;
+    cell.addEventListener('keydown', $30732a08c2749711$var$handleCtrlEnter);
+}
+function $30732a08c2749711$var$handleCtrlEnter(e) {
+    if (e.ctrlKey && e.key === 'Enter') $30732a08c2749711$var$runCell(e);
 }
 // Create and add a clone of a cell
 function $30732a08c2749711$var$copyCell(e) {
@@ -28837,4 +28841,4 @@ $30732a08c2749711$var$addNotebookButton.onclick = $30732a08c2749711$var$addNoteb
 $30732a08c2749711$var$addNotebook();
 
 
-//# sourceMappingURL=index.efaa1713.js.map
+//# sourceMappingURL=index.32bb51bb.js.map
