@@ -25631,6 +25631,8 @@ style](https://codemirror.net/6/docs/ref/#language.defaultHighlightStyle).
 
 
 
+
+
 var $361a76e6ea33591f$exports = {};
 // shim for using process in browser
 var $361a76e6ea33591f$var$process = $361a76e6ea33591f$exports = {};
@@ -28562,6 +28564,9 @@ function $30732a08c2749711$var$setupEditor(cell) {
     let state = (0, $8fc44fe4551a8c09$export$afa855cbfaff27f2).create({
         extensions: [
             (0, $aa3e4991f23def4f$export$f4f2465c1e83499c),
+            (0, $adcdfc900dd74c5f$export$5043418e2ef368d5).of([
+                (0, $3e8ac74135ec287d$export$893b77570f8af4da)
+            ]),
             $30732a08c2749711$var$language.of((0, $23a0421883e6f921$export$755219397dca4f08)()),
             $30732a08c2749711$var$tabSize.of((0, $8fc44fe4551a8c09$export$afa855cbfaff27f2).tabSize.of(2))
         ]
@@ -28832,4 +28837,4 @@ $30732a08c2749711$var$addNotebookButton.onclick = $30732a08c2749711$var$addNoteb
 $30732a08c2749711$var$addNotebook();
 
 
-//# sourceMappingURL=index.ab778c71.js.map
+//# sourceMappingURL=index.1f194487.js.map

@@ -10,9 +10,11 @@
 */
 
 // imports
-import {basicSetup, EditorView} from 'codemirror';
-import {EditorState, Compartment} from '@codemirror/state';
-import {javascript} from "@codemirror/lang-javascript";
+import { basicSetup, EditorView } from 'codemirror';
+import { EditorState, Compartment } from '@codemirror/state';
+import { keymap } from "@codemirror/view";
+import { javascript } from "@codemirror/lang-javascript";
+import { indentWithTab } from '@codemirror/commands';
 let language = new Compartment, tabSize = new Compartment;
 
 // UI elements
@@ -201,6 +203,7 @@ function setupEditor(cell){
   let state = EditorState.create({
     extensions: [
       basicSetup,
+      keymap.of([indentWithTab]),
       language.of(javascript()),
       tabSize.of(EditorState.tabSize.of(2))
     ]
