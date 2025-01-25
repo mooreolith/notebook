@@ -1,6 +1,6 @@
 # notebook
 
-This is my third version of a JavaScript notebook in the spirit of jupyter files. It's a light UI wrapped around window.eval. It should work alright on desktops and phones. 
+[This](https://mooreolith.github.io/notebook) is my third version of a JavaScript notebook in the spirit of jupyter files. It's a light UI wrapped around window.eval. It should work alright on desktops and phones. 
 
 Click the "Notebook Title" to edit it. The line beginning with line number "1" is a code cell. For simplicity, I don't have markdown cells, I just use comments. 
 
