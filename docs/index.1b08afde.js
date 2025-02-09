@@ -28414,6 +28414,7 @@ const $30732a08c2749711$var$scope = {
     eval: eval
 };
 const $30732a08c2749711$var$notebooks = document.querySelector('.notebooks');
+let $30732a08c2749711$var$urlSearchParams = new URLSearchParams(window.location.search);
 /*
   Cell Inputs and Outputs
 */ // Get a cell's input
@@ -28837,8 +28838,17 @@ $30732a08c2749711$var$uploadNotebookButton.onclick = function() {
 $30732a08c2749711$var$openNotebookButton.onclick = $30732a08c2749711$var$open;
 // Add a notebook upon button click
 $30732a08c2749711$var$addNotebookButton.onclick = $30732a08c2749711$var$addNotebook;
-// Open at least one notebook
+// Check urlParams for ?url=
+// Open Notebook URL if present
+const $30732a08c2749711$var$url = $30732a08c2749711$var$urlSearchParams.get('url');
+if ($30732a08c2749711$var$url && $30732a08c2749711$var$url.endsWith('.ipynb')) fetch($30732a08c2749711$var$url).then(async (response)=>{
+    const json = await response.json();
+    console.log("JSON", json);
+    const filename = $30732a08c2749711$var$url.split('/').pop().slice(0, -6);
+    $30732a08c2749711$var$openNotebook(json, filename);
+});
+else // Open at least one notebook
 $30732a08c2749711$var$addNotebook();
 
 
-//# sourceMappingURL=index.32bb51bb.js.map
+//# sourceMappingURL=index.1b08afde.js.map

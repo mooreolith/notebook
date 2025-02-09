@@ -29,6 +29,7 @@ let newCellId = 0;
 const cellEditors = new Map([]);
 const scope = {eval};
 const notebooks = document.querySelector('.notebooks');
+let urlSearchParams = new URLSearchParams(window.location.search);
 
 /*
   Cell Inputs and Outputs
@@ -534,5 +535,17 @@ openNotebookButton.onclick = open;
 // Add a notebook upon button click
 addNotebookButton.onclick = addNotebook;
 
-// Open at least one notebook
-addNotebook();
+// Check urlParams for ?url=
+// Open Notebook URL if present
+const url = urlSearchParams.get('url');
+if(url && url.endsWith('.ipynb')){
+  fetch(url).then(async response => {
+    const json = await response.json();
+    console.log("JSON", json)
+    const filename = url.split('/').pop().slice(0, -6);
+    openNotebook(json, filename);
+  })
+}else{
+  // Open at least one notebook
+  addNotebook();
+}
