@@ -303,12 +303,6 @@ function addCell(e) {
     setupEditor(cell);
     cells.appendChild(cell);
 }
-// Remove a notebook from the app
-function removeNotebook(e) {
-    const notebook = e.target.closest('.notebook');
-    notebook.remove();
-    delete notebookScopes[notebook];
-}
 /*
   Save a notebook to json and write it to a downloadable file
 */ function notebookToJSON(notebook) {
@@ -448,7 +442,7 @@ function setupNotebookButtons(notebook) {
     const addCellButton = notebook.querySelector('button.add-cell');
     addCellButton.onclick = addCell;
     const removeNotebookButton = notebook.querySelector('button.remove-notebook');
-    removeNotebookButton.onclick = removeNotebook;
+    removeNotebookButton.onclick = (e)=>closeNotebook(e.target.closest('.notebook'));
     // download as file
     const saveNotebookButton = notebook.querySelector('button.save-notebook');
     saveNotebookButton.onclick = saveNotebook;
@@ -29149,4 +29143,4 @@ $361a76e6ea33591f$var$process.umask = function() {
 
 parcelRequire("7rChL");
 
-//# sourceMappingURL=index.d441a51a.js.map
+//# sourceMappingURL=index.0754120e.js.map

@@ -297,13 +297,6 @@ function addCell(e){
   cells.appendChild(cell);
 }
 
-// Remove a notebook from the app
-function removeNotebook(e){
-  const notebook = e.target.closest('.notebook');
-  notebook.remove();
-  delete notebookScopes[notebook];
-}
-
 /*
   Save a notebook to json and write it to a downloadable file
 */
@@ -459,7 +452,7 @@ function setupNotebookButtons(notebook) {
   addCellButton.onclick = addCell;
 
   const removeNotebookButton = notebook.querySelector('button.remove-notebook');
-  removeNotebookButton.onclick = removeNotebook;
+  removeNotebookButton.onclick = (e) => closeNotebook(e.target.closest('.notebook'));
 
   // download as file
   const saveNotebookButton = notebook.querySelector('button.save-notebook');
