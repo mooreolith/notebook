@@ -63,6 +63,10 @@ button {
   background-color: white;
   color: black;
   padding: 15px;
+  border-radius: 0;
+  box-shadow: none;
+  border: none;
+  font-size: 20px;
 }
 
 button:hover {
@@ -100,14 +104,6 @@ button:hover {
   .notebook {
     width: calc(vw - 2px);
   }
-}
-
-button {
-  border-radius: 0;
-  box-shadow: none;
-  border: none;
-  font-size: 20px;
-  background-color: white;
 }
 
 .output {

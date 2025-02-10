@@ -160,13 +160,12 @@ function runCell(e){
     // begin calculation
 
     // const result = eval(texts.join(''));
-    notebookScopes[notebook]
-
     function scopedEval(code, context){
       const func = new Function(Object.keys(context), code);
       return func(...Object.values(context));
     }
-    const result = eval(texts.join(''), notebookScopes[notebook])
+    const globalEval = eval;
+    const result = globalEval(texts.join(''))
 
     if(output.classList.contains("error")) output.classList.remove('error');
     

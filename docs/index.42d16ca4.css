@@ -56,8 +56,12 @@ h2::selection {
 
 button {
   color: #000;
+  box-shadow: none;
   background-color: #fff;
+  border: none;
+  border-radius: 0;
   padding: 15px;
+  font-size: 20px;
 }
 
 button:hover {
@@ -89,14 +93,6 @@ button:hover {
   .notebook {
     width: calc(vw - 2px);
   }
-}
-
-button {
-  box-shadow: none;
-  background-color: #fff;
-  border: none;
-  border-radius: 0;
-  font-size: 20px;
 }
 
 .output {
@@ -141,4 +137,4 @@ button {
   border: 1px solid gray;
   margin-bottom: 50px;
 }
-/*# sourceMappingURL=index.9a5ddce7.css.map */
+/*# sourceMappingURL=index.42d16ca4.css.map */
