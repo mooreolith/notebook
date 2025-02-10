@@ -27,7 +27,7 @@ const openNotebookButton = document.querySelector('button.open-notebook');
 // program data
 let newCellId = 0;
 const cellEditors = new Map([]);
-const scope = {eval};
+const scope = {};
 const notebooks = document.querySelector('.notebooks');
 let urlSearchParams = new URLSearchParams(window.location.search);
 
@@ -157,7 +157,7 @@ function runCell(e){
 
     // begin calculation
     window.cell = cell;
-    const result = scope.eval(texts.join(''));
+    const result = eval(texts.join(''));
     window.cell = undefined;    
     if(output.classList.contains("error")) output.classList.remove('error');
     
@@ -200,9 +200,18 @@ function setupEditor(cell){
   // Get a place into which to stick a codemirror editor
   const inputContainer = cell.querySelector('.input-container');
 
+  // Ctrl-Enter
+  function CtrlEnter(){
+    return keymap.of([{
+      key: "Ctrl-Enter",
+      run() { runCell({target: cell.children[0]}); return true; }
+    }]);
+  }
+
   // Create an EditorState and use it to construct a EditorView
   let state = EditorState.create({
     extensions: [
+      CtrlEnter(),
       basicSetup,
       keymap.of([indentWithTab]),
       language.of(javascript()),
@@ -230,11 +239,25 @@ function setupCellButtons(cell){
   const copyCellButton = cell.querySelector('button.copy-cell');
   copyCellButton.onclick = copyCell;
 
-  cell.addEventListener('keydown', handleCtrlEnter);
+  // create a new cell and add it below the current cell
+  const addCellBelowButton = cell.querySelector('button.add-cell-below');
+  addCellBelowButton.onclick = addCellBelow;
+
+  // cell.addEventListener('keydown', handleCtrlEnter);
 }
 
 function handleCtrlEnter(e){
   if(e.ctrlKey && e.key === 'Enter') runCell(e);
+}
+
+function addCellBelow(e){
+  const originalCell = e.target.closest('.cell');
+  const addedCell = cellTemplate.content.cloneNode(true).querySelector('.cell');
+  
+  setupCellButtons(addedCell);
+  setupEditor(addedCell);
+
+  originalCell.after(addedCell);
 }
 
 // Create and add a clone of a cell
