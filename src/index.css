@@ -132,6 +132,10 @@ button {
   color: black;
 }
 
+.error {
+  color: red;
+}
+
 .debug {
   color: tomato;
 }

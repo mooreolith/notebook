@@ -71,6 +71,7 @@ const cellEditors = new Map([]);
 const scope = {};
 const notebooks = document.querySelector('.notebooks');
 let urlSearchParams = new URLSearchParams(window.location.search);
+const notebookScopes = [];
 /*
   Cell Inputs and Outputs
 */ // Get a cell's input
@@ -171,6 +172,7 @@ scope.console.debug = function() {
   Execute a code cell
 */ function runCell(e) {
     const cell = e.target.closest('.cell');
+    const notebook = cell.closest('.notebook');
     if (!cell.dataset.execution_count) cell.dataset.execution_count = 0;
     cell.dataset.execution_count = parseInt(cell.dataset.execution_count) + 1;
     // Get references to logs and outputs
@@ -184,12 +186,16 @@ scope.console.debug = function() {
         cellConsole.innerHTML = "";
         output.innerHTML = "";
         // begin calculation
-        window.cell = cell;
-        const result = eval(texts.join(''));
-        window.cell = undefined;
+        // const result = eval(texts.join(''));
+        notebookScopes[notebook];
+        function scopedEval(code, context) {
+            const func = new Function(Object.keys(context), code);
+            return func(...Object.values(context));
+        }
+        const result = eval(texts.join(''), notebookScopes[notebook]);
         if (output.classList.contains("error")) output.classList.remove('error');
         // display final output value, if any
-        output.value = JSON.stringify(result, null, 2);
+        output.value = result !== undefined ? JSON.stringify(result, null, 2) : "";
     } catch (e) {
         // show error message
         output.classList.add('error');
@@ -264,10 +270,6 @@ function setupCellButtons(cell) {
     // create a new cell and add it below the current cell
     const addCellBelowButton = cell.querySelector('button.add-cell-below');
     addCellBelowButton.onclick = addCellBelow;
-// cell.addEventListener('keydown', handleCtrlEnter);
-}
-function handleCtrlEnter(e) {
-    if (e.ctrlKey && e.key === 'Enter') runCell(e);
 }
 function addCellBelow(e) {
     const originalCell = e.target.closest('.cell');
@@ -305,6 +307,7 @@ function addCell(e) {
 function removeNotebook(e) {
     const notebook = e.target.closest('.notebook');
     notebook.remove();
+    delete notebookScopes[notebook];
 }
 /*
   Save a notebook to json and write it to a downloadable file
@@ -431,6 +434,7 @@ async function open(_) {
     // fetch us some elements
     const notebooks = document.querySelector('.notebooks');
     const notebook = notebookTemplate.content.cloneNode(true).querySelector('.notebook');
+    notebookScopes[notebook] = {};
     // wire up notebook buttons
     const addCellButton = notebook.querySelector('button.add-cell');
     addCellButton.onclick = addCell;
@@ -456,6 +460,7 @@ function setupNotebookButtons(notebook) {
 function closeNotebook(notebook) {
     cellEditors.clear();
     notebook.remove();
+    delete notebookScopes[notebook];
 }
 // Construct a notebook given json and a filename
 function openNotebook(json, filename) {
@@ -465,6 +470,7 @@ function openNotebook(json, filename) {
     const notebooks = document.querySelector('.notebooks');
     // instantiate a notebook template
     const notebook = notebookTemplate.content.cloneNode(true).querySelector('.notebook');
+    notebookScopes[notebook] = {};
     // set notebook title
     if (filename.endsWith('.ipynb')) filename = filename.slice(0, filename.length - 6);
     notebook.querySelector('.title').innerText = filename;
@@ -29143,4 +29149,4 @@ $361a76e6ea33591f$var$process.umask = function() {
 
 parcelRequire("7rChL");
 
-//# sourceMappingURL=index.689b1eff.js.map
+//# sourceMappingURL=index.d441a51a.js.map

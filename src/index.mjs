@@ -30,6 +30,7 @@ const cellEditors = new Map([]);
 const scope = {};
 const notebooks = document.querySelector('.notebooks');
 let urlSearchParams = new URLSearchParams(window.location.search);
+const notebookScopes = [];
 
 /*
   Cell Inputs and Outputs
@@ -137,6 +138,7 @@ scope.console.debug = function(){
 */
 function runCell(e){
   const cell = e.target.closest('.cell');
+  const notebook = cell.closest('.notebook');
   if(!cell.dataset.execution_count){
     cell.dataset.execution_count = 0;
   }
@@ -156,13 +158,20 @@ function runCell(e){
     output.innerHTML = "";
 
     // begin calculation
-    window.cell = cell;
-    const result = eval(texts.join(''));
-    window.cell = undefined;    
+
+    // const result = eval(texts.join(''));
+    notebookScopes[notebook]
+
+    function scopedEval(code, context){
+      const func = new Function(Object.keys(context), code);
+      return func(...Object.values(context));
+    }
+    const result = eval(texts.join(''), notebookScopes[notebook])
+
     if(output.classList.contains("error")) output.classList.remove('error');
     
     // display final output value, if any
-    output.value = JSON.stringify(result, null, 2);
+    output.value = result !== undefined ? JSON.stringify(result, null, 2) : "";
   }catch(e){
     // show error message
     output.classList.add('error');
@@ -242,12 +251,6 @@ function setupCellButtons(cell){
   // create a new cell and add it below the current cell
   const addCellBelowButton = cell.querySelector('button.add-cell-below');
   addCellBelowButton.onclick = addCellBelow;
-
-  // cell.addEventListener('keydown', handleCtrlEnter);
-}
-
-function handleCtrlEnter(e){
-  if(e.ctrlKey && e.key === 'Enter') runCell(e);
 }
 
 function addCellBelow(e){
@@ -298,6 +301,7 @@ function addCell(e){
 function removeNotebook(e){
   const notebook = e.target.closest('.notebook');
   notebook.remove();
+  delete notebookScopes[notebook];
 }
 
 /*
@@ -435,6 +439,7 @@ function addNotebook(e){
   // fetch us some elements
   const notebooks = document.querySelector('.notebooks')
   const notebook = notebookTemplate.content.cloneNode(true).querySelector('.notebook');
+  notebookScopes[notebook] = {}
 
   // wire up notebook buttons
   const addCellButton = notebook.querySelector('button.add-cell');
@@ -469,6 +474,7 @@ function setupNotebookButtons(notebook) {
 function closeNotebook(notebook){
   cellEditors.clear();
   notebook.remove();
+  delete notebookScopes[notebook];
 }
 
 // Construct a notebook given json and a filename
@@ -481,6 +487,8 @@ function openNotebook(json, filename){
 
   // instantiate a notebook template
   const notebook = notebookTemplate.content.cloneNode(true).querySelector('.notebook');
+
+  notebookScopes[notebook] = {};
 
   // set notebook title
   if(filename.endsWith('.ipynb')){

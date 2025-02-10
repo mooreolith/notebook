@@ -121,6 +121,10 @@ button {
   color: #000;
 }
 
+.error {
+  color: red;
+}
+
 .debug {
   color: tomato;
 }
@@ -137,4 +141,4 @@ button {
   border: 1px solid gray;
   margin-bottom: 50px;
 }
-/*# sourceMappingURL=index.1ec4f872.css.map */
+/*# sourceMappingURL=index.9a5ddce7.css.map */
