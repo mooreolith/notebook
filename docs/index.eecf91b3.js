@@ -28769,6 +28769,8 @@ async function $30732a08c2749711$var$open(_) {
 */ function $30732a08c2749711$var$addNotebook(e) {
     // fetch us some elements
     const notebooks = document.querySelector('.notebooks');
+    // if there's a notebook open, close it.
+    if (notebooks.children.length > 0) $30732a08c2749711$var$closeNotebook(notebooks.children[0]);
     const notebook = $30732a08c2749711$var$notebookTemplate.content.cloneNode(true).querySelector('.notebook');
     $30732a08c2749711$var$notebookScopes[notebook] = {};
     // wire up notebook buttons
@@ -28800,11 +28802,11 @@ function $30732a08c2749711$var$closeNotebook(notebook) {
 }
 // Construct a notebook given json and a filename
 function $30732a08c2749711$var$openNotebook(json, filename) {
-    $30732a08c2749711$var$closeNotebook();
     // close any opened pristine notebook
     document.querySelectorAll('.notebook').forEach($30732a08c2749711$var$closeIfPristine);
     // get a reference to .notebooks
     const notebooks = document.querySelector('.notebooks');
+    if (notebooks.children.length > 0) $30732a08c2749711$var$closeNotebook(notebooks.children[0]);
     // instantiate a notebook template
     const notebook = $30732a08c2749711$var$notebookTemplate.content.cloneNode(true).querySelector('.notebook');
     $30732a08c2749711$var$notebookScopes[notebook] = {};
@@ -28874,4 +28876,4 @@ else // Open at least one notebook
 $30732a08c2749711$var$addNotebook();
 
 
-//# sourceMappingURL=index.75a4a2b3.js.map
+//# sourceMappingURL=index.eecf91b3.js.map
