@@ -1,9 +1,9 @@
-@media screen and (min-width: 800px) {
+@media screen and (width >= 800px) {
   html, body {
-    margin: 0;
-    border: 0;
-    padding: 0;
     --nb-width: 750px;
+    border: 0;
+    margin: 0;
+    padding: 0;
     font-size: 14px;
   }
 
@@ -21,16 +21,16 @@
 
   .notebook {
     width: var(--nb-width);
-    border: 1px solid steelblue;
-    background: white;
+    background: #fff;
+    border: 1px solid #4682b4;
     margin-left: auto;
     margin-right: auto;
   }
 
   .cell {
+    border: 1px solid gray;
     width: 100%;
     height: 100%;
-    border: 1px solid gray;
     margin-top: 10px;
     margin-bottom: 10px;
   }
@@ -44,57 +44,46 @@ h2 {
   padding-left: 15px;
 }
 
-h2[contenteditable] {
-  border: none;
-  outline: none;
-}
-
-h2[contenteditable]:focus {
+h2[contenteditable], h2[contenteditable]:focus {
   border: none;
   outline: none;
 }
 
 h2::selection {
-  color: white;
-  background-color: black;
+  color: #fff;
+  background-color: #000;
 }
 
 button {
-  background-color: white;
-  color: black;
-  padding: 15px;
-  border-radius: 0;
+  color: #000;
   box-shadow: none;
+  background-color: #fff;
   border: none;
+  border-radius: 0;
+  padding: 15px;
   font-size: 20px;
 }
 
 button:hover {
-  background-color: black;
-  color: white;
+  color: #fff;
+  background-color: #000;
 }
 
 .cell-buttons {
-  display: flex;
   align-items: flex-end;
+  display: flex;
 }
 
 .notebook-buttons {
-  display: flex;
   align-items: flex-start;
+  display: flex;
 }
 
-@media screen  and (max-width: 800px) {
-  html, body {
+@media screen and (width <= 800px) {
+  html, body, .cells {
+    border: 0;
     margin: 0;
     padding: 0;
-    border: 0;
-  }
-
-  .cells {
-    margin: 0;
-    padding: 0;
-    border: 0;
   }
 
   .notebook-buttons {
@@ -107,18 +96,18 @@ button:hover {
 }
 
 .output {
-  padding-left: 30px;
   margin-bottom: 10px;
+  padding-left: 30px;
 }
 
 .console > .line {
-  padding-left: 30px;
-  padding-top: 0;
-  padding-bottom: 0;
+  overflow-wrap: break-word;
+  width: calc(100% - 30px);
   margin-top: 0;
   margin-bottom: 0;
-  width: calc(100% - 30px);
-  overflow-wrap: break-word;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 30px;
 }
 
 .console {
@@ -126,7 +115,7 @@ button:hover {
 }
 
 .log {
-  color: black;
+  color: #000;
 }
 
 .error {
@@ -142,10 +131,11 @@ button:hover {
 }
 
 .info {
-  color: blue;
+  color: #00f;
 }
 
 .notebook {
   border: 1px solid gray;
   margin-bottom: 50px;
 }
+/*# sourceMappingURL=index.61d3354a.css.map */

@@ -28800,6 +28800,7 @@ function $30732a08c2749711$var$closeNotebook(notebook) {
 }
 // Construct a notebook given json and a filename
 function $30732a08c2749711$var$openNotebook(json, filename) {
+    $30732a08c2749711$var$closeNotebook();
     // close any opened pristine notebook
     document.querySelectorAll('.notebook').forEach($30732a08c2749711$var$closeIfPristine);
     // get a reference to .notebooks
@@ -28866,7 +28867,6 @@ $30732a08c2749711$var$addNotebookButton.onclick = $30732a08c2749711$var$addNoteb
 const $30732a08c2749711$var$url = $30732a08c2749711$var$urlSearchParams.get('url');
 if ($30732a08c2749711$var$url && $30732a08c2749711$var$url.endsWith('.ipynb')) fetch($30732a08c2749711$var$url).then(async (response)=>{
     const json = await response.json();
-    console.log("JSON", json);
     const filename = $30732a08c2749711$var$url.split('/').pop().slice(0, -6);
     $30732a08c2749711$var$openNotebook(json, filename);
 });
@@ -28874,4 +28874,4 @@ else // Open at least one notebook
 $30732a08c2749711$var$addNotebook();
 
 
-//# sourceMappingURL=index.bee75d9a.js.map
+//# sourceMappingURL=index.75a4a2b3.js.map

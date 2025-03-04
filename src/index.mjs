@@ -429,7 +429,13 @@ async function open(_){
 */
 function addNotebook(e){
   // fetch us some elements
-  const notebooks = document.querySelector('.notebooks')
+  const notebooks = document.querySelector('.notebooks');
+  
+  // if there's a notebook open, close it.
+  if(notebooks.children.length > 0){
+    closeNotebook(notebooks.children[0]);
+  }
+
   const notebook = notebookTemplate.content.cloneNode(true).querySelector('.notebook');
   notebookScopes[notebook] = {}
 
@@ -476,6 +482,7 @@ function openNotebook(json, filename){
 
   // get a reference to .notebooks
   const notebooks = document.querySelector('.notebooks');
+  if(notebooks.children.length > 0){ closeNotebook(notebooks.children[0]) }
 
   // instantiate a notebook template
   const notebook = notebookTemplate.content.cloneNode(true).querySelector('.notebook');
@@ -556,7 +563,7 @@ uploadNotebookButton.onclick = function(){
 openNotebookButton.onclick = open;
 
 // Add a notebook upon button click
-addNotebookButton.onclick = addNotebook;
+addNotebookButton.onclick = addNotebook; 
 
 // Check urlParams for ?url=
 // Open Notebook URL if present
@@ -564,7 +571,6 @@ const url = urlSearchParams.get('url');
 if(url && url.endsWith('.ipynb')){
   fetch(url).then(async response => {
     const json = await response.json();
-    console.log("JSON", json)
     const filename = url.split('/').pop().slice(0, -6);
     openNotebook(json, filename);
   })
