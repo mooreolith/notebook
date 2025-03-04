@@ -28706,6 +28706,7 @@ function $30732a08c2749711$var$addCell(e) {
         title: title
     };
 }
+// https://nbformat.readthedocs.io/en/latest/
 function $30732a08c2749711$var$saveNotebook(e) {
     const notebook = e.target.closest('.notebook');
     let { text: text, title: title } = $30732a08c2749711$var$notebookToJSON(notebook);
@@ -28876,4 +28877,4 @@ else // Open at least one notebook
 $30732a08c2749711$var$addNotebook();
 
 
-//# sourceMappingURL=index.eecf91b3.js.map
+//# sourceMappingURL=index.ada5b4ce.js.map
