@@ -161,11 +161,12 @@ function runCell(e){
 
     // const result = eval(texts.join(''));
     function scopedEval(code, context){
-      const func = new Function(Object.keys(context).join(', '), code);
+      const func = new Function(Object.keys(context).join(','), `return eval(${code})`);
       return func(...Object.values(context));
     }
     const globalEval = eval;
-    const result = scopedEval(texts.join(''), {notebook, cell});
+
+    const result = scopedEval(texts.join('\n'), {notebook, cell, output});
 
     if(output.classList.contains("error")) output.classList.remove('error');
     

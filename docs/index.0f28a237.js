@@ -28530,13 +28530,14 @@ $30732a08c2749711$var$scope.console.debug = function() {
         // begin calculation
         // const result = eval(texts.join(''));
         function scopedEval(code, context) {
-            const func = new Function(Object.keys(context).join(', '), code);
+            const func = new Function(Object.keys(context).join(','), `return eval(${code})`);
             return func(...Object.values(context));
         }
         const globalEval = eval;
-        const result = scopedEval(texts.join(''), {
+        const result = scopedEval(texts.join('\n'), {
             notebook: notebook,
-            cell: cell
+            cell: cell,
+            output: output
         });
         if (output.classList.contains("error")) output.classList.remove('error');
         // display final output value, if any
@@ -28880,4 +28881,4 @@ else // Open at least one notebook
 $30732a08c2749711$var$addNotebook();
 
 
-//# sourceMappingURL=index.b278997d.js.map
+//# sourceMappingURL=index.0f28a237.js.map
