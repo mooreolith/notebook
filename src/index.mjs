@@ -3,10 +3,7 @@
 
   Joshua M. Moore
   December 23rd, 2024
-
-  This is my third attempt at writing a Jupyter Notebook compatible Javascript Notebook.
-  vscode is able to open my Jupyter file, although holes still exist. Right now I deal 
-  with nothing but Code files, but saving and opening works.
+  March 7th, 2025
 */
 
 // imports
@@ -161,11 +158,9 @@ function runCell(e){
 
     // const result = eval(texts.join(''));
     function scopedEval(code, context){
-      const func = new Function(Object.keys(context).join(','), `return eval(${code})`);
+      const func = new Function(...Object.keys(context), code);
       return func(...Object.values(context));
     }
-    const globalEval = eval;
-
     const result = scopedEval(texts.join('\n'), {notebook, cell, output});
 
     if(output.classList.contains("error")) output.classList.remove('error');
@@ -176,6 +171,7 @@ function runCell(e){
     // show error message
     output.classList.add('error');
     output.value = `${e.name}, Line: ${e.lineNumber}: ${e.message}`;
+    console.error(e);
   }
 
   return true;

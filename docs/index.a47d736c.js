@@ -3,10 +3,7 @@
 
   Joshua M. Moore
   December 23rd, 2024
-
-  This is my third attempt at writing a Jupyter Notebook compatible Javascript Notebook.
-  vscode is able to open my Jupyter file, although holes still exist. Right now I deal 
-  with nothing but Code files, but saving and opening works.
+  March 7th, 2025
 */ // imports
 // These are filled with ranges (rangeFrom[i] up to but not including
 // rangeTo[i]) of code points that count as extending characters.
@@ -28530,10 +28527,9 @@ $30732a08c2749711$var$scope.console.debug = function() {
         // begin calculation
         // const result = eval(texts.join(''));
         function scopedEval(code, context) {
-            const func = new Function(Object.keys(context).join(','), `return eval(${code})`);
+            const func = new Function(...Object.keys(context), code);
             return func(...Object.values(context));
         }
-        const globalEval = eval;
         const result = scopedEval(texts.join('\n'), {
             notebook: notebook,
             cell: cell,
@@ -28546,6 +28542,7 @@ $30732a08c2749711$var$scope.console.debug = function() {
         // show error message
         output.classList.add('error');
         output.value = `${e.name}, Line: ${e.lineNumber}: ${e.message}`;
+        console.error(e);
     }
     return true;
 }
@@ -28881,4 +28878,4 @@ else // Open at least one notebook
 $30732a08c2749711$var$addNotebook();
 
 
-//# sourceMappingURL=index.0f28a237.js.map
+//# sourceMappingURL=index.a47d736c.js.map
