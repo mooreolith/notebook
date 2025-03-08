@@ -133,7 +133,7 @@ scope.console.debug = function(){
 /*
   Execute a code cell
 */
-function runCell(e){
+async function runCell(e){
   const cell = e.target.closest('.cell');
   const notebook = cell.closest('.notebook');
   if(!cell.dataset.execution_count){
@@ -157,11 +157,12 @@ function runCell(e){
     // begin calculation
 
     // const result = eval(texts.join(''));
-    function scopedEval(code, context){
-      const func = new Function(...Object.keys(context), code);
-      return func(...Object.values(context));
+    async function scopedEval(code, context){
+      const AsyncFunction = async function(){}.constructor;
+      const func = new AsyncFunction(...Object.keys(context), code);
+      return await func(...Object.values(context));
     }
-    const result = scopedEval(texts.join('\n'), {notebook, cell, output});
+    const result = await scopedEval(texts.join('\n'), {notebook, cell, output});
 
     if(output.classList.contains("error")) output.classList.remove('error');
     
