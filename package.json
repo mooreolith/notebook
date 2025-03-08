@@ -7,9 +7,7 @@
     "build:dev": "parcel build ./src/index.html --public-url / --no-optimize && mv dist docs && cp -r notebooks docs/notebooks",
     "build": "npm run clean && npm run build:parcel",
     "start": "npm run clean && npm run build:dev && http-server docs",
-    "clean": "rm -rf dist/* && rm -rf docs",
-    "watch": "parcel watch src/index.html",
-    "serve": "parcel serve"
+    "clean": "rm -rf dist/* && rm -rf docs"
   },
   "author": "Joshua M. Moore <mooreolith@gmail.com>",
   "license": "MIT",

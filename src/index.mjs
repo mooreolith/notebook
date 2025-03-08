@@ -74,6 +74,7 @@ function getCellLogs(cell){
  Console Magic
 */
 let cellConsole = null;
+let output, cell, notebook;
 scope.console = console;
 scope.cellLogs = null;
 scope.cellOutput = null;
@@ -134,8 +135,8 @@ scope.console.debug = function(){
   Execute a code cell
 */
 async function runCell(e){
-  const cell = e.target.closest('.cell');
-  const notebook = cell.closest('.notebook');
+  cell = e.target.closest('.cell');
+  notebook = cell.closest('.notebook');
   if(!cell.dataset.execution_count){
     cell.dataset.execution_count = 0;
   }
@@ -143,7 +144,7 @@ async function runCell(e){
 
   // Get references to logs and outputs
   cellConsole = cell.querySelector('.console');
-  const output = cell.querySelector('.output');
+  output = cell.querySelector('.output');
   
   // get cell input
   const texts = getCellInputs(cell);
@@ -158,11 +159,11 @@ async function runCell(e){
 
     // const result = eval(texts.join(''));
     async function scopedEval(code, context){
-      const AsyncFunction = async function(){}.constructor;
+      const AsyncFunction = async function () {}.constructor;
       const func = new AsyncFunction(...Object.keys(context), code);
       return await func(...Object.values(context));
     }
-    const result = await scopedEval(texts.join('\n'), {notebook, cell, output});
+    const result = scopedEval(texts.join('\n'), {notebook, cell, output});
 
     if(output.classList.contains("error")) output.classList.remove('error');
     
