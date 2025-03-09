@@ -28565,6 +28565,11 @@ function $30732a08c2749711$var$removeCell(e) {
     // Remove the saved editor for that cell
     $30732a08c2749711$var$cellEditors.delete(cellId);
 }
+function $30732a08c2749711$var$runAll(notebook) {
+    notebook.querySelectorAll('.cell').forEach((cell)=>$30732a08c2749711$var$runCell({
+            target: cell.children[0]
+        }));
+}
 // Setup a text editor for a cell
 function $30732a08c2749711$var$setupEditor(cell) {
     // Get a unique id for the cell
@@ -28791,14 +28796,19 @@ async function $30732a08c2749711$var$open(_) {
     notebooks.appendChild(notebook);
 }
 function $30732a08c2749711$var$setupNotebookButtons(notebook) {
+    // run all cells
+    const runAllCellsButton = notebook.querySelector('button.run-all');
+    runAllCellsButton.onclick = ()=>$30732a08c2749711$var$runAll(notebook);
+    // add a cell
     const addCellButton = notebook.querySelector('button.add-cell');
     addCellButton.onclick = $30732a08c2749711$var$addCell;
+    // close notebook
     const removeNotebookButton = notebook.querySelector('button.remove-notebook');
     removeNotebookButton.onclick = (e)=>$30732a08c2749711$var$closeNotebook(e.target.closest('.notebook'));
-    // download as file
+    // download notebook as file
     const saveNotebookButton = notebook.querySelector('button.save-notebook');
     saveNotebookButton.onclick = $30732a08c2749711$var$saveNotebook;
-    // store to browser
+    // store notebook to browser's localStorage
     const storeNotebookButton = notebook.querySelector('button.store-notebook');
     storeNotebookButton.onclick = $30732a08c2749711$var$storeNotebook;
 }
@@ -28884,4 +28894,4 @@ else // Open at least one notebook
 $30732a08c2749711$var$addNotebook();
 
 
-//# sourceMappingURL=index.ec8182c0.js.map
+//# sourceMappingURL=index.3b286ad3.js.map

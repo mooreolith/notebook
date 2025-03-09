@@ -207,6 +207,12 @@ function removeCell(e){
   cellEditors.delete(cellId);
 }
 
+function runAll(notebook){
+  notebook
+    .querySelectorAll('.cell')
+    .forEach(cell => runCell({target: cell.children[0]}));
+}
+
 // Setup a text editor for a cell
 function setupEditor(cell){
   // Get a unique id for the cell
@@ -462,17 +468,23 @@ function addNotebook(e){
 }
 
 function setupNotebookButtons(notebook) {
+  // run all cells
+  const runAllCellsButton = notebook.querySelector('button.run-all');
+  runAllCellsButton.onclick = () => runAll(notebook);
+
+  // add a cell
   const addCellButton = notebook.querySelector('button.add-cell');
   addCellButton.onclick = addCell;
 
+  // close notebook
   const removeNotebookButton = notebook.querySelector('button.remove-notebook');
   removeNotebookButton.onclick = (e) => closeNotebook(e.target.closest('.notebook'));
 
-  // download as file
+  // download notebook as file
   const saveNotebookButton = notebook.querySelector('button.save-notebook');
   saveNotebookButton.onclick = saveNotebook;
 
-  // store to browser
+  // store notebook to browser's localStorage
   const storeNotebookButton = notebook.querySelector('button.store-notebook');
   storeNotebookButton.onclick = storeNotebook;
 }
