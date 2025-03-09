@@ -150,6 +150,11 @@ button:hover {
 }
 
 .notebook {
-  border: 1px solid gray;
+  border: 1px solid black;
   margin-bottom: 50px;
+}
+
+.cell {
+  border-top: 1px dotted darkslategray;
+  border-bottom: 1px dotted darkslategray;
 }

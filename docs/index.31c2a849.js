@@ -28480,6 +28480,19 @@ $30732a08c2749711$var$scope.console.warn = function() {
         $30732a08c2749711$var$cellConsole?.appendChild(line);
     }
 };
+const $30732a08c2749711$var$error = console.error.bind(console);
+$30732a08c2749711$var$scope.console.error = function() {
+    $30732a08c2749711$var$error(...arguments);
+    for (let item of [
+        ...arguments
+    ]){
+        const line = document.createElement('p');
+        line.innerText = item;
+        line.classList.add('error');
+        line.classList.add('line');
+        $30732a08c2749711$var$cellConsole?.appendChild(line);
+    }
+};
 // Rebound info function
 const $30732a08c2749711$var$info = console.info.bind(console);
 $30732a08c2749711$var$scope.console.info = function() {
@@ -28511,20 +28524,20 @@ $30732a08c2749711$var$scope.console.debug = function() {
 /*
   Execute a code cell
 */ async function $30732a08c2749711$var$runCell(e) {
-    $30732a08c2749711$var$cell = e.target.closest('.cell');
-    $30732a08c2749711$var$notebook = $30732a08c2749711$var$cell.closest('.notebook');
-    if (!$30732a08c2749711$var$cell.dataset.execution_count) $30732a08c2749711$var$cell.dataset.execution_count = 0;
-    $30732a08c2749711$var$cell.dataset.execution_count = parseInt($30732a08c2749711$var$cell.dataset.execution_count) + 1;
+    const cell = e.target.closest('.cell');
+    const notebook = cell.closest('.notebook');
+    if (!cell.dataset.execution_count) cell.dataset.execution_count = 0;
+    cell.dataset.execution_count = parseInt(cell.dataset.execution_count) + 1;
     // Get references to logs and outputs
-    $30732a08c2749711$var$cellConsole = $30732a08c2749711$var$cell.querySelector('.console');
-    $30732a08c2749711$var$output = $30732a08c2749711$var$cell.querySelector('.output');
+    const cellConsole = cell.querySelector('.console');
+    const output = cell.querySelector('.output');
     // get cell input
-    const texts = $30732a08c2749711$var$getCellInputs($30732a08c2749711$var$cell);
+    const texts = $30732a08c2749711$var$getCellInputs(cell);
     // try and run cell with input
     try {
         // clear previous outputs
-        $30732a08c2749711$var$cellConsole.innerHTML = "";
-        $30732a08c2749711$var$output.innerHTML = "";
+        cellConsole.innerHTML = "";
+        output.innerHTML = "";
         // begin calculation
         // const result = eval(texts.join(''));
         function scopedEval(code, context) {
@@ -28533,21 +28546,23 @@ $30732a08c2749711$var$scope.console.debug = function() {
             return func(...Object.values(context));
         }
         const result = await scopedEval(texts.join('\n'), {
-            notebook: $30732a08c2749711$var$notebook,
-            cell: $30732a08c2749711$var$cell,
-            output: $30732a08c2749711$var$output
+            notebook: notebook,
+            cell: cell,
+            output: output
         });
-        if (result && result instanceof HTMLElement) $30732a08c2749711$var$output.appendChild(result);
-        else if (result && typeof result === 'string') $30732a08c2749711$var$output.innerHTML = result;
-        else if (result && typeof result !== 'string') $30732a08c2749711$var$output.innerHTML = `<pre>${JSON.stringify(result, null, 2)}</pre>`;
-        else if (!result && !$30732a08c2749711$var$output.innerHTML) $30732a08c2749711$var$output.innerHTML = "No output";
-        if ($30732a08c2749711$var$output.classList.contains("error")) $30732a08c2749711$var$output.classList.remove('error'); // ??
+        if (result && result instanceof HTMLElement) output.appendChild(result);
+        else if (typeof result === 'number') output.innerHTML = result;
+        else if (typeof result === 'string') output.innerHTML = result;
+        else if (result === null) output.innerHTML = null;
+        else if (typeof result === 'object' || typeof result === 'array') output.innerHTML = `<pre>${JSON.stringify(result, null, 2)}</pre>`;
+        else if (!result && !output.innerHTML) output.innerHTML = "No output";
+    // if(output.classList.contains("error")) output.classList.remove('error'); // ??
     // display final output value, if any
     // output.value = JSON.stringify(result, null, 2) ?? "No output";
     } catch (e) {
         // show error message
-        $30732a08c2749711$var$output.classList.add('error');
-        $30732a08c2749711$var$output.value = `${e.name}, Line: ${e.lineNumber}: ${e.message}`;
+        output.classList.add('error');
+        output.value = `${e.name}, Line: ${e.lineNumber}: ${e.message}`;
         console.error(e);
     }
     return true;
@@ -28566,7 +28581,7 @@ function $30732a08c2749711$var$removeCell(e) {
     $30732a08c2749711$var$cellEditors.delete(cellId);
 }
 function $30732a08c2749711$var$runAll(notebook) {
-    notebook.querySelectorAll('.cell').forEach((cell)=>$30732a08c2749711$var$runCell({
+    notebook.querySelectorAll('.cell').forEach(async (cell)=>await $30732a08c2749711$var$runCell({
             target: cell.children[0]
         }));
 }
@@ -28894,4 +28909,4 @@ else // Open at least one notebook
 $30732a08c2749711$var$addNotebook();
 
 
-//# sourceMappingURL=index.3b286ad3.js.map
+//# sourceMappingURL=index.31c2a849.js.map

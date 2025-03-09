@@ -105,6 +105,18 @@ scope.console.warn = function(){
   }
 };
 
+const error = console.error.bind(console);
+scope.console.error = function(){
+  error(...arguments);
+  for(let item of [...arguments]){
+    const line = document.createElement('p');
+    line.innerText = item;
+    line.classList.add('error');
+    line.classList.add('line');
+    cellConsole?.appendChild(line);
+  }
+}
+
 // Rebound info function
 const info = console.info.bind(console);
 scope.console.info = function(){
@@ -135,16 +147,16 @@ scope.console.debug = function(){
   Execute a code cell
 */
 async function runCell(e){
-  cell = e.target.closest('.cell');
-  notebook = cell.closest('.notebook');
+  const cell = e.target.closest('.cell');
+  const notebook = cell.closest('.notebook');
   if(!cell.dataset.execution_count){
     cell.dataset.execution_count = 0;
   }
   cell.dataset.execution_count = parseInt(cell.dataset.execution_count) + 1;
 
   // Get references to logs and outputs
-  cellConsole = cell.querySelector('.console');
-  output = cell.querySelector('.output');
+  const cellConsole = cell.querySelector('.console');
+  const output = cell.querySelector('.output');
   
   // get cell input
   const texts = getCellInputs(cell);
@@ -164,17 +176,22 @@ async function runCell(e){
       return func(...Object.values(context));
     }
     const result = await scopedEval(texts.join('\n'), {notebook, cell, output});
+
     if(result && (result instanceof HTMLElement)){
       output.appendChild(result);
-    }else if(result && typeof result === 'string'){
+    }else if(typeof result === 'number'){
       output.innerHTML = result;
-    }else if(result && typeof result !== 'string'){
+    }else if(typeof result === 'string'){
+      output.innerHTML = result;
+    }else if(result === null){
+      output.innerHTML = null;
+    }else if((typeof result === 'object') || (typeof result === 'array')){
       output.innerHTML = `<pre>${JSON.stringify(result, null, 2)}</pre>`;
     }else if(!result && !output.innerHTML){
       output.innerHTML = "No output";
     }
 
-    if(output.classList.contains("error")) output.classList.remove('error'); // ??
+    // if(output.classList.contains("error")) output.classList.remove('error'); // ??
     
     // display final output value, if any
     // output.value = JSON.stringify(result, null, 2) ?? "No output";
@@ -210,7 +227,7 @@ function removeCell(e){
 function runAll(notebook){
   notebook
     .querySelectorAll('.cell')
-    .forEach(cell => runCell({target: cell.children[0]}));
+    .forEach(async cell => await runCell({target: cell.children[0]}));
 }
 
 // Setup a text editor for a cell

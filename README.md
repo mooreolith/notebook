@@ -1,27 +1,15 @@
 # notebook
 
-[This](https://mooreolith.github.io/notebook) is my third version of a JavaScript notebook in the spirit of jupyter files. It's a light UI wrapped around window.eval. It should work alright on desktops and phones. 
+[notebook](https://mooreolith.github.io/notebook) is (very) simple jupyter inspired notebook for client side javascript. Enter some javascript code in a cell, and hit "Run Cell" to execute it. The cell itself is an async function, so if you return a value or return await a value, the output below will show that value. 
 
-## How are variables handled? 
-Variables are local to the cell they are created in, unless they are global variables. Under the hood, it's a new Function. Additionally, your cell defines three variables: 
-* notebook, a reference to the notebook html element
-* cell, a reference to the notebook cell element
-* output, a reference to the notebook cell's output element. You can set it's value to something, or use appendChild. 
+The return value types treated with special consideration are:
+* strings: gets displayed, without quotes
+* objects, arrays: get pretty printed, 2 spaces. If that's not desired, use return JSON.stringify(...).
+* HTML elements: get appended to the output element below the cell.
 
-Using return in a cell prints the returned value to the output.
+Besides the return values, there are three variabels that notebook makes available to the code in the cells:
+* output: the current cell's .output div
+* cell: a reference to the current cell section element.
+* notebook: a reference to the current article element.
 
-## What do the buttons do?
-
-Click the "Notebook Title" to edit it. The line beginning with line number "1" is a code cell. For simplicity, I don't have markdown cells, I just use comments. 
-
-Click "Run Cell" to run the code above. Below you'll see console log, info, and warn output, and below that the return value of the cell, which may be "undefined" if your last call doesn't have a return value. Alternatively, hit Ctrl-Enter to run the current cell. The extra newline is a known bug.
-
-"Remove Cell" removes a cell, copy cell creates a cell with the same contents. 
-
-"Add Cell" appends another cell to the notebook, in the future I may allow reordering cells. For the time being, that's not the case.
-
-"Remove Notebook" closes this notebook. 
-
-"Download Notebook" downloads a "Notebook Title.ipynb" file, or if that file already exists, a Notebook Title(1).ipynb and so on. You can select this file and open it again by clicking "Upload Notebook". 
-
-"Store Notebook" writes this notebook into your browser's localStorage, where you can access it from "Open Notebook". There is no menu, but if you enter the filename of a previously stored notebook into the Open Notebook prompt, you should  get that notebook back. 
+You can treat them as any other HTML element, appendChild, set innerHTML, and so on. It is possible to load external libraries using **lib = await import("...");**. 

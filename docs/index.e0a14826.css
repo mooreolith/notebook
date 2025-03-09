@@ -139,7 +139,12 @@ button:hover {
 }
 
 .notebook {
-  border: 1px solid gray;
+  border: 1px solid #000;
   margin-bottom: 50px;
 }
-/*# sourceMappingURL=index.dae988b0.css.map */
+
+.cell {
+  border-top: 1px dotted #2f4f4f;
+  border-bottom: 1px dotted #2f4f4f;
+}
+/*# sourceMappingURL=index.e0a14826.css.map */
