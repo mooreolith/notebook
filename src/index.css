@@ -104,6 +104,10 @@ button:hover {
   .notebook {
     width: calc(vw - 2px);
   }
+
+  .output {
+    width: 100%;
+  }
 }
 
 .output {

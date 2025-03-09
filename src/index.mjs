@@ -17,7 +17,7 @@ let language = new Compartment, tabSize = new Compartment;
 // UI elements
 const notebookTemplate = document.querySelector('template.notebook-template');
 const cellTemplate = document.querySelector('template.cell-template');
-const addNotebookButton = document.querySelector('button.add-notebook');
+// const addNotebookButton = document.querySelector('button.add-notebook');
 const uploadNotebookButton = document.querySelector('button.upload-notebook');
 const openNotebookButton = document.querySelector('button.open-notebook');
 
@@ -163,7 +163,7 @@ async function runCell(e){
       const func = new AsyncFunction(...Object.keys(context), code);
       return await func(...Object.values(context));
     }
-    const result = await scopedEval(texts.join('\n'), {notebook, cell, output});
+    const result = scopedEval(texts.join('\n'), {notebook, cell, output});
 
     if(output.classList.contains("error")) output.classList.remove('error');
     
@@ -563,7 +563,7 @@ uploadNotebookButton.onclick = function(){
 openNotebookButton.onclick = open;
 
 // Add a notebook upon button click
-addNotebookButton.onclick = addNotebook; 
+// addNotebookButton.onclick = addNotebook; 
 
 // Check urlParams for ?url=
 // Open Notebook URL if present
