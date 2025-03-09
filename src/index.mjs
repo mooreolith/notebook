@@ -163,7 +163,7 @@ async function runCell(e){
       const func = new AsyncFunction(...Object.keys(context), code);
       return await func(...Object.values(context));
     }
-    const result = scopedEval(texts.join('\n'), {notebook, cell, output});
+    const result = await scopedEval(texts.join('\n'), {notebook, cell, output});
 
     if(output.classList.contains("error")) output.classList.remove('error');
     
