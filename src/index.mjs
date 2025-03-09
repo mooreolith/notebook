@@ -158,17 +158,26 @@ async function runCell(e){
     // begin calculation
 
     // const result = eval(texts.join(''));
-    async function scopedEval(code, context){
+    function scopedEval(code, context){
       const AsyncFunction = async function () {}.constructor;
       const func = new AsyncFunction(...Object.keys(context), code);
-      return await func(...Object.values(context));
+      return func(...Object.values(context));
     }
     const result = await scopedEval(texts.join('\n'), {notebook, cell, output});
+    if(result && (result instanceof HTMLElement)){
+      output.appendChild(result);
+    }else if(result && typeof result === 'string'){
+      output.innerHTML = result;
+    }else if(result && typeof result !== 'string'){
+      output.innerHTML = `<pre>${JSON.stringify(result, null, 2)}</pre>`;
+    }else if(!result && !output.innerHTML){
+      output.innerHTML = "No output";
+    }
 
-    if(output.classList.contains("error")) output.classList.remove('error');
+    if(output.classList.contains("error")) output.classList.remove('error'); // ??
     
     // display final output value, if any
-    output.value = result !== undefined ? JSON.stringify(result, null, 2) : "";
+    // output.value = JSON.stringify(result, null, 2) ?? "No output";
   }catch(e){
     // show error message
     output.classList.add('error');

@@ -1,13 +1,14 @@
 {
   "name": "notebook",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A simple notebook project",
   "scripts": {
-    "build:parcel": "parcel build ./src/index.html --public-url /notebook/ --no-optimize && mv dist docs && cp -r notebooks docs/notebooks",
-    "build:dev": "parcel build ./src/index.html --public-url / --no-optimize && mv dist docs && cp -r notebooks docs/notebooks",
-    "build": "npm run clean && npm run build:parcel",
-    "start": "npm run clean && npm run build:dev && http-server docs",
-    "clean": "rm -rf dist/* && rm -rf docs"
+    "build:parcel": "parcel build ./src/index.html --public-url /notebook/ --no-optimize",
+    "build:dev":    "parcel build ./src/index.html --public-url / --no-optimize",
+    "build:finish": "mv dist docs && cp -r notebooks docs/notebooks",
+    "build":        "npm run clean && npm run build:parcel && npm run build:finish",
+    "start":        "npm run clean && npm run build:dev    && npm run build:finish && http-server docs",
+    "clean":        "rm -rf dist/* && rm -rf docs"
   },
   "author": "Joshua M. Moore <mooreolith@gmail.com>",
   "license": "MIT",

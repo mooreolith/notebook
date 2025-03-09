@@ -28527,19 +28527,23 @@ $30732a08c2749711$var$scope.console.debug = function() {
         $30732a08c2749711$var$output.innerHTML = "";
         // begin calculation
         // const result = eval(texts.join(''));
-        async function scopedEval(code, context) {
+        function scopedEval(code, context) {
             const AsyncFunction = (async function() {}).constructor;
             const func = new AsyncFunction(...Object.keys(context), code);
-            return await func(...Object.values(context));
+            return func(...Object.values(context));
         }
         const result = await scopedEval(texts.join('\n'), {
             notebook: $30732a08c2749711$var$notebook,
             cell: $30732a08c2749711$var$cell,
             output: $30732a08c2749711$var$output
         });
-        if ($30732a08c2749711$var$output.classList.contains("error")) $30732a08c2749711$var$output.classList.remove('error');
-        // display final output value, if any
-        $30732a08c2749711$var$output.value = result !== undefined ? JSON.stringify(result, null, 2) : "";
+        if (result && result instanceof HTMLElement) $30732a08c2749711$var$output.appendChild(result);
+        else if (result && typeof result === 'string') $30732a08c2749711$var$output.innerHTML = result;
+        else if (result && typeof result !== 'string') $30732a08c2749711$var$output.innerHTML = `<pre>${JSON.stringify(result, null, 2)}</pre>`;
+        else if (!result && !$30732a08c2749711$var$output.innerHTML) $30732a08c2749711$var$output.innerHTML = "No output";
+        if ($30732a08c2749711$var$output.classList.contains("error")) $30732a08c2749711$var$output.classList.remove('error'); // ??
+    // display final output value, if any
+    // output.value = JSON.stringify(result, null, 2) ?? "No output";
     } catch (e) {
         // show error message
         $30732a08c2749711$var$output.classList.add('error');
@@ -28880,4 +28884,4 @@ else // Open at least one notebook
 $30732a08c2749711$var$addNotebook();
 
 
-//# sourceMappingURL=index.ccd50d75.js.map
+//# sourceMappingURL=index.ec8182c0.js.map
