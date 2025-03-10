@@ -28440,87 +28440,11 @@ function $30732a08c2749711$var$setCellInput(cell, values) {
 }
 // Given a cell, return its log lines
 function $30732a08c2749711$var$getCellLogs(cell) {
-    const cellConsole = cell.querySelector('.console');
+    const cellConsole1 = cell.querySelector('.console');
     return [
-        ...cellConsole.querySelectorAll('.line')
+        ...cellConsole1.querySelectorAll('.line')
     ].map((line)=>line.innerText);
 }
-/*
- Console Magic
-*/ let $30732a08c2749711$var$cellConsole = null;
-let $30732a08c2749711$var$output, $30732a08c2749711$var$cell, $30732a08c2749711$var$notebook;
-$30732a08c2749711$var$scope.console = console;
-$30732a08c2749711$var$scope.cellLogs = null;
-$30732a08c2749711$var$scope.cellOutput = null;
-// Rebound log function
-const $30732a08c2749711$var$log = console.log.bind(console);
-$30732a08c2749711$var$scope.console.log = function() {
-    $30732a08c2749711$var$log(...arguments);
-    for (let item of [
-        ...arguments
-    ]){
-        const line = document.createElement('p');
-        line.innerText = item; // JSON.stringify(item)
-        line.classList.add('log');
-        line.classList.add('line');
-        $30732a08c2749711$var$cellConsole?.appendChild(line);
-    }
-};
-// Rebound warn function
-const $30732a08c2749711$var$warn = console.warn.bind(console);
-$30732a08c2749711$var$scope.console.warn = function() {
-    $30732a08c2749711$var$warn(...arguments);
-    for (let item of [
-        ...arguments
-    ]){
-        const line = document.createElement('p');
-        line.innerText = item;
-        line.classList.add('warn');
-        line.classList.add('line');
-        $30732a08c2749711$var$cellConsole?.appendChild(line);
-    }
-};
-const $30732a08c2749711$var$error = console.error.bind(console);
-$30732a08c2749711$var$scope.console.error = function() {
-    $30732a08c2749711$var$error(...arguments);
-    for (let item of [
-        ...arguments
-    ]){
-        const line = document.createElement('p');
-        line.innerText = item;
-        line.classList.add('error');
-        line.classList.add('line');
-        $30732a08c2749711$var$cellConsole?.appendChild(line);
-    }
-};
-// Rebound info function
-const $30732a08c2749711$var$info = console.info.bind(console);
-$30732a08c2749711$var$scope.console.info = function() {
-    $30732a08c2749711$var$info(...arguments);
-    for (let item of [
-        ...arguments
-    ]){
-        const line = document.createElement('p');
-        line.innerText = item;
-        line.classList.add('info');
-        line.classList.add('line');
-        $30732a08c2749711$var$cellConsole?.appendChild(line);
-    }
-};
-// Rebound debug function
-const $30732a08c2749711$var$debug = console.debug.bind(console);
-$30732a08c2749711$var$scope.console.debug = function() {
-    $30732a08c2749711$var$debug(...arguments);
-    for (let item of [
-        ...arguments
-    ]){
-        const line = document.createElement('p');
-        line.innerText = item;
-        line.classList.add('debug');
-        line.classList.add('line');
-        $30732a08c2749711$var$cellConsole?.appendChild(line);
-    }
-};
 /*
   Execute a code cell
 */ async function $30732a08c2749711$var$runCell(e) {
@@ -28529,14 +28453,30 @@ $30732a08c2749711$var$scope.console.debug = function() {
     if (!cell.dataset.execution_count) cell.dataset.execution_count = 0;
     cell.dataset.execution_count = parseInt(cell.dataset.execution_count) + 1;
     // Get references to logs and outputs
-    const cellConsole = cell.querySelector('.console');
+    const cellConsole1 = cell.querySelector('.console');
+    const originals = {};
+    function wire(...names) {
+        for (const name of names){
+            originals[name] = console[name].bind(console);
+            console[name] = function(...args) {
+                const line = document.createElement('p');
+                line.classList.add(name);
+                line.innerText = args.join(', ');
+                cellConsole1.appendChild(line);
+                originals[name](...args);
+            };
+        }
+    }
+    function unwire(...names) {
+        for (const name of names)console[name] = originals[name];
+    }
     const output = cell.querySelector('.output');
     // get cell input
     const texts = $30732a08c2749711$var$getCellInputs(cell);
     // try and run cell with input
     try {
         // clear previous outputs
-        cellConsole.innerHTML = "";
+        cellConsole1.innerHTML = "";
         output.innerHTML = "";
         // begin calculation
         // const result = eval(texts.join(''));
@@ -28545,18 +28485,20 @@ $30732a08c2749711$var$scope.console.debug = function() {
             const func = new AsyncFunction(...Object.keys(context), code);
             return func(...Object.values(context));
         }
+        wire('log', 'error', 'debug', 'warn', 'info');
         const result = await scopedEval(texts.join('\n'), {
             notebook: notebook,
             cell: cell,
             output: output
         });
+        unwire('log', 'error', 'debug', 'warn', 'info');
         if (result && result instanceof HTMLElement) output.appendChild(result);
         else if (typeof result === 'number') output.innerHTML = result;
         else if (typeof result === 'string') output.innerHTML = result;
         else if (result === null) output.innerHTML = null;
         else if (typeof result === 'object' || typeof result === 'array') output.innerHTML = `<pre>${JSON.stringify(result, null, 2)}</pre>`;
         else if (!result && !output.innerHTML) output.innerHTML = "No output";
-    // if(output.classList.contains("error")) output.classList.remove('error'); // ??
+        if (output.classList.contains("error")) output.classList.remove('error'); // ??
     // display final output value, if any
     // output.value = JSON.stringify(result, null, 2) ?? "No output";
     } catch (e) {
@@ -28859,7 +28801,7 @@ function $30732a08c2749711$var$openNotebook(json, filename) {
         // set cell input
         $30732a08c2749711$var$setCellInput(cell, cellSource.source);
         // set cell output, if present
-        $30732a08c2749711$var$cellConsole = cell.querySelector('.console');
+        cellConsole = cell.querySelector('.console');
         const cellOutput = cell.querySelector('.output');
         const originalOutput = cellSource.outputs.map((output)=>{
             if (output.name === 'stdout') {
@@ -28867,7 +28809,7 @@ function $30732a08c2749711$var$openNotebook(json, filename) {
                 line.innerText = output;
                 line.classList.add('log');
                 line.classList.add('line');
-                $30732a08c2749711$var$cellConsole.appendChild(line);
+                cellConsole.appendChild(line);
             } else if (output.output_type === 'execute_result') cellOutput.value = output.data["text/plain"];
         });
         cell.querySelector('.output').value = originalOutput;
@@ -28909,4 +28851,4 @@ else // Open at least one notebook
 $30732a08c2749711$var$addNotebook();
 
 
-//# sourceMappingURL=index.31c2a849.js.map
+//# sourceMappingURL=index.d2adc9ce.js.map

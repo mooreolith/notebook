@@ -71,79 +71,6 @@ function getCellLogs(cell){
 }
 
 /*
- Console Magic
-*/
-let cellConsole = null;
-let output, cell, notebook;
-scope.console = console;
-scope.cellLogs = null;
-scope.cellOutput = null;
-
-// Rebound log function
-const log = console.log.bind(console);
-scope.console.log = function(){
-  log(...arguments);
-  for(let item of [...arguments]){
-    const line = document.createElement('p');
-    line.innerText = item; // JSON.stringify(item)
-    line.classList.add('log');
-    line.classList.add('line');
-    cellConsole?.appendChild(line);
-  }
-};
-
-// Rebound warn function
-const warn = console.warn.bind(console);
-scope.console.warn = function(){
-  warn(...arguments);
-  for(let item of [...arguments]){
-    const line = document.createElement('p');
-    line.innerText = item;
-    line.classList.add('warn');
-    line.classList.add('line');
-    cellConsole?.appendChild(line);
-  }
-};
-
-const error = console.error.bind(console);
-scope.console.error = function(){
-  error(...arguments);
-  for(let item of [...arguments]){
-    const line = document.createElement('p');
-    line.innerText = item;
-    line.classList.add('error');
-    line.classList.add('line');
-    cellConsole?.appendChild(line);
-  }
-}
-
-// Rebound info function
-const info = console.info.bind(console);
-scope.console.info = function(){
-  info(...arguments);
-  for(let item of [...arguments]){
-    const line = document.createElement('p');
-    line.innerText = item;
-    line.classList.add('info');
-    line.classList.add('line');
-    cellConsole?.appendChild(line);
-  }
-};
-
-// Rebound debug function
-const debug = console.debug.bind(console);
-scope.console.debug = function(){
-  debug(...arguments);
-  for(let item of [...arguments]){
-    const line = document.createElement('p');
-    line.innerText = item;
-    line.classList.add('debug');
-    line.classList.add('line');
-    cellConsole?.appendChild(line);
-  }
-};
-
-/*
   Execute a code cell
 */
 async function runCell(e){
@@ -156,6 +83,27 @@ async function runCell(e){
 
   // Get references to logs and outputs
   const cellConsole = cell.querySelector('.console');
+  
+  const originals = {};
+  function wire(...names){
+    for(const name of names){
+      originals[name] = console[name].bind(console);
+      console[name] = function(...args){
+        const line = document.createElement('p');
+        line.classList.add(name);
+        line.innerText = args.join(', ');
+        cellConsole.appendChild(line);
+
+        originals[name](...args);
+      }
+    }
+  }
+  function unwire(...names){
+    for(const name of names){
+      console[name] = originals[name];
+    }
+  }
+
   const output = cell.querySelector('.output');
   
   // get cell input
@@ -175,7 +123,10 @@ async function runCell(e){
       const func = new AsyncFunction(...Object.keys(context), code);
       return func(...Object.values(context));
     }
+
+    wire('log', 'error', 'debug', 'warn', 'info');
     const result = await scopedEval(texts.join('\n'), {notebook, cell, output});
+    unwire('log', 'error', 'debug', 'warn', 'info');
 
     if(result && (result instanceof HTMLElement)){
       output.appendChild(result);
@@ -191,7 +142,7 @@ async function runCell(e){
       output.innerHTML = "No output";
     }
 
-    // if(output.classList.contains("error")) output.classList.remove('error'); // ??
+    if(output.classList.contains("error")) output.classList.remove('error'); // ??
     
     // display final output value, if any
     // output.value = JSON.stringify(result, null, 2) ?? "No output";
