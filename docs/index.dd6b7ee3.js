@@ -28440,9 +28440,9 @@ function $30732a08c2749711$var$setCellInput(cell, values) {
 }
 // Given a cell, return its log lines
 function $30732a08c2749711$var$getCellLogs(cell) {
-    const cellConsole1 = cell.querySelector('.console');
+    const cellConsole = cell.querySelector('.console');
     return [
-        ...cellConsole1.querySelectorAll('.line')
+        ...cellConsole.querySelectorAll('.line')
     ].map((line)=>line.innerText);
 }
 /*
@@ -28453,7 +28453,7 @@ function $30732a08c2749711$var$getCellLogs(cell) {
     if (!cell.dataset.execution_count) cell.dataset.execution_count = 0;
     cell.dataset.execution_count = parseInt(cell.dataset.execution_count) + 1;
     // Get references to logs and outputs
-    const cellConsole1 = cell.querySelector('.console');
+    const cellConsole = cell.querySelector('.console');
     const originals = {};
     function wire(...names) {
         for (const name of names){
@@ -28462,7 +28462,7 @@ function $30732a08c2749711$var$getCellLogs(cell) {
                 const line = document.createElement('p');
                 line.classList.add(name);
                 line.innerText = args.join(', ');
-                cellConsole1.appendChild(line);
+                cellConsole.appendChild(line);
                 originals[name](...args);
             };
         }
@@ -28476,7 +28476,7 @@ function $30732a08c2749711$var$getCellLogs(cell) {
     // try and run cell with input
     try {
         // clear previous outputs
-        cellConsole1.innerHTML = "";
+        cellConsole.innerHTML = "";
         output.innerHTML = "";
         // begin calculation
         // const result = eval(texts.join(''));
@@ -28801,7 +28801,7 @@ function $30732a08c2749711$var$openNotebook(json, filename) {
         // set cell input
         $30732a08c2749711$var$setCellInput(cell, cellSource.source);
         // set cell output, if present
-        cellConsole = cell.querySelector('.console');
+        const cellConsole = cell.querySelector('.console');
         const cellOutput = cell.querySelector('.output');
         const originalOutput = cellSource.outputs.map((output)=>{
             if (output.name === 'stdout') {
@@ -28851,4 +28851,4 @@ else // Open at least one notebook
 $30732a08c2749711$var$addNotebook();
 
 
-//# sourceMappingURL=index.d2adc9ce.js.map
+//# sourceMappingURL=index.dd6b7ee3.js.map

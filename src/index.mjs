@@ -503,7 +503,7 @@ function openNotebook(json, filename){
     setCellInput(cell, cellSource.source);
 
     // set cell output, if present
-    cellConsole = cell.querySelector('.console');
+    const cellConsole = cell.querySelector('.console');
     const cellOutput = cell.querySelector('.output');
 
     const originalOutput = cellSource.outputs.map(output => {
