@@ -28495,7 +28495,7 @@ function $30732a08c2749711$var$getCellLogs(cell) {
         if (result && result instanceof HTMLElement) output.appendChild(result);
         else if (typeof result === 'number') output.innerHTML = result;
         else if (typeof result === 'string') output.innerHTML = result;
-        else if (result === null) output.innerHTML = null;
+        else if (result === null) output.innerHTML = 'null';
         else if (typeof result === 'object' || typeof result === 'array') output.innerHTML = `<pre>${JSON.stringify(result, null, 2)}</pre>`;
         else if (!result && !output.innerHTML) output.innerHTML = "No output";
         if (output.classList.contains("error")) output.classList.remove('error'); // ??
@@ -28851,4 +28851,4 @@ else // Open at least one notebook
 $30732a08c2749711$var$addNotebook();
 
 
-//# sourceMappingURL=index.dd6b7ee3.js.map
+//# sourceMappingURL=index.513c46d0.js.map

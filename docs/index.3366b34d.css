@@ -4,7 +4,6 @@
     border: 0;
     margin: 0;
     padding: 0;
-    font-size: 14px;
   }
 
   .app-buttons {
@@ -95,16 +94,15 @@ button:hover {
   }
 
   .output {
-    width: 100%;
+    margin-right: 30px;
   }
 }
 
-.output {
-  margin-bottom: 10px;
+.output, console {
   padding-left: 30px;
 }
 
-.console > .line {
+.console > .log, .console > .line {
   overflow-wrap: break-word;
   width: calc(100% - 30px);
   margin-top: 0;
@@ -116,22 +114,15 @@ button:hover {
 
 .console {
   width: 100%;
+  padding-left: 30px;
 }
 
 .log {
   color: #000;
 }
 
-.error {
-  color: red;
-}
-
-.debug {
-  color: tomato;
-}
-
-.warn {
-  color: orange;
+.error, .debug, .warn {
+  color: #ff4500;
 }
 
 .info {
@@ -147,4 +138,4 @@ button:hover {
   border-top: 1px dotted #2f4f4f;
   border-bottom: 1px dotted #2f4f4f;
 }
-/*# sourceMappingURL=index.e0a14826.css.map */
+/*# sourceMappingURL=index.3366b34d.css.map */

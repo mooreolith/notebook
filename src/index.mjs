@@ -135,7 +135,7 @@ async function runCell(e){
     }else if(typeof result === 'string'){
       output.innerHTML = result;
     }else if(result === null){
-      output.innerHTML = null;
+      output.innerHTML = 'null';
     }else if((typeof result === 'object') || (typeof result === 'array')){
       output.innerHTML = `<pre>${JSON.stringify(result, null, 2)}</pre>`;
     }else if(!result && !output.innerHTML){

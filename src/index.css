@@ -4,7 +4,6 @@
     border: 0;
     padding: 0;
     --nb-width: 750px;
-    font-size: 14px;
   }
 
   .app-buttons {
@@ -106,16 +105,15 @@ button:hover {
   }
 
   .output {
-    width: 100%;
+    margin-right: 30px;
   }
 }
 
-.output {
+.output, console {
   padding-left: 30px;
-  margin-bottom: 10px;
 }
 
-.console > .line {
+.console > .log, .console > .line {
   padding-left: 30px;
   padding-top: 0;
   padding-bottom: 0;
@@ -127,22 +125,15 @@ button:hover {
 
 .console {
   width: 100%;
+  padding-left: 30px; 
 }
 
 .log {
   color: black;
 }
 
-.error {
-  color: red;
-}
-
-.debug {
-  color: tomato;
-}
-
-.warn {
-  color: orange;
+.error, .debug, .warn {
+  color: orangered;
 }
 
 .info {
