@@ -107,6 +107,10 @@ button:hover {
   .output {
     margin-right: 30px;
   }
+
+  .cell-buttons, .notebook-buttons {
+    flex-wrap: wrap;
+  }
 }
 
 .output, console {

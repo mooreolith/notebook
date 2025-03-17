@@ -96,6 +96,10 @@ button:hover {
   .output {
     margin-right: 30px;
   }
+
+  .cell-buttons, .notebook-buttons {
+    flex-wrap: wrap;
+  }
 }
 
 .output, console {
@@ -138,4 +142,4 @@ button:hover {
   border-top: 1px dotted #2f4f4f;
   border-bottom: 1px dotted #2f4f4f;
 }
-/*# sourceMappingURL=index.3366b34d.css.map */
+/*# sourceMappingURL=index.cc893927.css.map */
