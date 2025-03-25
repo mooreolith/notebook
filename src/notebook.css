@@ -1,0 +1,133 @@
+:root {
+  --ui-color: black;
+  --ui-bg-color: white;
+  --nb-width: 600px;
+}
+
+html, body {
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+.title {
+  border: 0;
+  outline: none;
+  border-bottom: 1px solid black;
+}
+
+.title:focus {
+  border: 0;
+  outline: none;
+  border-bottom: 1px solid black;
+}
+
+.cells {
+  margin-top: 10px;
+  margin-left: 5px;
+  padding-left: 75px;
+  width: calc(min(100%, var(--nb-width)));
+}
+
+.cell-buttons {
+  margin-bottom: 5px;
+  justify-content: right;
+}
+
+.cell-button {
+  border: 0;
+  background-color: var(--ui-bg-color);
+  color: var(--ui-color);
+}
+
+.cell-button:hover {
+  background-color: var(--ui-color);
+  color: var(--ui-bg-color);
+}
+
+.log {
+  margin: 0;
+  padding-left: 25px;
+}
+
+.output {
+  margin-top: 10px;
+  padding-left: 25px;
+}
+
+.title {
+  margin-left: 50px;
+}
+
+.cells {
+  margin-left: 50px;
+  padding-left: 0;
+}
+
+.notebook-buttons {
+  margin-left: 50px;
+}
+
+.notebook {
+  background-image: url('./img/spiral.png');
+  background-repeat: repeat-y;
+  background-position: top left;
+  background-size: 40px 450px;
+  margin-bottom: 100vh;
+}
+
+.notebook-buttons {
+  margin-top: 5px;
+}
+
+.notebook-button {
+  border: 0;
+  background-color: var(--ui-bg-color);
+  color: var(--ui-color);
+}
+
+.notebook-button:hover {
+  background-color: var(--ui-color);
+  color: var(--ui-bg-color);
+}
+
+.app-buttons {
+  margin-top: 5px;
+}
+
+.app-button {
+  border: 0;
+  background-color: var(--ui-bg-color);
+  color: var(--ui-color);
+}
+
+.app-button:hover {
+  background-color: var(--ui-color);
+  color: var(--ui-bg-color);
+}
+
+.cell {
+  border-bottom: 1px solid gray;
+}
+
+@media screen and (min-width: 800px){
+  html, body {
+    --nb-width: 750px;
+  }
+
+  /* notebook */
+  main {
+    width: var(--nb-width);
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media screen and (max-width: 800px){
+  /* notebook */
+  main {
+    width: calc(min(100%, var(--nb-width)));
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
