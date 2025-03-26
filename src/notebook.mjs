@@ -219,7 +219,7 @@ class CodeCell extends Cell {
 
     this.output = await scopedEval( this.source, { cell, output } );
 
-    console.log = originalLog;
+    console.log = originalLog.bind(console);
   }
 
   remove(){
@@ -395,9 +395,7 @@ class Notebook {
     notebook.title = title;
     json.cells.forEach( json => {
       const CellType = json.cell_type === 'code' ? CodeCell : MarkdownCell;
-      const cell = CellType.fromJSON( notebook, json );
-      notebook.cellsArr.push( cell );
-      notebook.cellsEl.appendChild( cell.element );
+      CellType.fromJSON( notebook, json );
     } );
 
     return notebook;

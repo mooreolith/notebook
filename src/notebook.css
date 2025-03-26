@@ -8,22 +8,28 @@ html, body {
   margin: 0;
   border: 0;
   padding: 0;
+  background: rgba(0, 0, 0, 0.0)
+}
+
+.notebook-container {
+  margin-bottom: 50px;
 }
 
 .notebook {
   display: flex;
   flex-direction: column;
-  background-image: url('./img/spiral.png');
-  background-repeat: repeat-y;
-  background-position: top left;
-  background-size: 40px 450px;
 
   border-left: none;
   border-top: 1px solid black;
   border-right: 1px solid black;
   border-bottom: 1px solid black;
 
-  margin-bottom: 50px;
+
+  background-image: url('./img/spiral.png');
+  background-repeat: repeat-y;
+  background-position: top 0 left;
+  background-size: 40px 450px;
+
 }
 
 .notebook-buttons {

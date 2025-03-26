@@ -5,9 +5,14 @@
 }
 
 html, body {
+  background: none;
   border: 0;
   margin: 0;
   padding: 0;
+}
+
+.notebook-container {
+  margin-bottom: 50px;
 }
 
 .notebook {
@@ -18,7 +23,6 @@ html, body {
   border: 1px solid #000;
   border-left: none;
   flex-direction: column;
-  margin-bottom: 50px;
   display: flex;
 }
 
@@ -150,4 +154,4 @@ html, body {
     margin-right: auto;
   }
 }
-/*# sourceMappingURL=index.a6c3ce28.css.map */
+/*# sourceMappingURL=index.00f5f423.css.map */

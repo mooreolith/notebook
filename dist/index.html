@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Notebook</title>
-    <link rel="stylesheet" href="/notebook/index.a6c3ce28.css">
+    <link rel="stylesheet" href="/notebook/index.00f5f423.css">
   </head>
   <body>
     <main id="main"></main>
@@ -36221,7 +36221,7 @@ class $c1137132437b4289$var$CodeCell extends $c1137132437b4289$var$Cell {
             cell: cell,
             output: output
         });
-        console.log = originalLog;
+        console.log = originalLog.bind(console);
     }
     remove() {
         super.remove();
@@ -36370,9 +36370,7 @@ class $c1137132437b4289$var$Notebook {
         notebook.title = title;
         json.cells.forEach((json)=>{
             const CellType = json.cell_type === 'code' ? $c1137132437b4289$var$CodeCell : $c1137132437b4289$var$MarkdownCell;
-            const cell = CellType.fromJSON(notebook, json);
-            notebook.cellsArr.push(cell);
-            notebook.cellsEl.appendChild(cell.element);
+            CellType.fromJSON(notebook, json);
         });
         return notebook;
     }
