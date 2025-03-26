@@ -10,6 +10,11 @@ html, body {
   padding: 0;
 }
 
+.notebook {
+  flex-direction: column;
+  display: flex;
+}
+
 .title, .title:focus {
   border: 0;
   border-bottom: 1px solid #000;
@@ -17,7 +22,6 @@ html, body {
 }
 
 .cells {
-  width: calc(min(100%, var(--nb-width)));
   margin-top: 10px;
   margin-left: 5px;
   padding-left: 75px;
@@ -44,13 +48,22 @@ html, body {
   padding-left: 25px;
 }
 
-.output {
-  margin-top: 10px;
-  padding-left: 25px;
-}
-
 .title {
   margin-left: 50px;
+}
+
+.output {
+  padding-left: 35px;
+}
+
+.output:empty {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.output > * {
+  margin-top: 20px;
 }
 
 .cells {
@@ -58,8 +71,21 @@ html, body {
   padding-left: 0;
 }
 
+.title {
+  margin-bottom: 0;
+}
+
+.cells {
+  margin-top: 0;
+}
+
 .notebook-buttons {
+  margin-bottom: 15px;
   margin-left: 50px;
+}
+
+.cell {
+  margin-top: 25px;
 }
 
 .notebook {
@@ -67,6 +93,8 @@ html, body {
   background-position: 0 0;
   background-repeat: repeat-y;
   background-size: 40px 450px;
+  border: 1px solid #000;
+  border-left: none;
   margin-bottom: 100vh;
 }
 
@@ -98,6 +126,11 @@ html, body {
 .app-button:hover {
   background-color: var(--ui-color);
   color: var(--ui-bg-color);
+}
+
+.app-buttons {
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 
 .cell {

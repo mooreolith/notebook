@@ -74,7 +74,6 @@ class Cell {
     const state = EditorState.create( { extensions } );
     
     this.#editor = new EditorView({ state, parent: this.qs('.input-container') });
-    this.#element.classList.add(this.type);
   }
 
   get messages(){
