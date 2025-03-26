@@ -13,7 +13,37 @@ html, body {
 .notebook {
   display: flex;
   flex-direction: column;
+  background-image: url('./img/spiral.png');
+  background-repeat: repeat-y;
+  background-position: top left;
+  background-size: 40px 450px;
+
+  border-left: none;
+  border-top: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+
+  margin-bottom: 50px;
 }
+
+.notebook-buttons {
+  margin-top: 5px;
+  margin-left: 50px;
+  margin-bottom: 15px;
+
+}
+
+.notebook-button {
+  border: 0;
+  background-color: var(--ui-bg-color);
+  color: var(--ui-color);
+}
+
+.notebook-button:hover {
+  background-color: var(--ui-color);
+  color: var(--ui-bg-color);
+}
+
 
 .title {
   border: 0;
@@ -85,42 +115,10 @@ html, body {
   margin-top: 0;
 }
 
-.notebook-buttons {
-  margin-left: 50px;
-  margin-bottom: 15px;
-}
-
 .cell {
   margin-top: 25px;
 }
 
-.notebook {
-  background-image: url('./img/spiral.png');
-  background-repeat: repeat-y;
-  background-position: top left;
-  background-size: 40px 450px;
-  margin-bottom: 100vh;
-
-  border-left: none;
-  border-top: 1px solid black;
-  border-right: 1px solid black;
-  border-bottom: 1px solid black;
-}
-
-.notebook-buttons {
-  margin-top: 5px;
-}
-
-.notebook-button {
-  border: 0;
-  background-color: var(--ui-bg-color);
-  color: var(--ui-color);
-}
-
-.notebook-button:hover {
-  background-color: var(--ui-color);
-  color: var(--ui-bg-color);
-}
 
 .app-buttons {
   margin-top: 5px;

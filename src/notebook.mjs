@@ -457,35 +457,31 @@ class App {
   }
 
   onNewClick(){
-    this.#notebook = new Notebook( this.#element );
+    if(this.#notebook){
+      this.#notebook.element.remove();
+      this.#notebook = null;
+    }
+
+    this.#notebook = new Notebook( this.qs('.notebook-container') );
   }
 
   onUploadChange(){
+    if(this.#notebook){
+      this.#notebook.element.remove();
+      this.#notebook = null;
+    }
+
     const input = this.qs( '.notebook-input' );
     if(input.files.length){
       const file = input.files[0];
       const title = file.name.slice( 0, file.name.length - '.ipynb'.length );
       const reader = new FileReader();
       reader.addEventListener( 'load', () => {
-        const text = reader.result;
-        const json = JSON.parse( text );
-        const notebook = Notebook.fromJSON( this.#element, title, json );
-        this.#notebook = notebook;
-        this.qs( '.notebook-container' ).appendChild( notebook )
+        const json = JSON.parse( reader.result );
+        this.#notebook = Notebook.fromJSON( this.qs( '.notebook-container' ), title, json );
       })
-      reader.readAsDataURL( file );
+      reader.readAsText( file );
     }
-  }
-
-  onDownloadClick(){
-    const json = this.#notebook.toJSON();
-    const text = JSON.stringify( json );
-    const blob = new Blob( [ text ] );
-    const url = URL.createObjectURL( blob );
-    const a = this.qs( '.download-link' );
-    a.setAttribute( 'href', url );
-    a.setAttribute( 'download', `${this.#notebook.title}.ipynb` );
-    a.click();
   }
 
   onLoadClick(){
@@ -494,28 +490,39 @@ class App {
       localStorage.getItem( 'notebook.lastItem' ) ?? ''
     );
     if(filename){
-      this.#notebook?.element.remove();
-      this.#notebook = null;
+      if(this.#notebook){
+        this.#notebook.element.remove();
+        this.#notebook = null;
+      }
 
       if(!filename.endsWith( '.ipynb' )){
         filename = `${ filename }.ipynb`;
       }
 
       const title = filename.substring( 0, filename.length - '.ipynb'.length );
-      const text = localStorage.getItem( filename );
-      const json = JSON.parse( text );
-
+      const json = JSON.parse( localStorage.getItem( filename ) );
       this.#notebook = Notebook.fromJSON( this.qs( '.notebook-container' ), title, json );
-      this.qs( '.notebook-container' ).appendChild( this.#notebook.element )
     }
   }
 
+  onDownloadClick(){
+    if(!this.#notebook) return;
+    const text = JSON.stringify( this.#notebook.toJSON() );
+    const data = `data:application/json;charset=utf-8,${encodeURIComponent(text)}`;
+    const a = this.qs( '.download-link' );
+    a.setAttribute( 'href', data );
+    a.setAttribute( 'download', `${this.#notebook.title}.ipynb` );
+    a.click();
+  }
+
   onStoreClick(){
+    if(!this.#notebook) return;
     if(!this.#notebook.title) this.#notebook.title = prompt( "Notebook (localStorage) Filename: " );
     if(!this.#notebook.title) return;
     const text = JSON.stringify( this.#notebook.toJSON() );
     localStorage.setItem( `${ this.#notebook.title }.ipynb`, text );
     localStorage.setItem( 'notebook.lastItem', this.#notebook.title );
+    alert(`${this.#notebook.title} stored in browser's localStorage`)
   }
 
   onCloseClick(){
