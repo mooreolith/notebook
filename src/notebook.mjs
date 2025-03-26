@@ -508,7 +508,7 @@ class App {
   onDownloadClick(){
     if(!this.#notebook) return;
     const text = JSON.stringify( this.#notebook.toJSON() );
-    const data = `data:application/json;charset=utf-8,${encodeURIComponent(text)}`;
+    const data = `data:application/x-ipynb+json;charset=utf-8,${encodeURIComponent(text)}`;
     const a = this.qs( '.download-link' );
     a.setAttribute( 'href', data );
     a.setAttribute( 'download', `${this.#notebook.title}.ipynb` );
