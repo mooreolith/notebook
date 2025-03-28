@@ -269,7 +269,7 @@ class CodeCell extends Cell {
       "source": this.source,
       "outputs": [{
           "name": "stdout",
-          "output": "stream",
+          "output_type": "stream",
           "text": this.messages
         }, {
           "data": {
