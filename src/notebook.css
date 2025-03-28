@@ -122,7 +122,7 @@ output.output {
 }
 
 .error {
-  color: orangered;
+  color: crimson;
 }
 
 .debug {
