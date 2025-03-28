@@ -247,17 +247,17 @@ class CodeCell extends Cell {
   }
 
   #log(...args){
-    const p = create(`<p class="log">${ args.join(' ') }</p>`);
+    const p = create(`<p class="log">${ args.map( a => (typeof a === 'object') || (typeof a === 'array') ? JSON.stringify( a, null, 2 ) : a ).join( '  ' ) }</p>`);
     this.qs( '.messages' ).appendChild( p );
   }
 
   #error(...args){
-    const p = create(`<p class="error">${ args.join( ' ' ) }</p>`);
+    const p = create(`<p class="error">${ args.map( a => (typeof a === 'object') || (typeof a === 'array') ? JSON.stringify( a, null, 2 ) : a ).join( '  ' ) }</p>`);
     this.qs( '.messages' ).appendChild( p );
   }
 
   #debug(...args){
-    const p = create(`<p class="debug">${ args.join( '  ' )}</pre>`);
+    const p = create(`<p class="debug">${ args.map( a => (typeof a === 'object') || (typeof a === 'array') ? JSON.stringify( a, null, 2 ) : a ).join( '  ' ) }</pre>`);
     this.qs( '.messages' ).appendChild( p );
   }
 
