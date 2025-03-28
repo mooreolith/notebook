@@ -111,10 +111,6 @@ output.messages > .log {
   margin-bottom: 0;
 }
 
-output.output:not(:empty)::before {
-  content: "> ";
-}
-
 output.messages,
 output.output {
   margin-bottom: 15px;
