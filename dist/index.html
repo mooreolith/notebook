@@ -36327,7 +36327,16 @@ class $c1137132437b4289$var$Notebook {
         this.qs('.notebook-button.add-cell').addEventListener('click', this.addCodeCell.bind(this));
     }
     async runAll() {
-        for (let cell of this.cellsArr)await cell.run();
+        /*
+    for(let cell of this.cellsArr){
+      await cell.run();
+    }
+    */ let i = 0;
+        const nb = this;
+        setTimeout(async function() {
+            await nb.cellsArr[i].run();
+            if (i++ >= nb.cellsArr.length) setTimeout(arguments.callee, 10);
+        }, 10);
     }
     addCodeCell() {
         const cell = new $c1137132437b4289$var$CodeCell(this);

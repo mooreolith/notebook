@@ -343,9 +343,18 @@ class Notebook {
   }
 
   async runAll(){
+    /*
     for(let cell of this.cellsArr){
       await cell.run();
     }
+    */
+
+    let i = 0;
+    const nb = this;
+    setTimeout(async function(){
+      await nb.cellsArr[i].run();
+      if(i++ >= nb.cellsArr.length) setTimeout(arguments.callee, 10)
+    }, 10)
   }
 
   addCodeCell(){
