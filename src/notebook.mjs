@@ -83,6 +83,8 @@ class Cell {
     return;
   }
 
+  clear(){}
+
   remove(){
     const index = this.notebook.cellsArr.findIndex( cell => cell === this );
     this.notebook.cellsArr.splice( index, 1 );
@@ -190,6 +192,11 @@ class CodeCell extends Cell {
     }
   }
 
+  clear(){
+    this.qs( '.messages' ).innerHTML = '';
+    this.qs( '.output' ).innerHTML = '';
+  }
+
   get element(){
     return super.element;
   }
@@ -207,6 +214,18 @@ class CodeCell extends Cell {
       originalLog( ...args ); 
     };
 
+    const originalError = console.error.bind( console );
+    console.error = (...args) => {
+      this.#error( ...args );
+      originalError( ...args );
+    }
+
+    const originalDebug = console.debug.bind( console );
+    console.debug = (...args) => {
+      this.#debug( ...args );
+      originalDebug( ...args);
+    }
+
     messages.innerHTML = '';
     output.innerHTML = '';
 
@@ -218,7 +237,9 @@ class CodeCell extends Cell {
 
     this.output = await scopedEval( this.source, { cell, output, ...this.notebook.context } );
 
-    console.log = originalLog.bind(console);
+    console.log = originalLog.bind( console );
+    console.error = originalError.bind( console );
+    console.debug = originalDebug.bind( console );
   }
 
   remove(){
@@ -226,7 +247,17 @@ class CodeCell extends Cell {
   }
 
   #log(...args){
-    const p = create(`<p class="log">${ args.map(arg => arg).join(' ') }</p>`);
+    const p = create(`<p class="log">${ args.join(' ') }</p>`);
+    this.qs( '.messages' ).appendChild( p );
+  }
+
+  #error(...args){
+    const p = create(`<p class="error">${ args.join( ' ' ) }</p>`);
+    this.qs( '.messages' ).appendChild( p );
+  }
+
+  #debug(...args){
+    const p = create(`<p class="debug">${ args.join( '  ' )}</pre>`);
     this.qs( '.messages' ).appendChild( p );
   }
 
@@ -330,6 +361,7 @@ class Notebook {
       <div class="notebook-buttons">
         <button class="notebook-button run-all">Run All</button>
         <button class="notebook-button add-cell">Add Cell</button>
+        <button class="notebook-button clear-outputs">Clear Outputs</button>
       </div>
     </article>` );
 
@@ -338,23 +370,15 @@ class Notebook {
     this.cellsEl = this.qs( '.cells' );
     
     // button click event handlers
-    this.qs( '.notebook-button.run-all' ).addEventListener( 'click', this.runAll.bind(this) );
-    this.qs( '.notebook-button.add-cell' ).addEventListener( 'click', this.addCodeCell.bind(this) );
+    this.qs( '.notebook-button.run-all' ).addEventListener( 'click', this.runAll.bind( this ) );
+    this.qs( '.notebook-button.add-cell' ).addEventListener( 'click', this.addCodeCell.bind( this ) );
+    this.qs( '.notebook-button.clear-outputs' ).addEventListener( 'click', this.clearOutputs.bind( this ) );
   }
 
   async runAll(){
-    /*
     for(let cell of this.cellsArr){
       await cell.run();
     }
-    */
-
-    let i = 0;
-    const nb = this;
-    setTimeout(async function(){
-      await nb.cellsArr[i].run();
-      if(i++ >= nb.cellsArr.length) setTimeout(arguments.callee, 10)
-    }, 10)
   }
 
   addCodeCell(){
@@ -362,6 +386,12 @@ class Notebook {
     this.cellsArr.push( cell );
     this.cellsEl.appendChild( cell.element );
     return cell;
+  }
+
+  clearOutputs(){
+    for(let cell of this.cellsArr){
+      cell.clear();
+    }
   }
 
   addMarkdownCell(){
@@ -446,7 +476,7 @@ class App {
             <button class="app-button upload">File</button>
             <button class="app-button get">URL</button>
             <button class="app-button load">Browser</button>
-            
+
             <label style="margin-left: 25px;"><b>Save: </b></label>
             <button class="app-button download">File</button>
             <button class="app-button post">URL</button>

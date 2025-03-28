@@ -111,12 +111,8 @@ output.messages > .log {
   margin-bottom: 0;
 }
 
-output.output::before {
+output.output:not(:empty)::before {
   content: "> ";
-}
-
-output.output:not(.log)::before {
-  content: "";
 }
 
 output.messages,
@@ -127,6 +123,14 @@ output.output {
 
 output.output {
   margin-top: 15px;
+}
+
+.error {
+  color: orangered;
+}
+
+.debug {
+  color:darkslategray;
 }
 
 .title {
@@ -141,6 +145,7 @@ output.output {
   margin-top: 5px;
   display: flex;
   flex-direction: row;
+  justify-content: end;
 }
 
 .button-group {
