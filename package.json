@@ -4,7 +4,7 @@
   "description": "A client-side javascript notebook",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf dist/ && parcel build src/index.html --public-url /notebook/ --no-optimize && rm docs/* && cp dist/* docs/.",
+    "build": "rm -rf dist/ && parcel build src/index.html --public-url /notebook/ --no-optimize && rm docs/* && cp dist/* docs/. && cp examples/* docs/.",
     "watch": "parcel watch src/index.html",
     "serve": "http-server dist",
     "clean": "rm -rf dist/*"

@@ -24,7 +24,7 @@ class Cell {
     this.#notebook = notebook;
 
     this.#element = create( `<section class="cell">
-      <form>
+      <form class="cell-types">
         <input class="cell-type code" type="radio" name="cell-type" value="code" ${type === 'code' ? 'checked' : ''} />
         <label>Code</label>
         <input class="cell-type markdown" type="radio" name="cell-type" value="markdown" ${type === 'markdown' ? 'checked' : ''} />
