@@ -64,16 +64,23 @@ html, body {
 }
 
 .cells {
+  margin-left: 50px;
+  padding-left: 0;
   margin-top: 10px;
-  margin-left: 5px;
-  padding-left: 75px;
+  margin-left: 50px;
 }
 
 .cell-types {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.input-container {
   margin-bottom: 10px;
 }
 
 .cell-buttons {
+  margin-top: 15px;
   margin-bottom: 5px;
   justify-content: right;
 }
@@ -93,41 +100,33 @@ html, body {
   margin-left: 50px;
 }
 
-.log {
-  margin: 0;
-  padding-left: 25px;
-}
-
-output.output {
-  margin-top: 10px;
-  padding: 0;
-  padding-left: 25px;
-}
-
-output.output:not(:empty)::before {
-  content: "> ";
-}
-
+/* output */
+output.messages:empty,
 output.output:empty {
   display: none;
 }
 
-outoput.output {
-  margin-top: 25px;
-  margin-bottom: 25px;
+output.messages > .log {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
-output.messages:empty {
-  display: none;
+output.output::before {
+  content: "> ";
 }
 
-output.messages {
-  margin-top: 25px;
+output.output:not(.log)::before {
+  content: "";
 }
 
-.cells {
-  margin-left: 50px;
-  padding-left: 0;
+output.messages,
+output.output {
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+output.output {
+  margin-top: 15px;
 }
 
 .title {
@@ -138,13 +137,15 @@ output.messages {
   margin-top: 0;
 }
 
-.cell {
-  margin-top: 25px;
-}
-
-
 .app-buttons {
   margin-top: 5px;
+  display: flex;
+  flex-direction: row;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: row;
 }
 
 .app-button {

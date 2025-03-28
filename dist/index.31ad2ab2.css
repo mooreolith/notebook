@@ -51,12 +51,22 @@ html, body {
 
 .cells {
   margin-top: 10px;
-  margin-left: 5px;
-  padding-left: 75px;
+  margin-left: 50px;
+  padding-left: 0;
+}
+
+.cell-types {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.input-container {
+  margin-bottom: 10px;
 }
 
 .cell-buttons {
   justify-content: right;
+  margin-top: 15px;
   margin-bottom: 5px;
 }
 
@@ -71,32 +81,34 @@ html, body {
   color: var(--ui-bg-color);
 }
 
-.log {
-  margin: 0;
-  padding-left: 25px;
-}
-
 .title {
   margin-left: 50px;
 }
 
-.output {
-  padding-left: 35px;
+output.messages:empty, output.output:empty {
+  display: none;
 }
 
-.output:empty {
-  border: 0;
-  margin: 0;
-  padding: 0;
+output.messages > .log {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
-.output > * {
-  margin-top: 20px;
+output.output:before {
+  content: "> ";
 }
 
-.cells {
-  margin-left: 50px;
-  padding-left: 0;
+output.output:not(.log):before {
+  content: "";
+}
+
+output.messages, output.output {
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+output.output {
+  margin-top: 15px;
 }
 
 .title {
@@ -107,12 +119,15 @@ html, body {
   margin-top: 0;
 }
 
-.cell {
-  margin-top: 25px;
+.app-buttons {
+  flex-direction: row;
+  margin-top: 5px;
+  display: flex;
 }
 
-.app-buttons {
-  margin-top: 5px;
+.button-group {
+  flex-direction: row;
+  display: flex;
 }
 
 .app-button {
@@ -154,4 +169,4 @@ html, body {
     margin-right: auto;
   }
 }
-/*# sourceMappingURL=index.00f5f423.css.map */
+/*# sourceMappingURL=index.31ad2ab2.css.map */

@@ -1,4 +1,3 @@
-
 import { basicSetup, EditorView } from 'codemirror';
 import { EditorState, Compartment } from '@codemirror/state';
 import { keymap } from "@codemirror/view";
@@ -15,13 +14,13 @@ const create = function(innerText){
 }
 
 class Cell {
-  #notebook;
+  notebook;
   #element;
   #editor;
   type = undefined;
 
   constructor(notebook, type){
-    this.#notebook = notebook;
+    this.notebook = notebook;
 
     this.#element = create( `<section class="cell">
       <form class="cell-types">
@@ -85,40 +84,40 @@ class Cell {
   }
 
   remove(){
-    const index = this.#notebook.cellsArr.findIndex( cell => cell === this );
-    this.#notebook.cellsArr.splice( index, 1 );
+    const index = this.notebook.cellsArr.findIndex( cell => cell === this );
+    this.notebook.cellsArr.splice( index, 1 );
     this.#element.remove();
   }
 
   prepend(){
-    const index = this.#notebook.cellsArr.findIndex( cell => cell === this );
-    const cell = new CodeCell( this.#notebook );
-    this.#notebook.cellsArr.splice( index - 1, 0, cell );
+    const index = this.notebook.cellsArr.findIndex( cell => cell === this );
+    const cell = new CodeCell( this.notebook );
+    this.notebook.cellsArr.splice( index - 1, 0, cell );
     this.#element.before( cell.#element )
   }
 
   append(){
-    const index = this.#notebook.cellsArr.findIndex( cell => cell === this );
-    const cell = new CodeCell( this.#notebook );
-    this.#notebook.cellsArr.splice( index + 1, 0, cell );
+    const index = this.notebook.cellsArr.findIndex( cell => cell === this );
+    const cell = new CodeCell( this.notebook );
+    this.notebook.cellsArr.splice( index + 1, 0, cell );
     this.#element.after( cell.#element );
   }
 
   onCellTypeCodeClick(){
-    const cell = new CodeCell( this.#notebook );
-    const index = this.#notebook.cellsArr.findIndex( cell => cell === this );
+    const cell = new CodeCell( this.notebook );
+    const index = this.notebook.cellsArr.findIndex( cell => cell === this );
     cell.source = this.source;
-    this.#notebook.cellsArr.splice( index, 1, cell );
+    this.notebook.cellsArr.splice( index, 1, cell );
     this.#element.replaceWith( cell.element );
   }
 
   onCellTypeMarkdownClick(){
-    const cell = new MarkdownCell( this.#notebook );
-    const index = this.#notebook.cellsArr.findIndex( cell => cell === this );
+    const cell = new MarkdownCell( this.notebook );
+    const index = this.notebook.cellsArr.findIndex( cell => cell === this );
     cell.source = this.source;
     cell.output = '';
     cell.messages = [];
-    this.#notebook.cellsArr.splice( index, 1, cell );
+    this.notebook.cellsArr.splice( index, 1, cell );
     this.#element.replaceWith( cell.element );
   }
 
@@ -217,7 +216,7 @@ class CodeCell extends Cell {
       return func( ...Object.values( context ) );
     }
 
-    this.output = await scopedEval( this.source, { cell, output } );
+    this.output = await scopedEval( this.source, { cell, output, ...this.notebook.context } );
 
     console.log = originalLog.bind(console);
   }
@@ -318,10 +317,11 @@ class MarkdownCell extends Cell {
 class Notebook {
   #parent;
   #element;
+  context;
   cellsArr = [];
   cellsEl;
 
-  constructor(container){
+  constructor(container, context = {}){
     this.#parent = container;
     this.#element = create( `<article class="notebook">
       <h2 class="title" contenteditable="true">Notebook Title</h2>
@@ -334,6 +334,7 @@ class Notebook {
     </article>` );
 
     this.#parent.appendChild( this.#element );
+    this.context = context;
     this.cellsEl = this.qs( '.cells' );
     
     // button click event handlers
@@ -427,16 +428,23 @@ class App {
   #element;
   #notebook;
 
-  constructor(container){
+  constructor(container, context={}){
     this.#parent = container;
     this.#element = create( `<div>
         <div class="app-buttons">
-          <button class="app-button new">New</button>
-          <button class="app-button upload">Open</button>
-          <button class="app-button download">Save</button>
-          <button class="app-button load">Load from Browser</button>
-          <button class="app-button store">Store to Browser</button>
-          <button class="app-button close">Close</button>
+          <fieldset class="button-group">
+            <legend>Open</legend>
+            <button class="app-button new">New</button>
+            <button class="app-button upload">File</button>
+            <button class="app-button get">URL</button>
+            <button class="app-button load">Browser</button>
+          </fieldset>
+          <fieldset class="button-group">
+            <legend>Save</legend>
+            <button class="app-button download">File</button>
+            <button class="app-button post">URL</button>
+            <button class="app-button store">Browser</button>
+          </fieldset>
         </div>
         <input type="file" class="notebook-input" style="display: none;" />
         <a class="download-link" style="display: none;"></a>
@@ -444,31 +452,48 @@ class App {
       </div>` );
     this.#parent.appendChild( this.#element );
 
-    this.qs('.app-button.new').addEventListener( 'click', this.onNewClick.bind(this) );
-    this.#notebook = new Notebook( this.qs( '.notebook-container' ) );
-    this.qs( '.app-button.upload' ).addEventListener( 'click', () => this.qs( '.notebook-input' ).click() );
-    this.qs( '.notebook-input' ).addEventListener( 'change', this.onUploadChange.bind( this ) );
-    this.qs( '.app-button.download' ).addEventListener( 'click', this.onDownloadClick.bind( this ) );
-    this.qs( '.app-button.load' ).addEventListener( 'click', this.onLoadClick.bind( this ) );
-    this.qs( '.app-button.store' ).addEventListener( 'click', this.onStoreClick.bind( this ) );
-    this.qs( '.app-button.close' ).addEventListener( 'click', this.onCloseClick.bind(this) );
-  }
+    this.qs( '.app-button.new').addEventListener( 'click', this.onNewClick.bind(this) );
+    this.#notebook = new Notebook( this.qs( '.notebook-container' ), context );
 
-  onNewClick(){
-    if(this.#notebook){
-      this.#notebook.element.remove();
-      this.#notebook = null;
+    // open file menu items
+    this.qs( '.app-button.upload'   ).addEventListener( 'click', () => this.qs( '.notebook-input' ).click() );
+    this.qs( '.notebook-input'      ).addEventListener( 'change', this.onUploadChange.bind( this ) );
+    this.qs( '.app-button.get'      ).addEventListener( 'click',  this.onGetClick.bind( this ));
+    this.qs( '.app-button.load'     ).addEventListener( 'click',  this.onLoadClick.bind( this ) );
+
+    // save file menu items
+    this.qs( '.app-button.download' ).addEventListener( 'click',  this.onDownloadClick.bind( this ) );  
+    this.qs( '.app-button.post'     ).addEventListener( 'click',  this.onPostClick.bind( this ));  // todo
+    this.qs( '.app-button.store'    ).addEventListener( 'click',  this.onStoreClick.bind( this ) );
+
+    const query = window.location.search;
+    const searchParams = new URLSearchParams(query);
+    
+    if(searchParams.has('url')){
+      if(this.#notebook) this.close();
+      const url = decodeURI(searchParams.get('url'))
+      this.fromURL(url);
+    }
+    if(searchParams.has(`ls`)){
+      if(this.#notebook) this.close();
+      const filename = searchParams.get('ls');
+      this.fromLocalStorage(filename);
     }
 
+  }
+
+  get element(){
+    return this.#element;
+  }
+
+  onNewClick(e){
+    window.location.search = '';
+    if(this.#notebook) this.close();
     this.#notebook = new Notebook( this.qs('.notebook-container') );
   }
 
-  onUploadChange(){
-    if(this.#notebook){
-      this.#notebook.element.remove();
-      this.#notebook = null;
-    }
-
+  onUploadChange(e){
+    if(this.#notebook) this.close();
     const input = this.qs( '.notebook-input' );
     if(input.files.length){
       const file = input.files[0];
@@ -482,28 +507,49 @@ class App {
     }
   }
 
-  onLoadClick(){
+  onGetClick(e){
+    const url = prompt( "Please enter a URL to open: " );
+    if(!url) return;
+    if(this.#notebook) this.close();
+
+    this.fromURL(url);
+  }
+
+  async fromURL(url){
+    const response = await fetch(url);
+    if(!response.ok){
+      console.error(`Error fetching ${url}`)
+      return;
+    }
+
+    const title = url.split('/').at(-1).split('.').at(-2);
+    const json = await response.json();
+
+    this.#notebook = Notebook.fromJSON( this.qs( '.notebook-container' ), title, json );
+  }
+
+  onLoadClick(e){
     let filename = prompt( 
       'Notebook (Browser Storage) Filename: ', 
       localStorage.getItem( 'notebook.lastItem' ) ?? ''
     );
     if(filename){
-      if(this.#notebook){
-        this.#notebook.element.remove();
-        this.#notebook = null;
-      }
-
+      if(this.#notebook) this.close();
       if(!filename.endsWith( '.ipynb' )){
         filename = `${ filename }.ipynb`;
       }
 
-      const title = filename.substring( 0, filename.length - '.ipynb'.length );
-      const json = JSON.parse( localStorage.getItem( filename ) );
-      this.#notebook = Notebook.fromJSON( this.qs( '.notebook-container' ), title, json );
+      this.fromLocalStorage(filename);
     }
   }
 
-  onDownloadClick(){
+  fromLocalStorage(filename){
+    const title = filename.substring( 0, filename.length - '.ipynb'.length );
+    const json = JSON.parse( localStorage.getItem( filename ) );
+    this.#notebook = Notebook.fromJSON( this.qs( '.notebook-container' ), title, json );
+  }
+
+  onDownloadClick(e){
     if(!this.#notebook) return;
     const text = JSON.stringify( this.#notebook.toJSON() );
     const data = `data:application/x-ipynb+json;charset=utf-8,${encodeURIComponent(text)}`;
@@ -513,7 +559,31 @@ class App {
     a.click();
   }
 
-  onStoreClick(){
+  async onPostClick(e){
+    const url = prompt( "Where would you like to POST this notebook: " );
+    if(!url) return;
+
+    if(this.#notebook){
+      const title = this.#notebook.title;
+      const json = this.#notebook.toJSON();
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': "application/x-ipynb+json"
+        },
+        body: JSON.stringify(json)
+      });
+
+      if(response.ok){
+        alert( `${title} successfully sent to ${url}` );
+      }else{
+        alert( `Error: ${title} NOT successfully sent to ${url}` );
+      }
+    }
+  }
+
+  onStoreClick(e){
     if(!this.#notebook) return;
     if(!this.#notebook.title) this.#notebook.title = prompt( "Notebook (localStorage) Filename: " );
     if(!this.#notebook.title) return;
@@ -523,7 +593,12 @@ class App {
     alert(`${this.#notebook.title} stored in browser's localStorage`)
   }
 
-  onCloseClick(){
+  clear(){
+    if(this.#notebook) this.close();
+    this.#notebook = new Notebook( this.qs('.notebook-container'), context )
+  }
+
+  close(){
     this.#notebook.element.remove();
     this.#notebook = null;
   }
