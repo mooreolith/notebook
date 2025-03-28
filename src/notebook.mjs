@@ -441,19 +441,16 @@ class App {
     this.#parent = container;
     this.#element = create( `<div>
         <div class="app-buttons">
-          <fieldset class="button-group">
-            <legend>Open</legend>
+            <label><b>Open: </b></label>
             <button class="app-button new">New</button>
             <button class="app-button upload">File</button>
             <button class="app-button get">URL</button>
             <button class="app-button load">Browser</button>
-          </fieldset>
-          <fieldset class="button-group">
-            <legend>Save</legend>
+            
+            <label style="margin-left: 25px;"><b>Save: </b></label>
             <button class="app-button download">File</button>
             <button class="app-button post">URL</button>
             <button class="app-button store">Browser</button>
-          </fieldset>
         </div>
         <input type="file" class="notebook-input" style="display: none;" />
         <a class="download-link" style="display: none;"></a>
