@@ -7,7 +7,7 @@
     "build:local": "npm run clean && parcel build src/index.html --public-url / --no-optimize --dist-dir docs/ && mkdir docs/examples && cp src/examples/* docs/examples/.",
     "build:github": "npm run clean && parcel build src/index.html --public-url /notebook/ --dist-dir docs/ && mkdir docs/examples && cp src/examples/* docs/examples/.",
     "serve": "http-server docs",
-    "watch": "parcel watch src/index.html",
+    "watch": "parcel watch src/index.html --dist-dir docs/",
     "clean": "rm -rf docs/* && rm -rf ./parcel-cache"
   },
   "repository": {

@@ -231,7 +231,11 @@ class CodeCell extends Cell {
 
     function scopedEval(code, context){
       const AsyncFunction = async function(){}.constructor;
-      const func = new AsyncFunction( ...Object.keys( context ), code );
+      const func = new AsyncFunction( ...Object.keys( context ), `try{
+        ${code}
+      } catch(e) {
+        console.error(e.name, ':', e.message); 
+      }` );
       return func( ...Object.values( context ) );
     }
 
@@ -467,20 +471,20 @@ class App {
   #element;
   #notebook;
 
-  constructor(container, context={}){
+  constructor(container, context = {}){
     this.#parent = container;
     this.#element = create( `<div>
         <div class="app-buttons">
-            <label><b>Open: </b></label>
-            <button class="app-button new">New</button>
-            <button class="app-button upload">File</button>
-            <button class="app-button get">URL</button>
-            <button class="app-button load">Browser</button>
+          <label><b>Open: </b></label>
+          <button class="app-button new">New</button>
+          <button class="app-button upload">File</button>
+          <button class="app-button get">URL</button>
+          <button class="app-button load">Browser</button>
 
-            <label style="margin-left: 25px;"><b>Save: </b></label>
-            <button class="app-button download">File</button>
-            <button class="app-button post">URL</button>
-            <button class="app-button store">Browser</button>
+          <label style="margin-left: 25px;"><b>Save: </b></label>
+          <button class="app-button download">File</button>
+          <button class="app-button post">URL</button>
+          <button class="app-button store">Browser</button>
         </div>
         <input type="file" class="notebook-input" style="display: none;" />
         <a class="download-link" style="display: none;"></a>
@@ -499,7 +503,7 @@ class App {
 
     // save file menu items
     this.qs( '.app-button.download' ).addEventListener( 'click',  this.onDownloadClick.bind( this ) );  
-    this.qs( '.app-button.post'     ).addEventListener( 'click',  this.onPostClick.bind( this ));  // todo
+    this.qs( '.app-button.post'     ).addEventListener( 'click',  this.onPostClick.bind( this ));
     this.qs( '.app-button.store'    ).addEventListener( 'click',  this.onStoreClick.bind( this ) );
 
     const query = window.location.search;
@@ -515,7 +519,6 @@ class App {
       const filename = searchParams.get('ls');
       this.fromLocalStorage(filename);
     }
-
   }
 
   get element(){
@@ -566,7 +569,7 @@ class App {
 
   onLoadClick(e){
     let filename = prompt( 
-      'Notebook (Browser Storage) Filename: ', 
+      'Notebook (Browser Storage) Filename: ',
       localStorage.getItem( 'notebook.lastItem' ) ?? ''
     );
     if(filename){
@@ -574,8 +577,8 @@ class App {
       if(!filename.endsWith( '.ipynb' )){
         filename = `${ filename }.ipynb`;
       }
-
-      this.fromLocalStorage(filename);
+      
+      this.fromLocalStorage( filename );
     }
   }
 
