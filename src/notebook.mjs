@@ -252,7 +252,7 @@ class CodeCell extends Cell {
       const func = new AsyncFunction( ...Object.keys( context ), `try{
         ${code}
       } catch(e) {
-        console.error(e.name, ':', e.message); 
+        console.error(e.name, ':', e.message, e.stack); 
       }` );
       return func( ...Object.values( context ) );
     }
