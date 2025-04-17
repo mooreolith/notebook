@@ -23,6 +23,7 @@ import { javascript } from "@codemirror/lang-javascript";
 import { markdown } from "@codemirror/lang-markdown";
 import { indentWithTab } from '@codemirror/commands';
 import { marked } from 'marked';
+import { parse } from './lib/parser';
 let language = new Compartment, tabSize = new Compartment;
 
 const create = function(innerText){
@@ -258,7 +259,7 @@ class CodeCell extends Cell {
       return func( ...Object.values( context ) );
     }
 
-    this.output = await scopedEval( this.source, { cell: this, output, ...this.notebook.context } );
+    this.output = await scopedEval( this.source, { cell: this, parse, output, ...this.notebook.context } );
 
     console.log = originalLog.bind( console );
     console.error = originalError.bind( console );
