@@ -19,7 +19,7 @@
     "notebook"
   ],
   "author": "Joshua M. Moore <mooreolith@gmail.com>",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/mooreolith/jsbook/issues"
   },
