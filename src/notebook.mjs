@@ -258,7 +258,7 @@ class CodeCell extends Cell {
       return func( ...Object.values( context ) );
     }
 
-    this.output = await scopedEval( this.source, { cell, output, ...this.notebook.context } );
+    this.output = await scopedEval( this.source, { cell: this, output, ...this.notebook.context } );
 
     console.log = originalLog.bind( console );
     console.error = originalError.bind( console );

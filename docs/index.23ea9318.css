@@ -1,0 +1,185 @@
+:root {
+  --ui-color: black;
+  --ui-bg-color: white;
+  --nb-width: 600px;
+}
+
+html, body {
+  background: none;
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.notebook-container {
+  margin-bottom: 50px;
+}
+
+.notebook {
+  background-image: url("spiral.be2f751f.png");
+  background-position: 0 0;
+  background-repeat: repeat-y;
+  background-size: 40px 450px;
+  border: 1px solid #000;
+  border-left: none;
+  flex-direction: column;
+  display: flex;
+}
+
+.notebook-buttons {
+  margin-top: 5px;
+  margin-bottom: 15px;
+  margin-left: 50px;
+}
+
+.notebook-button {
+  background-color: var(--ui-bg-color);
+  color: var(--ui-color);
+  border: 0;
+}
+
+.notebook-button:hover {
+  background-color: var(--ui-color);
+  color: var(--ui-bg-color);
+}
+
+.title {
+  color: var(--ui-color);
+  border: 0;
+  border-bottom: 1px solid #000;
+  outline: none;
+}
+
+.title:focus {
+  border: 0;
+  border-bottom: 1px solid #000;
+  outline: none;
+}
+
+.title::selection {
+  background-color: var(--ui-color);
+  color: var(--ui-bg-color);
+}
+
+.cells {
+  margin-top: 10px;
+  margin-left: 50px;
+  padding-left: 0;
+}
+
+.cell-types {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.input-container {
+  margin-bottom: 10px;
+}
+
+.cell-buttons {
+  justify-content: right;
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+
+.cell-button {
+  background-color: var(--ui-bg-color);
+  color: var(--ui-color);
+  border: 0;
+}
+
+.cell-button:hover {
+  background-color: var(--ui-color);
+  color: var(--ui-bg-color);
+}
+
+.title {
+  margin-left: 50px;
+}
+
+output.messages:empty, output.output:empty {
+  display: none;
+}
+
+output.messages > .log {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+output.messages, output.output {
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+output.output {
+  margin-top: 15px;
+}
+
+.error {
+  color: #dc143c;
+}
+
+.debug {
+  color: #2f4f4f;
+}
+
+.title {
+  margin-bottom: 0;
+}
+
+.cells {
+  margin-top: 0;
+}
+
+.cell {
+  border-bottom: 1px solid gray;
+}
+
+.app-buttons {
+  flex-direction: row;
+  justify-content: end;
+  margin-top: 5px;
+  display: flex;
+}
+
+.button-group {
+  flex-direction: row;
+  display: flex;
+}
+
+.app-button {
+  background-color: var(--ui-bg-color);
+  color: var(--ui-color);
+  border: 0;
+}
+
+.app-button:hover {
+  background-color: var(--ui-color);
+  color: var(--ui-bg-color);
+}
+
+.app-buttons {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+@media screen and (width >= 800px) {
+  html, body {
+    --nb-width: 750px;
+  }
+
+  main {
+    width: var(--nb-width);
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media screen and (width <= 800px) {
+  main {
+    width: calc(min(100%, var(--nb-width)));
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+/*# sourceMappingURL=index.23ea9318.css.map */
