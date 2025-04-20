@@ -49,6 +49,7 @@ class Cell {
         <label>Markdown</label>
       </form>
         <div class="input-container"></div>
+        <span class="indicator"></span>
 
         <output class="messages"></output>
         <output class="output"></output>
@@ -221,7 +222,6 @@ class CodeCell extends Cell {
   }
 
   async run(){
-    const cell = this.element;
     const messages = this.qs( '.messages' );
     const output = this.qs( '.output' );
     
@@ -259,7 +259,15 @@ class CodeCell extends Cell {
       return func( ...Object.values( context ) );
     }
 
+    const indicator = this.qs('.indicator');
+    let i = 0;
+    const states = ['...', ':..', '.:.', '..:'];
+    const animation = setInterval(() => {
+      indicator.innerText = states[i++ % states.length];
+    }, 250);
     this.output = await scopedEval( this.source, { cell: this, parse, output, ...this.notebook.context } );
+    clearInterval(animation);
+    indicator.innerText = '';
 
     console.log = originalLog.bind( console );
     console.error = originalError.bind( console );
@@ -526,19 +534,28 @@ class App {
     this.qs( '.app-button.post'     ).addEventListener( 'click',  this.onPostClick.bind( this ));
     this.qs( '.app-button.store'    ).addEventListener( 'click',  this.onStoreClick.bind( this ) );
 
+    const opened = this.openSearchParams();
+    if(!opened) this.#notebook.addCodeCell();
+  }
+
+  openSearchParams() {
     const query = window.location.search;
     const searchParams = new URLSearchParams(query);
-    
-    if(searchParams.has('url')){
-      if(this.#notebook) this.close();
-      const url = decodeURI(searchParams.get('url'))
+
+    if (searchParams.has('url')) {
+      if (this.#notebook) this.close();
+      const url = decodeURI(searchParams.get('url'));
       this.fromURL(url);
+      return true;
     }
-    if(searchParams.has(`ls`)){
-      if(this.#notebook) this.close();
+    if (searchParams.has(`ls`)) {
+      if (this.#notebook) this.close();
       const filename = searchParams.get('ls');
       this.fromLocalStorage(filename);
+      return true;
     }
+
+    return false;
   }
 
   get element(){
