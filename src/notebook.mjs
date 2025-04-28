@@ -387,13 +387,15 @@ class Notebook {
   constructor(container, context = {}){
     this.#parent = container;
     this.#element = create( `<article class="notebook">
-      <h2 class="title" contenteditable="true">Notebook Title</h2>
-      <ol class="cells"></ol>
+      <div class="notebook-inner">
+        <h2 class="title" contenteditable="true">Notebook Title</h2>
+        <ol class="cells"></ol>
 
-      <div class="notebook-buttons">
-        <button class="notebook-button run-all">Run All</button>
-        <button class="notebook-button add-cell">Add Cell</button>
-        <button class="notebook-button clear-outputs">Clear Outputs</button>
+        <div class="notebook-buttons">
+          <button class="notebook-button run-all">Run All</button>
+          <button class="notebook-button add-cell">Add Cell</button>
+          <button class="notebook-button clear-outputs">Clear Outputs</button>
+        </div>
       </div>
     </article>` );
 

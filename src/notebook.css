@@ -38,16 +38,25 @@ html, body {
   flex-direction: column;
 
   border-left: none;
+  /*
   border-top: 1px solid black;
   border-right: 1px solid black;
   border-bottom: 1px solid black;
-
+  */
 
   background-image: url('./img/spiral.png');
   background-repeat: repeat-y;
-  background-position: top 0 left;
+  background-position: 1px -2px;
   background-size: 40px 450px;
 
+}
+
+.notebook-inner {
+  border-left: none;
+  border-top: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  margin-left: 15px;
 }
 
 .notebook-buttons {
