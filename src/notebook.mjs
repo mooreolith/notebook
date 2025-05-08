@@ -28,7 +28,7 @@ let language = new Compartment, tabSize = new Compartment;
 
 if("serviceWorker" in navigator){
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register(new URL('./service-worker.js', import.meta.url), {scope: '/notebook'})
+    navigator.serviceWorker.register(new URL('./service-worker.js', import.meta.url), {scope: '/notebook/'})
       .then(registration => {
         console.info(`Service Worker registered with scope: ${registration.scope}`);
       })
