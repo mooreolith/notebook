@@ -26,7 +26,7 @@ import { marked } from 'marked';
 import { parse } from './lib/parser';
 let language = new Compartment, tabSize = new Compartment;
 
-if(serviceWorker in navigator){
+if("serviceWorker" in navigator){
   window.addEventListener('load', () => {
     navigator.serviceWorker.register(new URL('./service-worker.js', import.meta.url))
       .then(registration => {
