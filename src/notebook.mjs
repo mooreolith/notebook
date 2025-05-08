@@ -699,6 +699,4 @@ class App {
   }
 }
 
-registerServiceWorker();
-
 export { App }
