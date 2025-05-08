@@ -1,16 +1,16 @@
 const CACHE_NAME = 'notebook-cache-v1';
 const urlsToCache = [
-  './',
-  './index.html',
-  './notebook.css',
-  './notebook.mjs',
-  './lib/parser.js',
-  './img/spiral.png',
-  './icon/notebook.png',
-  './examples/Countdown.ipynb',
-  './examples/fetch-threejs.ipynb',
-  './examples/MicroGrad.ipynb',
-  './examples/Notebook User Manual.ipynb'
+  '/notebook/',
+  '/notebook/index.html',
+  '/notebook/notebook.css',
+  '/notebook/notebook.mjs',
+  '/notebook/lib/parser.js',
+  '/notebook/img/spiral.png',
+  '/notebook/icon/notebook.png',
+  '/notebook/examples/Countdown.ipynb',
+  '/notebook/examples/fetch-threejs.ipynb',
+  '/notebook/examples/MicroGrad.ipynb',
+  '/notebook/examples/Notebook User Manual.ipynb'
 ];
 
 self.addEventListener('install', event => {
