@@ -1,16 +1,33 @@
+import { manifest, version } from '@parcel/service-worker';
+
+async function install(){
+  const cache = await cache.open(version);
+  await cache.addAll(manifest);
+}
+addEventListener('install', e => e.waitUntil(install()));
+
+async function activate(){
+  const keys = await caches.keys();
+  await Promise.all(
+    keys.map(key => key !== version && caches.delete(key))
+  );
+}
+addEventListener('activate', e => e.waitUntil(activate()));
+
+/*
 const CACHE_NAME = 'notebook-cache-v1';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/notebook.css',
-  '/notebook.mjs',
-  '/lib/parser.js',
-  '/img/spiral.png',
-  '/icon/notebook.png',
-  '/examples/Countdown.ipynb',
-  '/examples/fetch-threejs.ipynb',
-  '/examples/MicroGrad.ipynb',
-  '/examples/Notebook User Manual.ipynb'
+  './',
+  './index.html',
+  './notebook.css',
+  './notebook.mjs',
+  './lib/parser.js',
+  './img/spiral.png',
+  './icon/notebook.png',
+  './examples/Countdown.ipynb',
+  './examples/fetch-threejs.ipynb',
+  './examples/MicroGrad.ipynb',
+  './examples/Notebook User Manual.ipynb'
 ];
 
 self.addEventListener('install', event => {
@@ -54,3 +71,4 @@ self.addEventListener('fetch', event => {
       })
   );
 });
+*/
