@@ -26,6 +26,19 @@ import { marked } from 'marked';
 import { parse } from './lib/parser';
 let language = new Compartment, tabSize = new Compartment;
 
+if(serviceWorker in navigator){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(registration => {
+        console.info(`Service Worker registered with scope: ${registration.scope}`);
+      })
+      .catch(error => {
+        console.error(`Service Worker registration failed: `, error);
+      });
+  });
+}
+
+// utility function
 const create = function(innerText){
   const temp = document.createElement( 'div' );
   temp.innerHTML = innerText;
@@ -685,5 +698,7 @@ class App {
     return this.#element.querySelector( sel );
   }
 }
+
+registerServiceWorker();
 
 export { App }

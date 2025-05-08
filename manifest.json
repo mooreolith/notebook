@@ -1,10 +1,12 @@
 {
   "name": "Javascript Notebook",
+  "author": "Joshua M. Moore",
   "short_name": "Notebook",
   "display": "standalone",
+  "background_color": "white",
   "icons": [
     {
-      "src": "icon/"
+      "src": "icon/notebook.png"
     }
   ]
 
