@@ -18,26 +18,7 @@ self.addEventListener('install', event => {
     caches.open(CACHE_NAME)
       .then(cache => {
         console.info('Opened cache');
-        return cache.addAll(urlsToCache);
-      })
-  );
-});
-
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        if(response){
-          return response;
-        }
-
-        return fetch(event.request).then(response => {
-          const clone = request.clone();
-          caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, response);
-          });
-          return response;
-        })
+        return cache.addAll(urlsToCache, {cache: 'force-cache'});
       })
   );
 });
@@ -56,3 +37,20 @@ self.addEventListener('activate', event => {
   );
 });
 
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => {
+        if(response){
+          return response;
+        }
+
+        return fetch(event.request).then(response => {
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, response);
+          });
+          return response;
+        })
+      })
+  );
+});
