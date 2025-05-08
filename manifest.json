@@ -1,0 +1,11 @@
+{
+  "name": "Javascript Notebook",
+  "short_name": "Notebook",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "icon/"
+    }
+  ]
+
+}
