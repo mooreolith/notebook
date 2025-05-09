@@ -29,7 +29,7 @@ let language = new Compartment, tabSize = new Compartment;
 if("serviceWorker" in navigator){
   window.addEventListener('load', () => {
     navigator.serviceWorker.register(new URL('./service-worker.js', import.meta.url), {
-      scope: '/',
+      scope: '/notebook/',
       type: 'module'
     })
     .then(registration => {
