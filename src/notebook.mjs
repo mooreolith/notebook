@@ -28,7 +28,8 @@ let language = new Compartment, tabSize = new Compartment;
 
 async function persistData(){
   if(navigator.storage && navigator.storage.persist){
-    await navigator.storage.persist();
+    const persisted = await navigator.storage.persisted();
+    if(!persisted) navigator.storage.persist();
   }
 }
 persistData();
