@@ -26,6 +26,13 @@ import { marked } from 'marked';
 import { parse } from './lib/parser';
 let language = new Compartment, tabSize = new Compartment;
 
+async function persistData(){
+  if(navigator.storage && navigator.storage.persist){
+    await navigator.storage.persist();
+  }
+}
+persistData();
+
 if("serviceWorker" in navigator){
   window.addEventListener('load', () => {
     navigator.serviceWorker.register(new URL('./service-worker.js', import.meta.url), {
