@@ -9,6 +9,7 @@
     "url": "https://github.com/mooreolith"
   },
   "homepage_url": "https://github.com/mooreolith/notebook/",
+  "lang": "en",
   "icons": [
     {
       "src": "./icon/notebook.png",
@@ -16,7 +17,8 @@
       "type": "image/png"
     }
   ],
-  "start_url": "https://mooreolith.github.io/notebook/",
+  "start_url": "http://mooreolith.github.io/notebook/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "offline_enabled": true,
@@ -33,5 +35,8 @@
     }
   },
   "default_locale": "en",
-  "description": "A client-side Javascript Notebook"
+  "description": "A client-side Javascript Notebook",
+  "host_permissions": [
+    "storage"
+  ]
 }

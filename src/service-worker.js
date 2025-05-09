@@ -1,29 +1,52 @@
 import { manifest, version } from '@parcel/service-worker';
 
-async function install(){
-  const cache = await cache.open(version);
-  await cache.addAll(manifest);
-  await self.skipWaiting();
-}
-addEventListener('install', e => e.waitUntil(install()));
+self.addEventListener('install', e => {
+  e.waitUntil(
+    caches.open(version).then(cache => {
+      console.info('files pre-cached');
+      return cache.addAll(manifest);
+    })
+  )
 
-async function activate(){
-  caches.keys().then(cacheNames => {
-    return Promise.all(
-      cacheNames.filter((cache) => {
-        cache !== cacheName && caches.delete(cache);
-      })
-    )
-  })
+  self.skipWaiting();
+});
 
-
-  const keys = await caches.keys();
-  return await Promise.all(
-    keys.map(key => key !== version && caches.delete(key))
+self.addEventListener('activate', e => {
+  console.info('activated');
+  e.waitUntil(
+    caches.keys().then(keys => {
+      return Promise.all(
+        keys.map(key => {
+          if(key !== version){
+            console.info("removing old cached data", key);
+            return caches.delete(key);
+          }
+        })
+      ).catch(err => console.error(err));
+    })
   );
-}
-addEventListener('activate', e => e.waitUntil(activate()));
 
-addEventListener('fetch', 
-  e => e.respondWith(
-    caches.match(e.request).catch(fetch(e.request))));
+  self.clients.claim();
+});
+
+self.addEventListener('fetch', e => {
+  console.info('fetched', e.request.url);
+
+  e.respondWith(
+    caches.open(version)
+    .then(cache => {
+      return fetch(e.request)
+        .then(response => {
+          if(response.ok){
+            cache.put(e.request.url, response.clone());
+          }
+
+          return response;
+        })
+        .catch(error => {
+          return cache.match(e.request);
+        });
+    })
+    .catch(error => console.error(error))
+  )
+})

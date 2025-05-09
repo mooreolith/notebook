@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:local": "npm run clean && parcel build src/index.html --public-url / --no-optimize --dist-dir docs/ && mkdir docs/examples && cp src/examples/* docs/examples/. && mkdir docs/lib && cp src/lib/* docs/lib/.",
     "build:github": "npm run clean && parcel build src/index.html --public-url /notebook/ --dist-dir docs/ && mkdir docs/examples && cp src/examples/* docs/examples/.",
-    "serve": "http-server docs",
+    "start": "http-server docs",
     "watch": "parcel watch src/index.html --dist-dir docs/",
     "clean": "rm -rf docs/* && rm -rf ./parcel-cache"
   },
@@ -21,9 +21,9 @@
   "author": "Joshua M. Moore <mooreolith@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mooreolith/jsbook/issues"
+    "url": "https://github.com/mooreolith/notebook/issues"
   },
-  "homepage": "https://github.com/mooreolith/jsbook#readme",
+  "homepage": "https://github.com/mooreolith/notebook",
   "dependencies": {
     "@codemirror/commands": "^6.8.0",
     "@codemirror/lang-javascript": "^6.2.3",

@@ -26,26 +26,27 @@ import { marked } from 'marked';
 import { parse } from './lib/parser';
 let language = new Compartment, tabSize = new Compartment;
 
-async function persistData(){
-  if(navigator.storage && navigator.storage.persist){
-    const persisted = await navigator.storage.persisted();
-    if(!persisted) navigator.storage.persist();
-  }
-}
-persistData();
-
 if("serviceWorker" in navigator){
   window.addEventListener('load', () => {
     navigator.serviceWorker.register(new URL('./service-worker.js', import.meta.url), {
-      scope: '/notebook/',
+      scope: '/',
       type: 'module'
     })
-      .then(registration => {
-        console.info(`Service Worker registered with scope: ${registration.scope}`);
-      })
-      .catch(error => {
-        console.error(`Service Worker registration failed: `, error);
-      });
+    .then(registration => {
+      console.info(`Service Worker registered with scope: ${registration.scope}`);
+    })
+    .catch(error => {
+      console.error(`Service Worker registration failed: `, error);
+    });
+
+    navigator.serviceWorker.ready
+    .then(registration => {
+      console.log("Service worker is ready and active")
+      navigator.storage.persist().then(persisted => console.info(persisted ? "persist successful" : "persist unsuccessful"))
+    })
+    .catch(error => {
+      console.error("Service Worker failed to become ready", error);
+    })
   });
 }
 
