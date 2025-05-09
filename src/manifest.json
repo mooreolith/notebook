@@ -17,7 +17,7 @@
       "type": "image/png"
     }
   ],
-  "start_url": "http://mooreolith.github.io/notebook/",
+  "start_url": "https://mooreolith.github.io/notebook/",
   "scope": "/notebook/",
   "display": "standalone",
   "background_color": "#ffffff",
