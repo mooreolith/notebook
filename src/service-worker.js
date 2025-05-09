@@ -3,6 +3,7 @@ import { manifest, version } from '@parcel/service-worker';
 async function install(){
   const cache = await cache.open(version);
   await cache.addAll(manifest);
+  await self.skipWaiting();
 }
 addEventListener('install', e => e.waitUntil(install()));
 
@@ -13,6 +14,10 @@ async function activate(){
   );
 }
 addEventListener('activate', e => e.waitUntil(activate()));
+
+addEventListener('fetch', 
+  e => e.respondWith(
+    fetch(e.request).catch(() => caches.match(e.request))));
 
 /*
 const CACHE_NAME = 'notebook-cache-v1';
