@@ -107,6 +107,9 @@ class Cell {
     }
     
     const extensions = [
+      EditorView.contentAttributes.of({
+        'aria-label': "Cell editor"
+      }),
       CtrlEnter(),
       basicSetup,
       keymap.of( [ indentWithTab ] ),
@@ -118,7 +121,6 @@ class Cell {
     const state = EditorState.create( { extensions } );
     
     this.#editor = new EditorView({ state, parent: this.qs('.input-container') });
-    this.qs('.codemirror-editor').setAttribute('aria-label', 'Cell editor')
   }
 
   get messages(){
