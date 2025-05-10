@@ -68,22 +68,22 @@ class Cell {
 
     this.#element = create( `<section class="cell">
       <form class="cell-types">
-        <input class="cell-type code" type="radio" name="cell-type" value="code" ${type === 'code' ? 'checked' : ''} />
+        <input class="cell-type code" type="radio" name="cell-type" value="code" ${type === 'code' ? 'checked' : ''} aria-label="Code" />
         <label>Code</label>
-        <input class="cell-type markdown" type="radio" name="cell-type" value="markdown" ${type === 'markdown' ? 'checked' : ''} />
+        <input class="cell-type markdown" type="radio" name="cell-type" value="markdown" ${type === 'markdown' ? 'checked' : ''} aria-label="Markdown" />
         <label>Markdown</label>
       </form>
         <div class="input-container"></div>
         <span class="indicator"></span>
 
-        <output class="messages"></output>
-        <output class="output"></output>
+        <output class="messages" aria-label="Console messages"></output>
+        <output class="output" aria-label="Return value"></output>
 
         <div class="cell-buttons">
-          <button class="cell-button run">Run</button>
-          <button class="cell-button remove">Delete</button>
-          <button class="cell-button prepend">Add Above</button>
-          <button class="cell-button append">Add Below</button>
+          <button class="cell-button run" aria-label="Run cell">Run</button>
+          <button class="cell-button remove" aria-label="Delete cell">Delete</button>
+          <button class="cell-button prepend" aria-label="Add cell above">Add Above</button>
+          <button class="cell-button append" aria-label="Add cell below">Add Below</button>
         </div>
       </section>` );
 
@@ -118,6 +118,7 @@ class Cell {
     const state = EditorState.create( { extensions } );
     
     this.#editor = new EditorView({ state, parent: this.qs('.input-container') });
+    this.qs('.codemirror-editor').setAttribute('aria-label', 'Cell editor')
   }
 
   get messages(){
@@ -413,13 +414,13 @@ class Notebook {
     this.#parent = container;
     this.#element = create( `<article class="notebook">
       <div class="notebook-inner">
-        <h2 class="title" contenteditable="true">Notebook Title</h2>
+        <h2 class="title" contenteditable="true" aria-label="Notebook title">Notebook Title</h2>
         <ol class="cells"></ol>
 
         <div class="notebook-buttons">
-          <button class="notebook-button run-all">Run All</button>
-          <button class="notebook-button add-cell">Add Cell</button>
-          <button class="notebook-button clear-outputs">Clear Outputs</button>
+          <button class="notebook-button run-all" aria-label="Run all cells">Run All</button>
+          <button class="notebook-button add-cell" aria-label="Append cell">Add Cell</button>
+          <button class="notebook-button clear-outputs" aria-label="Clear cell outputs">Clear Outputs</button>
         </div>
       </div>
     </article>` );
@@ -531,15 +532,15 @@ class App {
     this.#element = create( `<div>
         <div class="app-buttons">
           <label><b>Open: </b></label>
-          <button class="app-button new">New</button>
-          <button class="app-button upload">File</button>
-          <button class="app-button get">URL</button>
-          <button class="app-button load">Browser</button>
+          <button class="app-button new" aria-label="New notebook">New</button>
+          <button class="app-button upload" aria-label="Upload notebook">File</button>
+          <button class="app-button get" aria-label="Open notebook URL">URL</button>
+          <button class="app-button load" aria-label="Load notebook from localStorage">Browser</button>
 
           <label style="margin-left: 25px;"><b>Save: </b></label>
-          <button class="app-button download">File</button>
-          <button class="app-button post">URL</button>
-          <button class="app-button store">Browser</button>
+          <button class="app-button download" aria-label="Download notebook">File</button>
+          <button class="app-button post" aria-label="Send notebook to URL via post request">URL</button>
+          <button class="app-button store" aria-label="Save notebook to localStorage">Browser</button>
         </div>
         <input type="file" class="notebook-input" style="display: none;" />
         <a class="download-link" style="display: none;"></a>
