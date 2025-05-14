@@ -431,6 +431,9 @@ class Notebook {
     this.qs( '.notebook-button.run-all' ).addEventListener( 'click', this.runAll.bind( this ) );
     this.qs( '.notebook-button.add-cell' ).addEventListener( 'click', this.addCodeCell.bind( this ) );
     this.qs( '.notebook-button.clear-outputs' ).addEventListener( 'click', this.clearOutputs.bind( this ) );
+    this.qs( '.title' ).addEventListener( 'blur', (e) => {
+      document.title = e.target.innerText;
+    });
   }
 
   async runAll(){
@@ -531,18 +534,20 @@ class App {
     this.#parent = container;
     this.#element = create( `<div>
         <div class="app-buttons">
-          <label><b>Open: </b></label>
-          <button class="app-button new" aria-label="New notebook">New</button>
-          <button class="app-button upload" aria-label="Upload notebook">File</button>
-          <button class="app-button get" aria-label="Open notebook URL">URL</button>
-          <button class="app-button load" aria-label="Load notebook from localStorage">Browser</button>
+          <div class="menu">
+            <label><b>Open: </b></label>
+            <button class="app-button new" aria-label="New notebook">New</button>
+            <button class="app-button upload" aria-label="Upload notebook">File</button>
+            <button class="app-button get" aria-label="Open notebook URL">URL</button>
+            <button class="app-button load" aria-label="Load notebook from localStorage">Browser</button>
+          </div>
 
-          <label style="margin-left: 25px;"><b>Save: </b></label>
-          <button class="app-button download" aria-label="Download notebook">File</button>
-          <button class="app-button post" aria-label="Send notebook to URL via post request">URL</button>
-          <button class="app-button store" aria-label="Save notebook to localStorage">Browser</button>
-
-          <label class="app-button" style="margin-left: 25px;" aria-label="About Notebook" onclick="window.location = 'https://github.com/mooreolith/notebook/'"><b>About</b></label>
+          <div class="menu">
+            <label><b>Save: </b></label>
+            <button class="app-button download" aria-label="Download notebook">File</button>
+            <button class="app-button post" aria-label="Send notebook to URL via post request">URL</button>
+            <button class="app-button store" aria-label="Save notebook to localStorage">Browser</button>
+          </div>
         </div>
         <input type="file" class="notebook-input" style="display: none;" />
         <a class="download-link" style="display: none;"></a>
