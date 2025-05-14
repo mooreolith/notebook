@@ -438,6 +438,7 @@ class Notebook {
     const title = e.target.innerText;
     this.title = title;
     document.title = title;
+    return false;
   }
 
   async runAll(){
