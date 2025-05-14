@@ -32,17 +32,13 @@ if("serviceWorker" in navigator){
       scope: '/notebook/',
       type: 'module'
     })
-    .then(registration => {
-      console.info(`Service Worker registered with scope: ${registration.scope}`);
-    })
     .catch(error => {
       console.error(`Service Worker registration failed: `, error);
     });
 
     navigator.serviceWorker.ready
     .then(registration => {
-      console.log("Service worker is ready and active")
-      navigator.storage.persist().then(persisted => console.info(persisted ? "persist successful" : "persist unsuccessful"))
+      navigator.storage.persist()
     })
     .catch(error => {
       console.error("Service Worker failed to become ready", error);
