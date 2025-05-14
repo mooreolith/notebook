@@ -13,7 +13,8 @@
     "copy:examples": "mkdir docs/examples && cp src/examples/* docs/examples/.",
     "copy:docs": "mkdir docs/lib && cp src/lib/* docs/lib/.",
     "copy:legal": "mkdir docs/legal && cp legal/* docs/legal/.",
-    "copy:all": "npm run copy:examples && npm run copy:docs && npm run copy:legal"
+    "copy:all": "npm run copy:examples && npm run copy:docs && npm run copy:legal",
+    "deploy": "npm run build:apps && rm -rf /var/www/html/apps.verticesandedges.net/notebok/* && cp ./docs/* /var/www/html/apps.verticesandedges.net/notebook/. -rf"
   },
   "repository": {
     "type": "git",
