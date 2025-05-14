@@ -3,7 +3,6 @@ import { manifest, version } from '@parcel/service-worker';
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(version).then(cache => {
-      console.info('files pre-cached');
       return cache.addAll(manifest);
     })
   )
@@ -12,13 +11,11 @@ self.addEventListener('install', e => {
 });
 
 self.addEventListener('activate', e => {
-  console.info('activated');
   e.waitUntil(
     caches.keys().then(keys => {
       return Promise.all(
         keys.map(key => {
           if(key !== version){
-            console.info("removing old cached data", key);
             return caches.delete(key);
           }
         })
@@ -30,8 +27,6 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
-  console.info('fetched', e.request.url);
-
   e.respondWith(
     caches.open(version)
     .then(cache => {
