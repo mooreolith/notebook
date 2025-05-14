@@ -431,14 +431,6 @@ class Notebook {
     this.qs( '.notebook-button.run-all' ).addEventListener( 'click', this.runAll.bind( this ) );
     this.qs( '.notebook-button.add-cell' ).addEventListener( 'click', this.addCodeCell.bind( this ) );
     this.qs( '.notebook-button.clear-outputs' ).addEventListener( 'click', this.clearOutputs.bind( this ) );
-    this.qs( '.title' ).addEventListener( 'input', this.setTitle.bind( this ) );
-  }
-
-  setTitle(e){
-    const title = e.target.innerText;
-    this.title = title;
-    document.title = title;
-    return false;
   }
 
   async runAll(){
@@ -499,7 +491,7 @@ class Notebook {
   static fromJSON(container, title, json){
     const notebook = new Notebook( container );
     notebook.title = title;
-    document.title = title;
+
     json.cells.forEach( json => {
       const CellType = json.cell_type === 'code' ? CodeCell : MarkdownCell;
       CellType.fromJSON( notebook, json );
