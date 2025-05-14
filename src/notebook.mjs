@@ -431,6 +431,13 @@ class Notebook {
     this.qs( '.notebook-button.run-all' ).addEventListener( 'click', this.runAll.bind( this ) );
     this.qs( '.notebook-button.add-cell' ).addEventListener( 'click', this.addCodeCell.bind( this ) );
     this.qs( '.notebook-button.clear-outputs' ).addEventListener( 'click', this.clearOutputs.bind( this ) );
+    this.qs( '.title' ).addEventListener( 'input', this.setTitle.bind( this ) );
+  }
+
+  setTitle(e){
+    const title = e.target.innerText;
+    this.title = title;
+    document.title = title;
   }
 
   async runAll(){
