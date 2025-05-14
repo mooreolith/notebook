@@ -160,6 +160,7 @@ output.output {
 
 .cells {
   margin-top: 0;
+  list-style: none;
 }
 
 .cell {

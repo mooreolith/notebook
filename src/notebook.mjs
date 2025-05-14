@@ -66,7 +66,7 @@ class Cell {
   constructor(notebook, type){
     this.notebook = notebook;
 
-    this.#element = create( `<section class="cell">
+    this.#element = create( `<li class="cell">
       <form class="cell-types">
         <input class="cell-type code" type="radio" name="cell-type" value="code" ${type === 'code' ? 'checked' : ''} aria-label="Code" />
         <label>Code</label>
@@ -85,7 +85,7 @@ class Cell {
           <button class="cell-button prepend" aria-label="Add cell above">Add Above</button>
           <button class="cell-button append" aria-label="Add cell below">Add Below</button>
         </div>
-      </section>` );
+      </li>` );
 
     this.qs( '.cell-button.run' ).addEventListener( 'click', this.run.bind( this ) );
     this.qs( '.cell-button.remove' ).addEventListener( 'click', this.remove.bind( this ) );
