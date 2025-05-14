@@ -87,4 +87,4 @@ In addition to the "Open" options listed above, you can use query parameters to 
 * Notebook User Manual: https://mooreolith.github.io/notebook/?url=./examples/Notebook%20User%20Manual.ipynb Covers pretty much the same as the readme, but with runnable examples.
 
 ## Attribution
-This project wouldn't have been possible without [these projects](./oss-attribution/attribution.txt). Follow the link for license information and links to the dependency sources. 
+This project wouldn't have been possible without [these projects](./legal/attribution.txt). Follow the link for license information and links to the dependency sources. 
