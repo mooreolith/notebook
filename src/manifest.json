@@ -3,12 +3,12 @@
   "short_name": "Notebook",
   "name": "Javascript Notebook",
   "version": "0.1",
-  "author": "Joshua M. Moore",
+  "author": "Joshua M. Moore <joshua.moore@verticesandedges.net",
   "developer": {
     "name": "Joshua M. Moore",
     "url": "https://github.com/mooreolith"
   },
-  "homepage_url": "https://github.com/mooreolith/notebook/",
+  "homepage_url": "https://apps.verticesandedges.net/notebook/",
   "lang": "en",
   "icons": [
     {
@@ -17,7 +17,7 @@
       "type": "image/png"
     }
   ],
-  "start_url": "https://mooreolith.github.io/notebook/",
+  "start_url": "https://apps.verticesandedges.net/notebook/",
   "scope": "/notebook/",
   "display": "standalone",
   "background_color": "#ffffff",
