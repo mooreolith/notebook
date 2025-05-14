@@ -543,6 +543,8 @@ class App {
           <button class="app-button download" aria-label="Download notebook">File</button>
           <button class="app-button post" aria-label="Send notebook to URL via post request">URL</button>
           <button class="app-button store" aria-label="Save notebook to localStorage">Browser</button>
+
+          <label class="app-button" style="margin-left: 25px;" aria-label="About Notebook" onclick="window.location = 'https://github.com/mooreolith/notebook/'"><b>About</b></label>
         </div>
         <input type="file" class="notebook-input" style="display: none;" />
         <a class="download-link" style="display: none;"></a>

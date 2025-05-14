@@ -36,13 +36,11 @@ html, body {
 .notebook {
   display: flex;
   flex-direction: column;
-
   border-left: none;
-  background-image: url('./img/spiral.png');
+  background-image: url('./img/spiral-small.png');
   background-repeat: repeat-y;
-  background-position: 1px -2px;
-  background-size: 40px 450px;
-
+  background-position: -1px -2px;
+  background-size: 57px 120px;
 }
 
 .notebook-inner {
@@ -50,7 +48,7 @@ html, body {
   border-top: 1px solid black;
   border-right: 1px solid black;
   border-bottom: 1px solid black;
-  margin-left: 15px;
+  margin-left: 14px;
 }
 
 .notebook-buttons {
