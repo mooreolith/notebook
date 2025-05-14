@@ -12,7 +12,7 @@
     "clean": "rm -rf docs/* && rm -rf ./parcel-cache",
     "copy:examples": "mkdir docs/examples && cp src/examples/* docs/examples/.",
     "copy:docs": "mkdir docs/lib && cp src/lib/* docs/lib/.",
-    "copy:legal": "mkdir docs/legal && cp src/legal/* docs/legal/.",
+    "copy:legal": "mkdir docs/legal && cp legal/* docs/legal/.",
     "copy:all": "npm run copy:examples && npm run copy:docs && npm run copy:legal"
   },
   "repository": {
