@@ -74,5 +74,17 @@ At the bottom of a notebook, you'll find three buttons:
 * Add Cell, adds a cell at the bottom
 * Clear Outputs, clears all cells' outputs (the notebook's state remains unchanged)
 
+In addition to the "Open" options listed above, you can use query parameters to open a notebook from a link. `?url=` followed by a relative or absolute URL opens the notebook at the url, if present. `?ls=<notebook title>` opens a notebook from the browser's localStorage.
+
+* `?url=./examples/Countdown.ipynb`
+* `?ls=Title of a Notebook In Browser's LocalStorage.ipynb`
+
+### Example Notebooks
+
+* Countdown: https://mooreolith.github.io/notebook/?url=./examples/Countdown.ipynb Click **Run** to display a countdown from 10
+* fetch-threejs: https://mooreolith.github.io/notebook/?url=./examples/fetch-threejs.ipynb Demonstrates how to fetch an external library (threejs)
+* MicroGrad: https://mooreolith.github.io/notebook/?url=./examples/MicroGrad.ipynb Click **Run All** to run a small example Multilayer Perceptron
+* Notebook User Manual: https://mooreolith.github.io/notebook/?url=./examples/Notebook%20User%20Manual.ipynb Covers pretty much the same as the readme, but with runnable examples.
+
 ## Attribution
 This project wouldn't have been possible without [these projects](./oss-attribution/attribution.txt). Follow the link for license information and links to the dependency sources. 
