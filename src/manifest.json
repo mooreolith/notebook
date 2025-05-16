@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "short_name": "Notebook",
   "name": "Javascript Notebook",
-  "version": "0.1",
+  "version": "0.2",
   "author": "Joshua M. Moore <joshua.moore@verticesandedges.net>",
   "developer": {
     "name": "Joshua M. Moore",
