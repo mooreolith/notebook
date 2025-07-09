@@ -1,0 +1,226 @@
+/**
+ * notebook.css
+ * 
+ * Joshua Moore
+ * May 14th, 2025
+ * 
+ * Source Code: https://github.com/mooreolith/notebook
+ * Live Example: https://mooreolith.github.io/notebook
+ * 
+ * License: MIT License
+ * 
+ * Copyright © 2025 Joshua M. Moore
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+:root {
+  --ui-color: black;
+  --ui-bg-color: white;
+  --nb-width: 600px;
+}
+
+html, body {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.0)
+}
+
+
+.notebook-container {
+  margin-bottom: 50px;
+}
+
+.notebook {
+  display: flex;
+  flex-direction: column;
+  border-left: none;
+  background-image: url('./img/spiral-small.png');
+  background-repeat: repeat-y;
+  background-position: -1px -2px;
+  background-size: 57px;
+}
+
+.notebook-inner {
+  border-left: none;
+  border-top: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  margin-left: 20px;
+}
+
+.notebook-buttons {
+  margin-top: 5px;
+  margin-left: 50px;
+  margin-bottom: 15px;
+}
+
+.notebook-button {
+  border: 0;
+  background-color: var(--ui-bg-color);
+  color: var(--ui-color);
+}
+
+.notebook-button:hover {
+  background-color: var(--ui-color);
+  color: var(--ui-bg-color);
+}
+
+.title {
+  border: 0;
+  outline: none;
+  border-bottom: 1px solid black;
+  color: var(--ui-color);
+}
+
+.title:focus {
+  border: 0;
+  outline: none;
+  border-bottom: 1px solid black;
+}
+
+.title::selection {
+  background-color: var(--ui-color);
+  color: var(--ui-bg-color);
+}
+
+.cells {
+  margin-left: 50px;
+  padding-left: 0;
+  margin-top: 10px;
+  margin-left: 50px;
+}
+
+.cell-types {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.input-container {
+  margin-bottom: 10px;
+}
+
+.cell-buttons {
+  margin-top: 15px;
+  margin-bottom: 5px;
+  justify-content: right;
+}
+
+.cell-button {
+  border: 0;
+  background-color: var(--ui-bg-color);
+  color: var(--ui-color);
+}
+
+.cell-button:hover {
+  background-color: var(--ui-color);
+  color: var(--ui-bg-color);
+}
+
+.title {
+  margin-left: 50px;
+}
+
+/* output */
+output.messages:empty,
+output.output:empty {
+  display: none;
+}
+
+output.messages > .log {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+output.messages,
+output.output {
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+output.output {
+  margin-top: 15px;
+}
+
+.error {
+  color: crimson;
+}
+
+.debug {
+  color:darkslategray;
+}
+
+.title {
+  margin-bottom: 0;
+}
+
+.cells {
+  margin-top: 0;
+  list-style: none;
+}
+
+.cell {
+  border-bottom: 1px solid gray;
+}
+
+.app-buttons {
+  margin-top: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: row;
+}
+
+.menu {
+  margin-left: 15px;
+}
+
+.app-button {
+  border: 0;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 2px;
+  font-size: 14px;
+  background-color: var(--ui-bg-color);
+  color: var(--ui-color);
+}
+
+.app-button:hover {
+  background-color: var(--ui-color);
+  color: var(--ui-bg-color);
+}
+
+.app-buttons {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+
+@media screen and (min-width: 800px){
+  html, body {
+    --nb-width: 750px;
+  }
+
+  /* notebook */
+  main {
+    width: var(--nb-width);
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media screen and (max-width: 800px){
+  /* notebook */
+  main {
+    width: calc(min(100%, var(--nb-width)));
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
