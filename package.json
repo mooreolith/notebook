@@ -1,6 +1,6 @@
 {
-  "name": "Javascript Notebook",
-  "version": "0.8.0",
+  "name": "javascript-notebook",
+  "version": "0.10.0",
   "description": "A client-side javascript notebook",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
