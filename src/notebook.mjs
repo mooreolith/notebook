@@ -20,6 +20,7 @@ import { basicSetup, EditorView } from 'codemirror';
 import { EditorState, Compartment } from '@codemirror/state';
 import { keymap } from "@codemirror/view";
 import { javascript } from "@codemirror/lang-javascript";
+import * as ts from "typescript";
 import { markdown } from "@codemirror/lang-markdown";
 import { indentWithTab } from '@codemirror/commands';
 import { marked } from 'marked';
@@ -58,14 +59,24 @@ class Cell {
   #element;
   #editor;
   type = undefined;
+  metadata = {
+    language: 'javascript'
+  }
 
-  constructor(notebook, type){
+  constructor(notebook, type, sourceLang){
     this.notebook = notebook;
+
+    this.type = type;
+    this.metadata.language = sourceLang;
 
     this.#element = create( `<li class="cell">
       <form class="cell-types">
-        <input class="cell-type code" type="radio" name="cell-type" value="code" ${type === 'code' ? 'checked' : ''} aria-label="Code" />
-        <label>Code</label>
+        <input class="cell-type code javascript" type="radio" name="cell-type" value="javascript" ${type === 'code' && sourceLang === 'javascript' ? 'checked' : ''} aria-label="Javascript Code" />
+        <label>Javascript</label>
+
+        <input class="cell-type code typescript" type="radio" name="cell-type" value="typescript" ${type === 'code' && sourceLang === 'typescript' ? 'checked' : ''} aria-label="Typescript Code" /> 
+        <label>Typescript</label>
+
         <input class="cell-type markdown" type="radio" name="cell-type" value="markdown" ${type === 'markdown' ? 'checked' : ''} aria-label="Markdown" />
         <label>Markdown</label>
       </form>
@@ -87,7 +98,8 @@ class Cell {
     this.qs( '.cell-button.remove' ).addEventListener( 'click', this.remove.bind( this ) );
     this.qs( '.cell-button.prepend' ).addEventListener( 'click', this.prepend.bind( this) );
     this.qs( '.cell-button.append' ).addEventListener( 'click', this.append.bind( this ) );
-    this.qs( '.cell-type.code' ).addEventListener( 'change', this.onCellTypeCodeClick.bind( this ) );
+    this.qs( '.cell-type.code.javascript' ).addEventListener( 'change', this.onCellTypeCodeJavascriptClick.bind( this ) );
+    this.qs( '.cell-type.code.typescript' ).addEventListener( 'change', this.onCellTypeCodeTypescriptClick.bind( this ) );
     this.qs( '.cell-type.markdown' ).addEventListener( 'change', this.onCellTypeMarkdownClick.bind( this ) );
 
     const cell = this;
@@ -109,7 +121,7 @@ class Cell {
       CtrlEnter(),
       basicSetup,
       keymap.of( [ indentWithTab ] ),
-      language.of( type === 'code' ? javascript() : markdown() ),
+      language.of( type === 'code' ? javascript({ typescript: sourceLang === 'typescript' }) : markdown() ),
       tabSize.of( EditorState.tabSize.of( 2 ) )
     ];
 
@@ -137,6 +149,8 @@ class Cell {
 
   prepend(){
     const index = this.notebook.cellsArr.findIndex( cell => cell === this );
+    const type = this.notebook.cellsArr[index].type;
+    const language = this.notebook.cellsArr[index].language;
     const cell = new CodeCell( this.notebook );
     this.notebook.cellsArr.splice( index - 1, 0, cell );
     this.#element.before( cell.#element )
@@ -149,10 +163,24 @@ class Cell {
     this.#element.after( cell.#element );
   }
 
-  onCellTypeCodeClick(){
-    const cell = new CodeCell( this.notebook );
+  onCellTypeCodeJavascriptClick(){
+    const cell = new CodeCell( this.notebook, 'code', 'javascript' );
     const index = this.notebook.cellsArr.findIndex( cell => cell === this );
     cell.source = this.source;
+    cell.output = '';
+    cell.messages = [];
+    this.notebook.cellsArr.splice( index, 1, cell );
+    this.#element.replaceWith( cell.element );
+  }
+
+  onCellTypeCodeTypescriptClick(){
+    console.info('oncelltypecodetypescriptclick')
+    const cell = new CodeCell(this.notebook, 'code', 'typescript' );
+    console.info(cell.type, cell.metadata.language)
+    const index = this.notebook.cellsArr.findIndex( cell => cell === this );
+    cell.source = this.source;
+    cell.output = '';
+    cell.messages = [];
     this.notebook.cellsArr.splice( index, 1, cell );
     this.#element.replaceWith( cell.element );
   }
@@ -200,8 +228,8 @@ class CodeCell extends Cell {
   #execution_count = 0;
   type = 'code';
 
-  constructor(notebook){
-    super(notebook, 'code');
+  constructor(notebook, type='code', sourceLang='javascript'){
+    super(notebook, type, sourceLang);
   }
 
   get messages(){
@@ -289,9 +317,28 @@ class CodeCell extends Cell {
     const animation = setInterval(() => {
       indicator.innerText = states[i++ % states.length];
     }, 250);
-    this.output = await scopedEval( this.source, { cell: this, parse, output, ...this.notebook.context } );
-    clearInterval(animation);
-    indicator.innerText = '';
+
+    console.info('code-type', this.metadata.language)
+    const source = this.metadata.language === 'javascript' ? 
+      this.source : 
+      ts.transpileModule(this.source, {module: ts.ModuleKind.ESNext}).outputText;
+
+    try{
+      this.output = await scopedEval( 
+        source, 
+        { 
+          cell: this, 
+          parse, 
+          output, 
+          ...this.notebook.context 
+        } 
+      );
+    }catch(error){
+      console.error(`Error: ${error}<br />Stacktrace: ${error.stack}`)
+    }finally{
+      clearInterval(animation);
+      indicator.innerText = '';
+    }
 
     console.log = originalLog.bind( console );
     console.error = originalError.bind( console );
@@ -321,7 +368,9 @@ class CodeCell extends Cell {
     return {
       "cell_type": "code",
       "execution_count": this.#execution_count,
-      "metadata": {},
+      "metadata": {
+        "language": this.metadata.language
+      },
       "source": this.source,
       "outputs": [{
           "name": "stdout",
@@ -340,7 +389,7 @@ class CodeCell extends Cell {
   }
 
   static fromJSON(notebook, json){
-    const cell = notebook.addCodeCell();
+    const cell = notebook.addCodeCell(json.metadata.language);
     cell.execution_count = json.execution_count;
     cell.source = json.source;
     cell.messages = json.outputs.filter( o => o.name === 'stdout' ).map( o => o.text );
@@ -358,7 +407,7 @@ class MarkdownCell extends Cell {
   type = "markdown";
 
   constructor(notebook){
-    super(notebook, 'markdown');
+    super(notebook, 'markdown', 'markdown');
   }
 
   run(){
@@ -429,7 +478,7 @@ class Notebook {
     
     // button click event handlers
     this.qs( '.notebook-button.run-all' ).addEventListener( 'click', this.runAll.bind( this ) );
-    this.qs( '.notebook-button.add-cell' ).addEventListener( 'click', this.addCodeCell.bind( this ) );
+    this.qs( '.notebook-button.add-cell' ).addEventListener( 'click', () => this.addCodeCell('javascript') );
     this.qs( '.notebook-button.clear-outputs' ).addEventListener( 'click', this.clearOutputs.bind( this ) );
     this.qs( '.title' ).addEventListener( 'blur', (e) => {
       document.title = e.target.innerText;
@@ -442,8 +491,8 @@ class Notebook {
     }
   }
 
-  addCodeCell(){
-    const cell = new CodeCell( this );
+  addCodeCell(sourceLang="javascript"){
+    const cell = new CodeCell( this, 'code', sourceLang );
     this.cellsArr.push( cell );
     this.cellsEl.appendChild( cell.element );
     return cell;
@@ -574,7 +623,7 @@ class App {
     this.qs( '.app-button.store'    ).addEventListener( 'click',  this.onStoreClick.bind( this ) );
 
     const opened = this.openSearchParams();
-    if(!opened) this.#notebook.addCodeCell();
+    if(!opened) this.#notebook.addCodeCell('javascript');
   }
 
   openSearchParams() {
