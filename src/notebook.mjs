@@ -318,7 +318,6 @@ class CodeCell extends Cell {
       indicator.innerText = states[i++ % states.length];
     }, 250);
 
-    console.info('code-type', this.metadata.language)
     const source = this.metadata.language === 'javascript' ? 
       this.source : 
       ts.transpileModule(this.source, {module: ts.ModuleKind.ESNext}).outputText;
