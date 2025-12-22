@@ -70,16 +70,16 @@ class Cell {
     this.metadata.language = sourceLang;
 
     this.#element = create( `<li class="cell">
-      <form class="cell-types">
-        <input class="cell-type code javascript" type="radio" name="cell-type" value="javascript" ${type === 'code' && sourceLang === 'javascript' ? 'checked' : ''} aria-label="Javascript Code" />
-        <label>Javascript</label>
+        <form class="cell-types">
+          <input class="cell-type code javascript" type="radio" name="cell-type" value="javascript" ${type === 'code' && sourceLang === 'javascript' ? 'checked' : ''} aria-label="Javascript Code" />
+          <label>Javascript</label>
 
-        <input class="cell-type code typescript" type="radio" name="cell-type" value="typescript" ${type === 'code' && sourceLang === 'typescript' ? 'checked' : ''} aria-label="Typescript Code" /> 
-        <label>Typescript</label>
+          <input class="cell-type code typescript" type="radio" name="cell-type" value="typescript" ${type === 'code' && sourceLang === 'typescript' ? 'checked' : ''} aria-label="Typescript Code" /> 
+          <label>Typescript</label>
 
-        <input class="cell-type markdown" type="radio" name="cell-type" value="markdown" ${type === 'markdown' ? 'checked' : ''} aria-label="Markdown" />
-        <label>Markdown</label>
-      </form>
+          <input class="cell-type markdown" type="radio" name="cell-type" value="markdown" ${type === 'markdown' ? 'checked' : ''} aria-label="Markdown" />
+          <label>Markdown</label>
+        </form>
         <div class="input-container"></div>
         <span class="indicator"></span>
 
@@ -153,34 +153,38 @@ class Cell {
     const language = this.notebook.cellsArr[index].language;
     const cell = new CodeCell( this.notebook );
     this.notebook.cellsArr.splice( index - 1, 0, cell );
-    this.#element.before( cell.#element )
+    this.#element.before( cell.#element );
   }
 
   append(){
     const index = this.notebook.cellsArr.findIndex( cell => cell === this );
-    const cell = new CodeCell( this.notebook );
+    const type = this.notebook.cellsArr[index].type;
+    const language = type === "code" ? this.notebook.cellsArr[index].metadata.language : undefined;
+    const cell = new CodeCell( this.notebook, type, language );
     this.notebook.cellsArr.splice( index + 1, 0, cell );
     this.#element.after( cell.#element );
   }
 
   onCellTypeCodeJavascriptClick(){
     const cell = new CodeCell( this.notebook, 'code', 'javascript' );
-    const index = this.notebook.cellsArr.findIndex( cell => cell === this );
+    const index = this.notebook.cellsArr.indexOf( this );
+    
     cell.source = this.source;
     cell.output = '';
     cell.messages = [];
+    
     this.notebook.cellsArr.splice( index, 1, cell );
     this.#element.replaceWith( cell.element );
   }
 
   onCellTypeCodeTypescriptClick(){
-    console.info('oncelltypecodetypescriptclick')
     const cell = new CodeCell(this.notebook, 'code', 'typescript' );
-    console.info(cell.type, cell.metadata.language)
-    const index = this.notebook.cellsArr.findIndex( cell => cell === this );
+    const index = this.notebook.cellsArr.indexOf( this );
+
     cell.source = this.source;
     cell.output = '';
     cell.messages = [];
+    
     this.notebook.cellsArr.splice( index, 1, cell );
     this.#element.replaceWith( cell.element );
   }
@@ -311,6 +315,7 @@ class CodeCell extends Cell {
       return func( ...Object.values( context ) );
     }
 
+    // running animation
     const indicator = this.qs('.indicator');
     let i = 0;
     const states = ['...', ':..', '.:.', '..:'];
@@ -318,6 +323,7 @@ class CodeCell extends Cell {
       indicator.innerText = states[i++ % states.length];
     }, 250);
 
+    // source, either raw javascript, or typescript transpiled to javascript
     const source = this.metadata.language === 'javascript' ? 
       this.source : 
       ts.transpileModule(this.source, {module: ts.ModuleKind.ESNext}).outputText;
