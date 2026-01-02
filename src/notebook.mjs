@@ -252,7 +252,7 @@ class CodeCell extends Cell {
   set output(result){
     const output = this.qs( '.output' );
 
-    if (result && (result instanceof HTMLElement)) {
+    if (result instanceof HTMLElement) {
       output.innerHTML = '';
       output.appendChild( result );
     } else if (typeof result === 'number') {
