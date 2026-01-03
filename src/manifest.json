@@ -24,7 +24,7 @@
       "purpose": "any"
     }
   ],
-  "start_url": "https://mooreolith.github.io/notebook/",
+  "start_url": "http://localhost:8080/notebook/",
   "scope": "/notebook/",
   "display": "standalone",
   "orientation": "any",
@@ -44,18 +44,10 @@
   },
   "default_locale": "en",
   "description": "A client-side Javascript Notebook",
-    "file_handlers": [{
-    "action": "/open-notebook",
+  "file_handlers": [{
+    "action": "/",
     "accept": {
       "application/x-ipynb+json": [".ipynb"]
-    },
-    "icons": [
-      {
-        "src": "icon/notebook-maskable.png",
-        "sizes": "512x512",
-        "type": "image/png"
-      }
-    ],
-    "launch_type": "multiple-clients"
+    }
   }]
 }
