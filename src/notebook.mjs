@@ -153,7 +153,7 @@ class Cell {
     const index = this.notebook.cellsArr.indexOf( this );
     const language = this.type === 'code' ? this.metadata.language : undefined;
     const cell = new CodeCell( this.notebook, this.type, language );    
-    this.notebook.cellsArr.splice( index - 1, 0, cell );
+    this.notebook.cellsArr.splice( index, 0, cell );
     this.element.before( cell.element );
   }
 
