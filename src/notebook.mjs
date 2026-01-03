@@ -625,8 +625,35 @@ class App {
     this.qs( '.app-button.post'     ).addEventListener( 'click',  this.onPostClick.bind( this ));
     this.qs( '.app-button.store'    ).addEventListener( 'click',  this.onStoreClick.bind( this ) );
 
-    const opened = this.openSearchParams();
+    let opened = false;
+    opened = opened || this.openSearchParams();
+    opened = opened || this.openLaunchParams();
     if(!opened) this.#notebook.addCodeCell('javascript');
+  }
+
+  openLaunchParams() {
+    if(!('launchQueue' in window)) return false;
+
+    launchQueue.setConsumer(async launchParams => {
+      if(!launchParams.files.length) return;
+
+      const handle = launchParams.files[0];
+      const title = handle.name.slice( 0, handle.name.length - '.ipynb'.length );
+      const file = await handle.getFile();
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        const text = reader.result;
+        const json = JSON.parse(text);
+
+        if (this.#notebook) this.close();
+        this.#notebook = Notebook.fromJSON(this.qs('.notebook-container'), title, json);
+      };
+      reader.onerror = (e) => {
+        console.error('Error opening file: ', e.error)
+      };
+      reader.readAsText(file);
+    })
   }
 
   openSearchParams() {
@@ -662,16 +689,16 @@ class App {
   onUploadChange(e){
     if(this.#notebook) this.close();
     const input = this.qs( '.notebook-input' );
-    if(input.files.length){
-      const file = input.files[0];
-      const title = file.name.slice( 0, file.name.length - '.ipynb'.length );
-      const reader = new FileReader();
-      reader.addEventListener( 'load', () => {
-        const json = JSON.parse( reader.result );
-        this.#notebook = Notebook.fromJSON( this.qs( '.notebook-container' ), title, json );
-      })
-      reader.readAsText( file );
-    }
+    if(!input.files.length) return;
+
+    const file = input.files[0];
+    const title = file.name.slice( 0, file.name.length - '.ipynb'.length );
+    const reader = new FileReader();
+    reader.addEventListener( 'load', () => {
+      const json = JSON.parse( reader.result );
+      this.#notebook = Notebook.fromJSON( this.qs( '.notebook-container' ), title, json );
+    })
+    reader.readAsText( file );
   }
 
   onGetClick(e){

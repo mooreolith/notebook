@@ -24,7 +24,7 @@
       "purpose": "any"
     }
   ],
-  "start_url": "http://localhost:8080/notebook/",
+  "start_url": "https://mooreolith.github.io/notebook/",
   "scope": "/notebook/",
   "display": "standalone",
   "orientation": "any",
@@ -45,7 +45,7 @@
   "default_locale": "en",
   "description": "A client-side Javascript Notebook",
   "file_handlers": [{
-    "action": "/",
+    "action": "/notebook/",
     "accept": {
       "application/x-ipynb+json": [".ipynb"]
     }
