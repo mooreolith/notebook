@@ -629,6 +629,8 @@ class App {
     opened = opened || this.openSearchParams();
     opened = opened || this.openLaunchParams();
     if(!opened) this.#notebook.addCodeCell('javascript');
+
+    navigator.registerProtocolHandler('web+ipynb', '/notebook/url=%s')
   }
 
   openLaunchParams() {
