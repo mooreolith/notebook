@@ -12,7 +12,7 @@
     "build:github": "npm run clean && parcel build src/index.html --dist-dir docs/ --public-url /notebook/ && npm run copy:all",
     "deploy:github": "npm run build:github && git add . && git commit -m \"Deploy to Github $(date)\" && git push github main",
     "build:apps": "npm run clean && parcel build src/index.html --dist-dir docs/ --public-url /notebook/ && npm run copy:all",
-    "deploy:apps": "npm run build:apps && rm -rf /var/www/html/apps.verticesandedges.net/notebok/* && cp ./docs/* /var/www/html/apps.verticesandedges.net/notebook/.",
+    "deploy:apps": "npm run build:apps && rm -rf /var/www/html/apps.verticesandedges.net/notebok/* && cp -r ./docs/* /var/www/html/apps.verticesandedges.net/notebook/.",
     "start": "http-server docs",
     "watch": "parcel watch src/index.html --dist-dir docs/ --public-url /",
     "clean": "rm -rf docs/* && rm -rf .parcel-cache/",
