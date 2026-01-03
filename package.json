@@ -10,7 +10,7 @@
     "start:notebook": "http-server . -o /notebook/",
     "watch:notebook": "parcel watch src/index.html --dist-dir notebook/ --public-url /notebook/",
     "build:github": "npm run clean && parcel build src/index.html --dist-dir docs/ --public-url /notebook/ && npm run copy:all",
-    "deploy:github": "npm run build:github && git add . && git commit -m \"Deploy to Github $(date)\" && git push origin main",
+    "deploy:github": "npm run build:github && git add . && git commit -m \"Deploy to Github $(date)\" && git push github main",
     "build:apps": "npm run clean && parcel build src/index.html --dist-dir docs/ --public-url /notebook/ && npm run copy:all",
     "start": "http-server docs",
     "watch": "parcel watch src/index.html --dist-dir docs/ --public-url /",
