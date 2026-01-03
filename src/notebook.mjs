@@ -630,7 +630,7 @@ class App {
     opened = opened || this.openLaunchParams();
     if(!opened) this.#notebook.addCodeCell('javascript');
 
-    navigator.registerProtocolHandler('web+ipynb', '/notebook/url=%s')
+    navigator.registerProtocolHandler('web+ipynb', 'https://mooreolith.github.io/notebook/open=%s');
   }
 
   openLaunchParams() {
@@ -672,6 +672,13 @@ class App {
       if (this.#notebook) this.close();
       const filename = searchParams.get('ls');
       this.fromLocalStorage(filename);
+      return true;
+    }
+    if(searchParams.has("open")) {
+      if(this.#notebook) this.close();
+      const what = searchParams.get('open');
+      const url = decodeURIComponent(what).substring('web+ipynb:'.length);
+      this.fromURL(url);
       return true;
     }
 

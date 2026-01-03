@@ -45,7 +45,7 @@
   "default_locale": "en",
   "description": "A client-side Javascript Notebook",
   "file_handlers": [{
-    "action": "/notebook/",
+    "action": "/notebook/open",
     "accept": {
       "application/x-ipynb+json": [".ipynb", ".ipynb.txt"],
       "text/plain": [".ipynb", ".ipynb.txt"],
