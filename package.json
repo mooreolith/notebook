@@ -7,7 +7,7 @@
     "build:local": "npm run clean && parcel build src/index.html --dist-dir docs/ --public-url / --no-optimize && npm run copy:all",
     "build:notebook": "npm run clean:notebook && parcel build src/index.html --dist-dir notebook/ --public-url /notebook/ --no-optimize && mkdir notebook/examples notebook/icon notebook/lib notebook/legal && cp src/examples/* notebook/examples/. && cp src/icon/* notebook/icon/. && cp src/lib/* notebook/lib/. && cp src/legal/* notebook/legal/.",
     "clean:notebook": "rm -rf notebook/* && rm -rf .parcel-cache",
-    "start:notebook": "http-server notebook",
+    "start:notebook": "http-server . -o /notebook/",
     "watch:notebook": "parcel watch src/index.html --dist-dir notebook/ --public-url /notebook/",
     "build:github": "npm run clean && parcel build src/index.html --dist-dir docs/ --public-url /notebook/  && npm run copy:all",
     "build:apps": "npm run clean && parcel build src/index.html --dist-dir docs/ --public-url /notebook/ && npm run copy:all",
