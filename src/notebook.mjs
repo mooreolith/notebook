@@ -148,8 +148,6 @@ class Cell {
   }
 
   prepend(e){
-    console.info('prepend clicked', this.notebook.cellsArr.indexOf(this))
-
     const index = this.notebook.cellsArr.indexOf( this );
     const language = this.type === 'code' ? this.metadata.language : undefined;
     const cell = new CodeCell( this.notebook, this.type, language );    
