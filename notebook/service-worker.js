@@ -207,16 +207,16 @@
       });
     }
   }
-})({"fKEKo":[function(require,module,exports,__globalThis) {
+})({"94gMK":[function(require,module,exports,__globalThis) {
 var _serviceWorker = require("@parcel/service-worker");
 const manifest = [
-    "/notebook/index.html",
-    "/notebook/manifest.webmanifest",
-    "/notebook/notebook-maskable.137ff12f.png",
-    "/notebook/notebook.01027033.png",
-    "/notebook/favicon.2781afdf.ico",
-    "/notebook/notebook.332dfc0c.css",
-    "/notebook/spiral-small.4663d354.png"
+    "http://localhost:8080/notebook/index.html",
+    "http://localhost:8080/notebook/manifest.webmanifest",
+    "http://localhost:8080/notebook/notebook-maskable.137ff12f.png",
+    "http://localhost:8080/notebook/notebook.01027033.png",
+    "http://localhost:8080/notebook/favicon.2781afdf.ico",
+    "http://localhost:8080/notebook/notebook.332dfc0c.css",
+    "http://localhost:8080/notebook/spiral-small.4663d354.png"
 ];
 const version = "52d0880e";
 (0, _serviceWorker._register)(manifest, version);
@@ -798,6 +798,6 @@ self.addEventListener('fetch', (e)=>{
     }).catch((error)=>console.error(error)));
 });
 
-},{"@parcel/service-worker":"lUmb9"}]},["fKEKo","a8N2c","hW6Rl"], "hW6Rl", "parcelRequire752b", {})
+},{"@parcel/service-worker":"lUmb9"}]},["94gMK","a8N2c","hW6Rl"], "hW6Rl", "parcelRequire752b", {})
 
 //# sourceMappingURL=service-worker.js.map

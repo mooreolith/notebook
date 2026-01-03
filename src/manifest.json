@@ -47,7 +47,8 @@
   "file_handlers": [{
     "action": "/notebook/",
     "accept": {
-      "application/x-ipynb+json": [".ipynb"]
+      "application/x-ipynb+json": [".ipynb", ".ipynb.txt"],
+      "text/html": [".ipynb", ".ipynb.txt"]
     }
   }]
 }
