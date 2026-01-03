@@ -16,9 +16,9 @@
     "start": "http-server docs",
     "watch": "parcel watch src/index.html --dist-dir docs/ --public-url /",
     "clean": "rm -rf docs/* && rm -rf ./parcel-cache",
-    "copy:examples": "mkdir docs/examples && cp src/examples/* docs/examples/.",
-    "copy:lib": "mkdir docs/lib && cp src/lib/* docs/lib/.",
-    "copy:legal": "mkdir docs/legal && cp src/legal/* docs/legal/.",
+    "copy:examples": "mkdir docs/examples && cp -r src/examples/* docs/examples/.",
+    "copy:lib": "mkdir docs/lib && cp -r src/lib/* docs/lib/.",
+    "copy:legal": "mkdir docs/legal && cp -r src/legal/* docs/legal/.",
     "copy:all": "npm run copy:examples && npm run copy:lib && npm run copy:legal"
   },
   "repository": {
