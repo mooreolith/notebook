@@ -630,7 +630,7 @@ class App {
     opened = opened || this.openLaunchParams();
     if(!opened) this.#notebook.addCodeCell('javascript');
 
-    navigator.registerProtocolHandler('web+ipynb', 'https://mooreolith.github.io/notebook/open=%s');
+    navigator.registerProtocolHandler('web+ipynb', 'https://mooreolith.github.io/notebook/?open=%s');
   }
 
   openLaunchParams() {
