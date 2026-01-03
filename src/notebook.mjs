@@ -96,7 +96,7 @@ class Cell {
 
     this.qs( '.cell-button.run' ).addEventListener( 'click', this.run.bind( this ) );
     this.qs( '.cell-button.remove' ).addEventListener( 'click', this.remove.bind( this ) );
-    this.qs( '.cell-button.prepend' ).addEventListener( 'click', this.prepend.bind( this) );
+    this.qs( '.cell-button.prepend' ).addEventListener( 'click', this.prepend.bind( this ) );
     this.qs( '.cell-button.append' ).addEventListener( 'click', this.append.bind( this ) );
     this.qs( '.cell-type.code.javascript' ).addEventListener( 'change', this.onCellTypeCodeJavascriptClick.bind( this ) );
     this.qs( '.cell-type.code.typescript' ).addEventListener( 'change', this.onCellTypeCodeTypescriptClick.bind( this ) );
@@ -142,25 +142,25 @@ class Cell {
   clear(){}
 
   remove(){
-    const index = this.notebook.cellsArr.findIndex( cell => cell === this );
+    const index = this.notebook.cellsArr.indexOf( this );
     this.notebook.cellsArr.splice( index, 1 );
     this.#element.remove();
   }
 
-  prepend(){
-    const index = this.notebook.cellsArr.findIndex( cell => cell === this );
-    const type = this.notebook.cellsArr[index].type;
-    const language = this.notebook.cellsArr[index].language;
-    const cell = new CodeCell( this.notebook );
+  prepend(e){
+    console.info('prepend clicked', this.notebook.cellsArr.indexOf(this))
+
+    const index = this.notebook.cellsArr.indexOf( this );
+    const language = this.type === 'code' ? this.metadata.language : undefined;
+    const cell = new CodeCell( this.notebook, this.type, language );    
     this.notebook.cellsArr.splice( index - 1, 0, cell );
-    this.#element.before( cell.#element );
+    this.element.before( cell.element );
   }
 
   append(){
     const index = this.notebook.cellsArr.findIndex( cell => cell === this );
-    const type = this.notebook.cellsArr[index].type;
-    const language = type === "code" ? this.notebook.cellsArr[index].metadata.language : undefined;
-    const cell = new CodeCell( this.notebook, type, language );
+    const language = this.type === "code" ? this.metadata.language : undefined;
+    const cell = new CodeCell( this.notebook, this.type, language );
     this.notebook.cellsArr.splice( index + 1, 0, cell );
     this.#element.after( cell.#element );
   }
