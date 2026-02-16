@@ -333,7 +333,12 @@ class CodeCell extends Cell {
           cell: this, 
           parse, 
           output, 
-          ...this.notebook.context 
+          ...this.notebook.context,
+          console: {
+            log: this.#log.bind(this),
+            error: this.#error.bind(this),
+            debug: this.#debug.bind(this)
+          }
         } 
       );
     }catch(error){
