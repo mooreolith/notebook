@@ -12,7 +12,7 @@
   "lang": "en",
   "icons": [
     {
-      "src": "icon/notebook-maskable.png",
+      "src": "icon/notebook.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
