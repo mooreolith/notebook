@@ -419,6 +419,7 @@ class MarkdownCell extends Cell {
   }
 
   run(){
+    const source = this.source;
     const html = marked.parse( this.source );
 
     const input = super.qs( '.input-container' );
@@ -430,6 +431,7 @@ class MarkdownCell extends Cell {
 
     output.addEventListener( 'dblclick', () => {
       output.innerHTML = '';
+      this.source = source;
       input.style.display = previous;
     })
   }
