@@ -239,7 +239,10 @@ class CodeCell extends Cell {
   }
 
   set messages(msgs){
-    msgs.forEach( msg => this.#log(msg) );
+    msgs.forEach(msg => {
+      const p = create(`<p class="log">${ msg }</p>`);
+      this.qs('.messages').appendChild(p);
+    });
   }
 
   get output(){
@@ -283,20 +286,32 @@ class CodeCell extends Cell {
 
     const originalLog = console.log.bind( console );
     console.log = (...args) => { 
-      this.#log( ...args ); 
+      // this cell log
+      const p = create(`<p class="log">${ args.join(' ')}</p>`);
+      messages.appendChild(p);
+
+      // original console log
       originalLog( ...args ); 
     };
 
     const originalError = console.error.bind( console );
     console.error = (...args) => {
-      this.#error( ...args );
+      // this cell error
+      const p = create(`<p class="error">${ args.join( ' ' ) }</p>`);
+      messages.appendChild( p );
+      
+      // original console error
       originalError( ...args );
     }
 
     const originalDebug = console.debug.bind( console );
     console.debug = (...args) => {
-      this.#debug( ...args );
-      originalDebug( ...args);
+      // this cell debug
+      const p = create(`<p class="debug">${ args.map( a => (typeof a === 'object') || (typeof a === 'array') ? JSON.stringify( a, null, 2 ) : a ).join( '  ' )  }</pre>`);
+      messages.appendChild( p );
+
+      // original debug
+      originalDebug( ...args );
     }
 
     messages.innerHTML = '';
@@ -334,11 +349,7 @@ class CodeCell extends Cell {
           parse, 
           output, 
           ...this.notebook.context,
-          console: {
-            log: this.#log.bind(this),
-            error: this.#error.bind(this),
-            debug: this.#debug.bind(this)
-          }
+          console
         } 
       );
     }catch(error){
@@ -355,21 +366,6 @@ class CodeCell extends Cell {
 
   remove(){
     super.remove();
-  }
-
-  #log(...args){
-    const p = create(`<p class="log">${ args.join(' ') }</p>`);
-    this.qs( '.messages' ).appendChild( p );
-  }
-
-  #error(...args){
-    const p = create(`<p class="error">${ args.join( ' ' ) }</p>`);
-    this.qs( '.messages' ).appendChild( p );
-  }
-
-  #debug(...args){
-    const p = create(`<p class="debug">${ args.map( a => (typeof a === 'object') || (typeof a === 'array') ? JSON.stringify( a, null, 2 ) : a ).join( '  ' )  }</pre>`);
-    this.qs( '.messages' ).appendChild( p );
   }
 
   toJSON(){
