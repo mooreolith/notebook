@@ -20,6 +20,7 @@
   --ui-color: black;
   --ui-bg-color: white;
   --nb-width: 600px;
+  --border-left: 50px;
 }
 
 html, body {
@@ -29,33 +30,17 @@ html, body {
   background: rgba(0, 0, 0, 0.0)
 }
 
-
 .notebook-container {
-  margin-bottom: 50px;
-}
-
-.notebook {
-  display: flex;
-  flex-direction: column;
-  border-left: none;
-  background-image: url('./img/spiral-small.png');
-  background-repeat: repeat-y;
-  background-position: -1px -2px;
-  background-size: 57px;
+  margin-bottom: 100vh;
 }
 
 .notebook-inner {
   border-left: none;
-  border-top: 1px solid black;
-  border-right: 1px solid black;
-  border-bottom: 1px solid black;
+  outline: 1px solid black;
+  /*border-top: 1px solid black;*/
+  /*border-right: 1px solid black;*/
+  /*border-bottom: 1px solid black; */
   margin-left: 20px;
-}
-
-.notebook-buttons {
-  margin-top: 5px;
-  margin-left: 50px;
-  margin-bottom: 15px;
 }
 
 .notebook-button {
@@ -87,13 +72,6 @@ html, body {
   color: var(--ui-bg-color);
 }
 
-.cells {
-  margin-left: 50px;
-  padding-left: 0;
-  margin-top: 10px;
-  margin-left: 50px;
-}
-
 .cell-types {
   margin-top: 15px;
   margin-bottom: 15px;
@@ -118,10 +96,6 @@ html, body {
 .cell-button:hover {
   background-color: var(--ui-color);
   color: var(--ui-bg-color);
-}
-
-.title {
-  margin-left: 50px;
 }
 
 /* output */
@@ -202,6 +176,9 @@ output.output {
   padding-bottom: 15px;
 }
 
+.notbeook {
+  outline: 1px solid black;
+}
 
 @media screen and (min-width: 800px){
   html, body {
@@ -214,6 +191,20 @@ output.output {
     margin-left: auto;
     margin-right: auto;
   }
+
+  .notebook {
+    display: flex;
+    flex-direction: column;
+    border-left: none;
+    background-image: url('./img/spiral-small.png');
+    background-repeat: repeat-y;
+    background-position: -1px -2px;
+    background-size: 57px;
+  }
+
+  :root {
+    --margin-left: 50px;
+  }
 }
 
 @media screen and (max-width: 800px){
@@ -223,4 +214,40 @@ output.output {
     margin-left: auto;
     margin-right: auto;
   }
+
+  .notebook {
+    display: flex;
+    flex-direction: column;
+    /*border-left: 1px solid black;*/
+    border: none;
+    background-image: none;
+    background-repeat: none;
+    background-position: 0px 0px;
+    background-size: none;
+  }
+
+  .notebook-inner {
+    margin-left: 0px;
+  }
+
+  :root {
+    --margin-left: 5px; 
+  }
 }
+
+.notebook-buttons {
+  margin-top: 5px;
+  margin-left: var(--margin-left);
+  margin-bottom: 15px;
+}
+
+.cells {
+  margin-left: var(--margin-left);
+  padding-left: 0;
+  margin-top: 10px;
+}
+
+.title {
+  margin-left: var(--margin-left);;
+}
+

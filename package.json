@@ -17,7 +17,7 @@
 
     "build:github": "npm run clean && parcel build src/index.html --dist-dir docs/ --public-url /notebook/ && npm run copy:all",
     "deploy:github": "npm run build:github && git add . && git commit -m \"Deploy to Github $(date)\" && git push github main",
-    "deploy:server": "npm run deploy:github && ssh $VANDE_SERVER 'cd /root/notebook/ && git stash && git pull origin main && rm -rf /var/www/html/apps.verticesandedges.net/notebook/* && cp -r ./docs/* /var/www/html/apps.verticesandedges.net/notebook/.'"
+    "deploy:server": "npm run build:github && ssh $VANDE_SERVER 'cd /root/notebook/ && git stash && git pull origin main && rm -rf /var/www/html/apps.verticesandedges.net/notebook/* && cp -r ./docs/* /var/www/html/apps.verticesandedges.net/notebook/.'"
   },
   "repository": {
     "type": "git",
