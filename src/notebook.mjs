@@ -193,6 +193,7 @@ class Cell {
     
     this.notebook.cellsArr.splice( index, 1, cell );
     this.#element.replaceWith( cell.element );
+    cell.editor.focus();
   }
 
   onCellTypeCodeTypescriptClick(){
@@ -205,6 +206,7 @@ class Cell {
     
     this.notebook.cellsArr.splice( index, 1, cell );
     this.#element.replaceWith( cell.element );
+    cell.editor.focus();
   }
 
   onCellTypeMarkdownClick(){
@@ -215,6 +217,7 @@ class Cell {
     cell.messages = [];
     this.notebook.cellsArr.splice( index, 1, cell );
     this.#element.replaceWith( cell.element );
+    cell.editor.focus();
   }
 
   get source(){
