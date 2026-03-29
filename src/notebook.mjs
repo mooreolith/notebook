@@ -57,7 +57,7 @@ const create = function(innerText){
 class Cell {
   notebook;
   #element;
-  #editor;
+  editor;
   type = undefined;
   metadata = {
     language: 'javascript'
@@ -71,13 +71,13 @@ class Cell {
 
     this.#element = create( `<li class="cell">
         <form class="cell-types">
-          <input class="cell-type code javascript" type="radio" name="cell-type" value="javascript" ${type === 'code' && sourceLang === 'javascript' ? 'checked' : ''} aria-label="Javascript Code" />
+          <input class="cell-type code javascript" type="radio" name="cell-type" value="javascript" ${type === 'code' && sourceLang === 'javascript' ? 'checked' : ''} aria-label="Javascript Cell" />
           <label>Javascript</label>
 
-          <input class="cell-type code typescript" type="radio" name="cell-type" value="typescript" ${type === 'code' && sourceLang === 'typescript' ? 'checked' : ''} aria-label="Typescript Code" /> 
+          <input class="cell-type code typescript" type="radio" name="cell-type" value="typescript" ${type === 'code' && sourceLang === 'typescript' ? 'checked' : ''} aria-label="Typescript Cell" /> 
           <label>Typescript</label>
 
-          <input class="cell-type markdown" type="radio" name="cell-type" value="markdown" ${type === 'markdown' ? 'checked' : ''} aria-label="Markdown" />
+          <input class="cell-type markdown" type="radio" name="cell-type" value="markdown" ${type === 'markdown' ? 'checked' : ''} aria-label="Markdown Cell" />
           <label>Markdown</label>
         </form>
         <div class="input-container"></div>
@@ -128,7 +128,25 @@ class Cell {
     if(type === 'markdown') extensions.push(EditorView.lineWrapping);
     const state = EditorState.create( { extensions } );
     
-    this.#editor = new EditorView({ state, parent: this.qs('.input-container') });
+    this.editor = new EditorView({ 
+      state, 
+      parent: this.qs('.input-container')
+    });
+  }
+
+  reTabIndex(start){
+    let index = start;
+
+    this.qs('.cell-type.code.javascript').tabIndex = ++index;
+    this.qs('.cell-type.code.typescript').tabIndex = ++index;
+    this.qs('.cell-type.markdown').tabIndex = ++index;
+    this.qs('.input-container').tabIndex = ++index;
+    this.qs('.cell-button.run').tabIndex = ++index;
+    this.qs('.cell-button.remove').tabIndex = ++index;
+    this.qs('.cell-button.prepend').tabIndex = ++index;
+    this.qs('.cell-button.append').tabIndex = ++index;
+
+    return index;
   }
 
   get messages(){
@@ -153,6 +171,7 @@ class Cell {
     const cell = new CodeCell( this.notebook, this.type, language );    
     this.notebook.cellsArr.splice( index, 0, cell );
     this.element.before( cell.element );
+    cell.editor.focus();
   }
 
   append(){
@@ -161,6 +180,7 @@ class Cell {
     const cell = new CodeCell( this.notebook, this.type, language );
     this.notebook.cellsArr.splice( index + 1, 0, cell );
     this.#element.after( cell.#element );
+    cell.editor.focus();
   }
 
   onCellTypeCodeJavascriptClick(){
@@ -198,14 +218,14 @@ class Cell {
   }
 
   get source(){
-    return this.#editor.state.doc.toString();
+    return this.editor.state.doc.toString();
   }
 
   set source(text){
-    this.#editor.dispatch( {
+    this.editor.dispatch( {
       changes: {
         from: 0,
-        to: this.#editor.state.doc.length,
+        to: this.editor.state.doc.length,
         insert: text
       }
     } );
@@ -497,6 +517,12 @@ class Notebook {
     }
   }
 
+  clearOutputs(){
+    for(let cell of this.cellsArr){
+      cell.clear();
+    }
+  }
+
   addCodeCell(sourceLang="javascript"){
     const cell = new CodeCell( this, 'code', sourceLang );
     this.cellsArr.push( cell );
@@ -504,17 +530,25 @@ class Notebook {
     return cell;
   }
 
-  clearOutputs(){
-    for(let cell of this.cellsArr){
-      cell.clear();
-    }
-  }
-
   addMarkdownCell(){
     const cell = new MarkdownCell( this );
     this.cellsArr.push( cell );
     this.cellsEl.appendChild( cell.element );
     return cell;
+  }
+
+  reTabIndex(start){
+    let index = start;
+
+    this.qs('.title').tabIndex = ++index;
+    for(let cell of this.cellsArr){
+      index = cell.reTabIndex(index);
+    }
+    this.qs('.notebook-button.run-all').tabIndex = ++index;
+    this.qs('.notebook-button.add-cell').tabIndex = ++index;
+    this.qs('.notebook-button.clear-outputs').tabIndex = ++index;
+
+    return index;
   }
 
   get element(){
@@ -580,6 +614,8 @@ class Notebook {
   }
 }
 
+let app = null;
+
 class App {
   #parent;
   #element;
@@ -631,7 +667,27 @@ class App {
     let opened = false;
     opened = opened || this.openSearchParams();
     opened = opened || this.openLaunchParams();
-    if(!opened) this.#notebook.addCodeCell('javascript');
+    if(!opened){
+      this.#notebook.addCodeCell('javascript');
+      this.#notebook.cellsArr[0].editor.focus();
+    }
+  }
+
+  reTabIndex(start){
+    let index = start;
+
+    this.qs('.app-button.new').tabIndex = ++index;
+    this.qs('.app-button.upload').tabIndex = ++index;
+    this.qs('.app-button.get').tabIndex = ++index;
+    this.qs('.app-button.load').tabIndex = ++index;
+
+    this.qs('.app-button.download').tabIndex = ++index;
+    this.qs('.app-button.post').tabIndex = ++index;
+    this.qs('.app-button.store').tabIndex = ++index;
+
+    index = this.#notebook.reTabIndex(index);
+
+    return index;
   }
 
   openLaunchParams() {
