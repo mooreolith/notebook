@@ -72,13 +72,13 @@ class Cell {
     this.#element = create( `<li class="cell">
         <form class="cell-types">
           <input class="cell-type code javascript" type="radio" name="cell-type" value="javascript" ${type === 'code' && sourceLang === 'javascript' ? 'checked' : ''} aria-label="Javascript Cell" />
-          <label>Javascript</label>
+          <label class="cell-type label javascript">Javascript</label>
 
           <input class="cell-type code typescript" type="radio" name="cell-type" value="typescript" ${type === 'code' && sourceLang === 'typescript' ? 'checked' : ''} aria-label="Typescript Cell" /> 
-          <label>Typescript</label>
+          <label class="cell-type label typescript">Typescript</label>
 
           <input class="cell-type markdown" type="radio" name="cell-type" value="markdown" ${type === 'markdown' ? 'checked' : ''} aria-label="Markdown Cell" />
-          <label>Markdown</label>
+          <label class="cell-type label markdown">Markdown</label>
         </form>
         <div class="input-container"></div>
         <span class="indicator"></span>
@@ -98,9 +98,15 @@ class Cell {
     this.qs( '.cell-button.remove' ).addEventListener( 'click', this.remove.bind( this ) );
     this.qs( '.cell-button.prepend' ).addEventListener( 'click', this.prepend.bind( this ) );
     this.qs( '.cell-button.append' ).addEventListener( 'click', this.append.bind( this ) );
+    
     this.qs( '.cell-type.code.javascript' ).addEventListener( 'change', this.onCellTypeCodeJavascriptClick.bind( this ) );
+    this.qs( '.cell-type.label.javascript' ).addEventListener( 'click', this.onCellTypeCodeJavascriptClick.bind( this ) );
+
     this.qs( '.cell-type.code.typescript' ).addEventListener( 'change', this.onCellTypeCodeTypescriptClick.bind( this ) );
+    this.qs( '.cell-type.label.typescript' ).addEventListener( 'click', this.onCellTypeCodeTypescriptClick.bind( this ) );
+
     this.qs( '.cell-type.markdown' ).addEventListener( 'change', this.onCellTypeMarkdownClick.bind( this ) );
+    this.qs( '.cell-type.label.markdown' ).addEventListener( 'click', this.onCellTypeMarkdownClick.bind( this ) );
 
     const cell = this;
     
