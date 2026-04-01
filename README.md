@@ -2,26 +2,6 @@
 
 Welcome to Notebook, a client-side Markdown/JavaScript notebook. 
 
-## How to install Notebook
-Clone the notebook repository
-
-
-`git clone https://github.com/mooreolith/notebook`
-
-Change to the newly created directory.
-
-`cd notebook`
-
-Run install the dependencies
-
-`npm install`
-
-Run the start script
-
-`npm run start`
-
-This should open a server on port 8080, which you can then access at http://localhost:8080/.
-
 ## How to use Notebook
 You can either install the notebook locally, or run the github hosted version: https://mooreolith.github.io/notebook/. 
 
@@ -85,6 +65,33 @@ In addition to the "Open" options listed above, you can use query parameters to 
 * fetch-threejs: https://mooreolith.github.io/notebook/?url=./examples/fetch-threejs.ipynb Demonstrates how to fetch an external library (threejs)
 * MicroGrad: https://mooreolith.github.io/notebook/?url=./examples/MicroGrad.ipynb Click **Run All** to run a small example Multilayer Perceptron
 * Notebook User Manual: https://mooreolith.github.io/notebook/?url=./examples/Notebook%20User%20Manual.ipynb Covers pretty much the same as the readme, but with runnable examples.
+
+## How to install Notebook
+### PWA
+This notebook can be installed using the Chrome Progressive Web App feature. Open the notebook at 
+https://apps.verticesandedges.net/notebook , and click the "Install" button in the right side of
+the address bar.
+
+### Self Hosted
+Alternatively, you can self host this application.
+
+Clone the notebook repository
+`git clone https://github.com/mooreolith/notebook`
+
+Change to the newly created directory.
+
+`cd notebook`
+
+Run install the dependencies
+
+`npm install`
+
+Run the start script
+
+`npm run start`
+
+This should open a server on port 8080, which you can then access at http://localhost:8080/.
+
 
 ## Attribution
 This project wouldn't have been possible without [these projects](./legal/attribution.txt). Follow the link for license information and links to the dependency sources. 

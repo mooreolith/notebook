@@ -6,6 +6,7 @@
  * 
  * Source Code: https://github.com/mooreolith/notebook
  * Live Example: https://mooreolith.github.io/notebook
+ * https://apps.verticesandedges.net/notebook
  * 
  * License: MIT License
  * 
