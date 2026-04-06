@@ -369,7 +369,10 @@ class CodeCell extends Cell {
     // source, either raw javascript, or typescript transpiled to javascript
     const source = this.metadata.language === 'javascript' ? 
       this.source : 
-      ts.transpileModule(this.source, {module: ts.ModuleKind.ESNext}).outputText;
+      ts.transpileModule(this.source, {
+        module: ts.ModuleKind.ESNext,
+        compact: false
+      }).outputText;
 
     try{
       this.output = await scopedEval( 
@@ -377,7 +380,7 @@ class CodeCell extends Cell {
         { 
           cell: this, 
           parse, 
-          output, 
+          output: this.output, 
           ...this.notebook.context,
           console
         } 
