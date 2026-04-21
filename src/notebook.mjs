@@ -780,11 +780,17 @@ class App {
   }
 
   onGetClick(e){
-    const url = prompt( "Please enter a URL to open: " );
+    const last = localStorage.getItem('lastGetURL')
+    const url = prompt( "Please enter a URL to open: ", last ?? '' );
     if(!url) return;
     if(this.#notebook) this.close();
 
-    this.fromURL(url);
+    try{
+      this.fromURL(url);
+      localStorage.setItem('lastGetURL', url);
+    }catch(error){
+      console.error(error);
+    }  
   }
 
   async fromURL(url){
@@ -832,7 +838,8 @@ class App {
   }
 
   async onPostClick(e){
-    const url = prompt( "Where would you like to POST this notebook: " );
+    const last = localStorage.getItem('notebook.lastPostURL');
+    const url = prompt( "Where would you like to POST this notebook: ", last ?? '' );
     if(!url) return;
 
     if(this.#notebook){
@@ -849,6 +856,7 @@ class App {
 
       if(response.ok){
         alert( `${title} successfully sent to ${url}` );
+        localStorage.setItem('notebook.lastPostURL', url);
       }else{
         alert( `Error sending ${title} to ${url}: ${response.status} - ${response.statusText}` );
       }
