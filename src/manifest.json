@@ -1,14 +1,14 @@
 {
-  "manifest_version": 4,
+  "manifest_version": 5,
   "short_name": "Notebook",
   "name": "Javascript Notebook",
-  "version": "1.0",
+  "version": "1.0.5",
   "author": "Joshua M. Moore <joshua.moore@verticesandedges.net>",
   "developer": {
     "name": "Joshua M. Moore",
-    "url": "https://github.com/mooreolith"
+    "url": "https://mooreolith.github.io/"
   },
-  "homepage_url": "https://github.com/mooreolith/notebook",
+  "homepage_url": "https://mooreolith.github.io/",
   "lang": "en",
   "icons": [
     {
@@ -24,7 +24,7 @@
       "purpose": "any"
     }
   ],
-  "start_url": "http://localhost:8080/notebook/",
+  "start_url": "https://mooreolith.github.io/notebook/",
   "scope": "/notebook/",
   "display": "standalone",
   "orientation": "any",
