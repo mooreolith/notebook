@@ -352,8 +352,8 @@ class CodeCell extends Cell {
       const func = new AsyncFunction( ...Object.keys( context ), `try{
         ${code}
       } catch(e) {
-       console.error(e.message);
-       console.error(e.stack);
+        console.error(e.message);
+        console.error(e.stack);
       }` );
       return func( ...Object.values( context ) );
     }
@@ -380,7 +380,7 @@ class CodeCell extends Cell {
         { 
           cell: this, 
           parse, 
-          output: this.output, 
+          output, 
           ...this.notebook.context,
           console
         } 
@@ -678,7 +678,7 @@ class App {
     this.qs( '.app-button.store'    ).addEventListener( 'click',  this.onStoreClick.bind( this ) );
 
     let opened = false;
-    opened = opened || this.openSearchParams();
+    // opened = opened || this.openSearchParams();
     opened = opened || this.openLaunchParams();
     if(!opened){
       this.#notebook.addCodeCell('javascript');
@@ -704,49 +704,55 @@ class App {
   }
 
   openLaunchParams() {
-    if(!('launchQueue' in window)) return false;
+    if('launchQueue' in window){
+      window.launchQueue.setConsumer(async launchParams => {
+        if((launchParams.files && launchParams.files.length) || searchParams.has('open-file')){
+          this.close();
+          const handle = launchParams.files[0];
+          const title = handle.name.slice( 0, handle.name.length - '.ipynb'.length );
+          const file = await handle.getFile();
+          const text = await file.text();
+          const json = JSON.parse(text);
 
-    launchQueue.setConsumer(async launchParams => {
-      if(!launchParams.files.length) return;
+          this.#notebook?.close();
+          const elem = this.qs('.notebook-container');
+          this.#notebook = Notebook.fromJSON(elem, title, json);
+          return true;
+        }else if(launchParams.targetURL){
+          const searchParams = new URL(launchParams.targetURL).searchParams;
+          if(searchParams.has('url')){            
+            if(this.#notebook) this.close();
+            const url = decodeURI(searchParams.get('url'));
+            this.fromURL(url);
+            return true;
+          }
+          if(searchParams.has('ls')){
+            if(this.#notebook) this.close();
+            const filename = searchParams.get('ls');
+            this.fromLocalStorage(filename);
+            return true;
+          }
+        }
 
-      const handle = launchParams.files[0];
-      const title = handle.name.slice( 0, handle.name.length - '.ipynb'.length );
-      const file = await handle.getFile();
-
-      const reader = new FileReader();
-      reader.onload = () => {
-        const text = reader.result;
-        const json = JSON.parse(text);
-
-        if (this.#notebook) this.close();
-        this.#notebook = Notebook.fromJSON(this.qs('.notebook-container'), title, json);
-      };
-      reader.onerror = (e) => {
-        console.error('Error opening file: ', e.error)
-      };
-      reader.readAsText(file);
-    })
+        return false;
+      })
+    }
   }
 
-  openSearchParams() {
-    const query = window.location.search;
-    const searchParams = new URLSearchParams(query);
-
-    if (searchParams.has('url')) {
-      if (this.#notebook) this.close();
-      const url = decodeURI(searchParams.get('url'));
-      this.fromURL(url);
-      return true;
-    }
-    if (searchParams.has(`ls`)) {
-      if (this.#notebook) this.close();
-      const filename = searchParams.get('ls');
-      this.fromLocalStorage(filename);
-      return true;
-    }
-    
-    return false;
-  }
+  // openSearchParams() {
+  //   if (searchParams.has('url')) {
+  //     if (this.#notebook) this.close();
+  //     const url = decodeURI(searchParams.get('url'));
+  //     this.fromURL(url);
+  //     return true;
+  //   }
+  //   if (searchParams.has(`ls`)) {
+  //     if (this.#notebook) this.close();
+  //     const filename = searchParams.get('ls');
+  //     this.fromLocalStorage(filename);
+  //     return true;
+  //   }
+  // }
 
   get element(){
     return this.#element;
@@ -844,7 +850,7 @@ class App {
       if(response.ok){
         alert( `${title} successfully sent to ${url}` );
       }else{
-        alert( `Error: ${title} NOT successfully sent to ${url}` );
+        alert( `Error sending ${title} to ${url}: ${response.status} - ${response.statusText}` );
       }
     }
   }
