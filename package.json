@@ -5,9 +5,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf docs/* && rm -rf .parcel-cache/",
-    "copy:examples": "mkdir docs/notebook/examples && cp -r src/examples/* docs/notebook/examples/.",
-    "copy:lib": "mkdir docs/notebook/lib && cp -r src/lib/* docs/notebook/lib/.",
-    "copy:legal": "mkdir docs/notebook/legal && cp -r src/legal/* docs/notebook/legal/.",
+    "copy:examples": "mkdir docs/examples && cp -r src/examples/* docs/examples/.",
+    "copy:lib": "mkdir docs/lib && cp -r src/lib/* docs/lib/.",
+    "copy:legal": "mkdir docs/legal && cp -r src/legal/* docs/legal/.",
     "copy:all": "npm run copy:examples && npm run copy:lib && npm run copy:legal",
     "build": "npm run clean && parcel build src/index.html --dist-dir docs/ --public-url /notebook/ --no-optimize && npm run copy:all",
     "start": "http-server docs",
