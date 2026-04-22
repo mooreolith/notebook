@@ -832,10 +832,11 @@ class App {
     if(!this.#notebook) return;
     const text = JSON.stringify( this.#notebook.toJSON() );
     const data = `data:application/x-ipynb+json;charset=utf-8,${encodeURIComponent(text)}`;
+    const blob = new Blob([data, {type: 'application/x-ipynb+json'}]);
+    const url = window.URL.createObjectURL(blob);
     const a = this.qs( '.download-link' );
-    a.setAttribute( 'href', data );
-    a.setAttribute( 'type', 'application/x-ipynb+json')
-    a.setAttribute( 'download', `${this.#notebook.title}.ipynb` );
+    a.href = url;
+    a.download = `${this.notebook.title}.ipynb`;
     a.click();
   }
 
