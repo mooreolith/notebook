@@ -833,7 +833,7 @@ class App {
     const a = this.qs( '.download-link' );
 
     const obj = this.#notebook.toJSON();
-    const blob = new Blob([JSON.stringify(obj)], type: 'application/x-ipynb+json');
+    const blob = new Blob([JSON.stringify(obj)], {"type": 'application/x-ipynb+json'});
 
     a.href = URL.createObjectURL(blob);
     a.download = this.#notebook.title + '.ipynb';
