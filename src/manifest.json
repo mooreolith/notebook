@@ -1,8 +1,8 @@
 {
-  "manifest_version": 6,
+  "manifest_version": 8,
   "short_name": "Notebook",
   "name": "Javascript Notebook",
-  "version": "1.0.6",
+  "version": "1.0.8",
   "author": "Joshua M. Moore <joshua.moore@verticesandedges.net>",
   "developer": {
     "name": "Joshua M. Moore",
@@ -48,7 +48,8 @@
     "action": "/notebook/?open-file",
     "accept": {
       "application/x-ipynb+json": [".ipynb"],
-      "application/vnd.jupyter": [".ipynb"]
+      "application/vnd.jupyter": [".ipynb"],
+      "application/json": [".ipynb"]
     }
   }],
   "launch_handler": {
