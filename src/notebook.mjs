@@ -830,13 +830,14 @@ class App {
 
   onDownloadClick(e){
     if(!this.#notebook) return;
-    const text = JSON.stringify( this.#notebook.toJSON() );
-    const data = `data:application/x-ipynb+json;charset=utf-8,${encodeURIComponent(text)}`;
-    const blob = new Blob([data], {type: 'application/x-ipynb+json'});
-    const url = window.URL.createObjectURL(blob);
     const a = this.qs( '.download-link' );
-    a.href = url;
-    a.download = `${this.notebook.title}.ipynb`;
+
+    const obj = this.#notebook.toJSON();
+    const blob = new Blob([JSON.stringify(obj)], type: 'application/x-ipynb+json');
+
+    a.href = URL.createObjectURL(blob);
+    a.download = this.#notebook.title + '.ipynb';
+
     a.click();
   }
 
