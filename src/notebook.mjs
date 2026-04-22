@@ -596,6 +596,7 @@ class Notebook {
   static fromJSON(container, title, json){
     const notebook = new Notebook( container );
     notebook.title = title;
+    document.title = title;
 
     json.cells.forEach( json => {
       const CellType = json.cell_type === 'code' ? CodeCell : MarkdownCell;
