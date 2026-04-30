@@ -14,7 +14,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "parcel src/index.html --dist-dir docs",
     "start": "http-server docs/",
-    "clean": "rm -rf .parcel-cache/ docs/"
+    "clean": "rm -rf .parcel-cache/ docs/",
+    "build:github": "parcel src/index.html --public-url /notebook-rewrite/ --dist-dir docs"
   },
   "devDependencies": {
     "@parcel/transformer-inline-string": "^2.16.4",
