@@ -1,11 +1,12 @@
 {
-  "name": "livebook",
-  "version": "0.0.1",
+  "name": "notebook",
+  "version": "0.0.9",
   "description": "A JS/TS/MD notebook with live markdown fields",
   "keywords": [
     "js",
     "ts",
-    "md"
+    "md",
+    "notebook"
   ],
   "license": "UNLICENSED",
   "author": "Joshua M. Moore <illogical.alliteration@gmail.com>",

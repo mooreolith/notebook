@@ -175,7 +175,6 @@ notebook-actions:last-of-type {
 
     this.title = obj.metadata.title;
     obj.cells.forEach((spec: any) => {
-      console.log(spec)
       let cell;
       if(spec.cell_type === 'markdown') 
         cell = MarkdownCellElement.fromJSON(spec);

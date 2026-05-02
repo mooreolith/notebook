@@ -99,7 +99,7 @@ hr {
       output.append(result);
     }else if(typeof result in new Set(['number', 'string', 'boolean', 'bigint'])){
       output.innerText = result;
-    }else if((typeof result === 'object') || (typeof result === 'array')){
+    }else if((typeof result === 'object') || Array.isArray(result)){
       output.innerHTML = `<pre>${ JSON.stringify(result, null, 2) }</pre>`;
     }else if(result === null){
       output.innerText = 'null';
@@ -160,8 +160,9 @@ hr {
     const outputs = [];
 
     // console.log and console.error outputs
-    const messages = this.qs('.cell-output.messages');
-    [...messages.children].forEach((p: any) => {
+    const messages = this.qsa('.cell-output.messages>*');
+    messages.forEach((p: HTMLElement) => {
+
       let output;
       if(p.classList.contains('log')){
         output = {

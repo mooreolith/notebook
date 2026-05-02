@@ -797,6 +797,6 @@ self.addEventListener('fetch', (e)=>{
     }).catch((error)=>console.error(error)));
 });
 
-},{"@parcel/service-worker":"lUmb9"}]},["eGPQv","5YnFB","hW6Rl"], "hW6Rl", "parcelRequire6e4c", {})
+},{"@parcel/service-worker":"lUmb9"}]},["eGPQv","5YnFB","hW6Rl"], "hW6Rl", "parcelRequire6a0b", {})
 
 //# sourceMappingURL=service-worker.js.map

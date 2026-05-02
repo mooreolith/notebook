@@ -148,7 +148,7 @@ button {
       const url = URL.createObjectURL(new Blob([contents]));
       document.body.appendChild(anchor);
       anchor.href = url;
-      anchor.download = `${nb.title}.ipynb`;
+      anchor.download = `${nb.title}${nb.title.includes('.ipynb') ? "" : ".ipynb"}`;
       anchor.click();
       anchor.remove();
       URL.revokeObjectURL(url);
@@ -159,6 +159,7 @@ button {
     let previous = localStorage.getItem('notebook.previousURL') ?? '';
     const url = prompt("URL:", previous);
     if(!url) return;
+    localStorage.setItem('notebook.previousURL', url);
     const nb = this.qs('notebook-el') as NotebookElement;
     const response = await fetch(url, {method: "POST", body: nb.toString()});
     if(response.ok){
@@ -171,6 +172,7 @@ button {
   onSaveToBrowserClick(): void {
     const open = window.indexedDB.open("notebook.notebookDB", 1);
     const notebook = this.qs('notebook-el') as NotebookElement;
+    localStorage.setItem('notebook.lastTItle', notebook.title);
 
     open.onupgradeneeded = () => {
       const db = open.result;
@@ -197,13 +199,19 @@ button {
     };
   }
 
+  private removeExt(filename: string): string {
+    return filename.slice(0, filename.lastIndexOf('.ipynb'));
+  }
+
   async onOpenFromFileClick(): Promise<void> {
     if("showOpenFilePicker" in window){
       const [fileHandle] = await window.showOpenFilePicker({multipel: false});
       const file: File = await fileHandle.getFile();
       const contents = await file.text();
       const nb = this.qs('notebook-el') as NotebookElement;
-      nb.fromString(contents, true);
+      const object = JSON.parse(contents);
+      nb.fromJSON(object, true);
+      nb.title = this.removeExt(file.name) ?? object.metadata.title;
     }else{
       const input = document.createElement('input');
       input.type = 'file';
@@ -212,12 +220,13 @@ button {
         if(input.files.length){
           const file = input.files[0];
           const contents = await file.text();
+          const object = JSON.parse(contents);
           const nb = this.qs('notebook-el') as NotebookElement;
-          nb.fromString(contents, true);
+          nb.fromJSON(object, true);
+          nb.title = this.removeExt(file.name) ?? object.metadata.title;
         }
       }
     }
-
   }
 
   async onOpenFromURLClick(): Promise<void> {
@@ -240,13 +249,12 @@ button {
     let previous = localStorage.getItem('notebook.lastTitle') ?? '';
     const title = prompt("title", previous);
     if(!title) return;
-
-    const open = indexedDB.open('notebook.notebookDB', 1);
+    localStorage.setItem('notebook.lastTitle', title);
     
+    const open = indexedDB.open('notebook.notebookDB', 1);
     open.onupgradeneeded = () => {
       alert(`No DB "notebook.notebookDB" present. Thus no such notebook could be found.`);
     };
-
     open.onsuccess = () => {
       const db = open.result;
       const transaction = db.transaction("notebookStore", "readonly");
