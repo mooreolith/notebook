@@ -84,6 +84,11 @@ cell-type {
   font-family: monospace;
 }
 
+.cm-line {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 20px;
+}
+
 hr {
   border: none;
   height: 1px;

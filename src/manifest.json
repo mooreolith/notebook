@@ -42,7 +42,7 @@
       "description": "Execute currently focused code cell"
     }
   },
-  "default_locale": "en",
+  "default_locale": "en-US",
   "description": "A client-side Javascript Notebook",
   "file_handlers": [{
     "action": "/notebook/?open-file",

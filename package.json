@@ -14,12 +14,15 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "parcel src/index.html --dist-dir docs",
     "start": "http-server docs/",
-    "clean": "rm -rf .parcel-cache/ docs/",
-    "build:github": "parcel src/index.html --public-url /notebook-rewrite/ --dist-dir docs/",
-    "copy": "cp -r ./examples/ docs/."
+    "build:folder": "parcel src/index.html --dist-dir docs/notebook/ --public-url /notebook/",
+    "copy:folder": "cp -r ./examples/ ./docs/notebook/. && cp src/notebook/spiral-small.png ./docs/notebook/.",
+    "start:folder": "http-server docs/",
+    "build:github": "rm -rf .parcel-cache/ docs/* && cp src/notebook/spiral-small.png docs/. && cp -r examples/ docs/. && parcel src/index.html --dist-dir docs/ --public-url /notebook/"
   },
   "devDependencies": {
+    "@parcel/packager-raw-url": "^2.16.4",
     "@parcel/transformer-inline-string": "^2.16.4",
+    "@parcel/transformer-webmanifest": "^2.16.4",
     "parcel": "^2.16.4",
     "process": "^0.11.10"
   },

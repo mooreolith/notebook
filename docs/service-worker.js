@@ -207,13 +207,15 @@
       });
     }
   }
-})({"gvxfI":[function(require,module,exports,__globalThis) {
+})({"eGPQv":[function(require,module,exports,__globalThis) {
 var _serviceWorker = require("@parcel/service-worker");
 const manifest = [
-    "/index.html",
-    "/favicon.543c5379.ico",
-    "/notebook-rewrite.fc7cabbb.css",
-    "/notebook-rewrite.20379891.js"
+    "/notebook/index.html",
+    "/notebook/manifest.webmanifest",
+    "/notebook/notebook.880e8652.png",
+    "/notebook/favicon.543c5379.ico",
+    "/notebook/notebook-rewrite.fc7cabbb.css",
+    "/notebook/notebook-rewrite.20379891.js"
 ];
 const version = "22826600";
 (0, _serviceWorker._register)(manifest, version);
@@ -795,6 +797,6 @@ self.addEventListener('fetch', (e)=>{
     }).catch((error)=>console.error(error)));
 });
 
-},{"@parcel/service-worker":"lUmb9"}]},["gvxfI","5YnFB","hW6Rl"], "hW6Rl", "parcelRequire6e4c", {})
+},{"@parcel/service-worker":"lUmb9"}]},["eGPQv","5YnFB","hW6Rl"], "hW6Rl", "parcelRequire6e4c", {})
 
 //# sourceMappingURL=service-worker.js.map

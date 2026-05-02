@@ -6,7 +6,6 @@ export class CellTypeSelector extends HTMLElement {
   static template = `
 <style>
 :root {
-  
 }
 
 :host {
@@ -16,11 +15,15 @@ export class CellTypeSelector extends HTMLElement {
   justify-content: flex-end;
   outline: none;
   border: none;
-  --font-size: 20px;
+}
+
+input {
+  font-size: 20px;
 }
 
 label {
-  font-size: var(--font-size);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 20px;
 }
 
 @media not screen {

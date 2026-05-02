@@ -11,6 +11,9 @@ export class NotebookAppElement extends HTMLElement {
   display: block;
   float: none;
   padding-bottom: 100vh;
+
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 20px;
 }
 
 @media screen {
@@ -36,6 +39,7 @@ export class NotebookAppElement extends HTMLElement {
 
 label {
   font-weight: bold;
+
 }
 
 button {

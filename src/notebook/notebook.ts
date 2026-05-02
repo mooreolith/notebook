@@ -6,6 +6,10 @@ export class NotebookElement extends HTMLElement {
   static template: string = `
 <style class="notebook-styles">
 :root {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+:host {
 }
 
 @media screen and (min-width: 800px){
@@ -34,6 +38,7 @@ export class NotebookElement extends HTMLElement {
 h1 {
   border: none;
   border-bottom: 1px solid black;
+  font-family: serif;
 }
 
 h1:focus {
@@ -51,7 +56,8 @@ button {
   border: 0;
   padding: 0;
 
-  font: serif 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 20px;
 
   color: var(--ui-color);
   background-color: var(--bg-color);

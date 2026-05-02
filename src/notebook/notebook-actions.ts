@@ -7,6 +7,8 @@ export class NotebookActionsElement extends HTMLElement {
   static template: string = `
 <style>
 :root {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 20px;
 }
 
 :host {
