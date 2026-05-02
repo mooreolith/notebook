@@ -15,7 +15,8 @@
     "build": "parcel src/index.html --dist-dir docs",
     "start": "http-server docs/",
     "clean": "rm -rf .parcel-cache/ docs/",
-    "build:github": "parcel src/index.html --public-url /notebook-rewrite/ --dist-dir docs"
+    "build:github": "parcel src/index.html --public-url /notebook-rewrite/ --dist-dir docs/",
+    "copy": "cp -r ./examples/ docs/."
   },
   "devDependencies": {
     "@parcel/transformer-inline-string": "^2.16.4",
@@ -30,6 +31,7 @@
     "@codemirror/state": "^6.6.0",
     "@codemirror/view": "^6.41.1",
     "@lezer/markdown": "^1.6.3",
+    "@parcel/service-worker": "^2.16.4",
     "codemirror": "^6.0.2",
     "codemirror-live-markdown": "^0.5.1-alpha.1",
     "katex": "^0.16.45",

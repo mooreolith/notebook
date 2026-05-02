@@ -1,4 +1,4 @@
-import { NotebookElement } from "./notebook";
+import { NotebookElement } from "./notebook/notebook";
 
 export class NotebookAppElement extends HTMLElement {
   static template: string = `
@@ -13,17 +13,25 @@ export class NotebookAppElement extends HTMLElement {
   padding-bottom: 100vh;
 }
 
-.notebook-app-actions {
-  display: flex;
-  flex-direction: row;
-  gap: 15px;
-  justify-content: center;
-  align-items: center;
-  outline: none;
-  border: none;
-  --font-size: 20px;
-  margin-top: 15px;
-  margin-bottom: 15px;
+@media screen {
+  .notebook-app-actions {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    border: none;
+    --font-size: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+}
+
+@media not screen {
+  .notebook-app-actions {
+    display: none;
+  }
 }
 
 label {
@@ -84,6 +92,42 @@ button {
     this.qs('.open-file').addEventListener('click', () => this.onOpenFromFileClick());
     this.qs('.open-url').addEventListener('click', () => this.onOpenFromURLClick());
     this.qs('.open-browser').addEventListener('click', () => this.onOpenFromBrowserClick());
+
+    this.openURLParams();
+    this.openLaunchFile();
+  }
+
+  async openURLParams(){
+    const queryString = window.location.search;
+    const params = new URLSearchParams(queryString);
+    const url = params.get('url');
+    if(!url) return;
+    const response = await fetch(url);
+    if(!response.ok){
+      alert(`Error opening url parameter ${url}. ${response.status}: ${response.statusText}`);
+      return;
+    }
+    const text = await response.text();
+    const nb = this.qs('notebook-el') as NotebookElement;
+    nb.fromString(text, true);
+  }
+
+  openLaunchFile(){
+    if('launchQueue' in window){
+      const nb = this.qs('notebook-el') as NotebookElement;
+      window.launchQueue.setConsumer(async launchParams => {
+        const params = new URL(launchParams.targetURL).searchParams;
+        if((params.files && params.files.length) || params.has('open-file')){
+          const handle = launchParams.files[0];
+          const title = handle.name.slice(0, handle.name.length - '.ipynb'.length);
+          const file = await handle.getFile();
+          const text = await file.text();
+          nb.fromString(text, true);
+          nb.title = title;
+          return;
+        }
+      });
+    }
   }
 
   async onSaveToFileClick(): Promise<void> {
