@@ -172,7 +172,7 @@ button {
   onSaveToBrowserClick(): void {
     const open = window.indexedDB.open("notebook.notebookDB", 1);
     const notebook = this.qs('notebook-el') as NotebookElement;
-    localStorage.setItem('notebook.lastTItle', notebook.title);
+    localStorage.setItem('notebook.lastTitle', notebook.title);
 
     open.onupgradeneeded = () => {
       const db = open.result;
@@ -180,8 +180,8 @@ button {
       const index = store.createIndex("notebookTitleIndex", ["metadata.title"]);
     };
 
-    open.onsuccess = () => {
-      const db = open.result;
+    open.onsuccess = (event) => {
+      const db = event.target.result;
       const transaction = db.transaction('notebookStore', "readwrite");
       const store = transaction.objectStore("notebookStore");
       // const index = store.index("notebookTitleIndex");
