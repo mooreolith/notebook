@@ -142,6 +142,7 @@ hr {
     const indicator = this.createIndicator(); 
 
     try{
+      this.resetOutput();
       this.result = await func( ... Object.values( context ));
       this.#execution_count!++;
     }catch(error){
