@@ -182,7 +182,7 @@ button {
 
     open.onsuccess = (event) => {
       const db = event.target.result;
-      const transaction = db.transaction('notebookStore', "readwrite");
+      const transaction = db.transaction(['notebookStore'], "readwrite");
       const store = transaction.objectStore("notebookStore");
       // const index = store.index("notebookTitleIndex");
 

@@ -1,0 +1,30 @@
+:root {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
+  font-size: 20px;
+}
+
+:host {
+  --font-size: 20px;
+  border: none;
+  outline: none;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 15px;
+  display: flex;
+}
+
+button {
+  color: var(--ui-color);
+  background-color: var(--bg-color);
+  font-size: var(--font-size);
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+@media not screen {
+  :host {
+    display: none;
+  }
+}
+/*# sourceMappingURL=notebook-actions.2bdaaf54.css.map */

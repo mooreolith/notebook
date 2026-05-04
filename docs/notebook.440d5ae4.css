@@ -1,0 +1,75 @@
+:root {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
+}
+
+@media screen and (width >= 800px) {
+  :host {
+    --font-size: 20px;
+    margin: 50px transparent;
+    --spiral-width: 75px;
+    background: url("spiral-small.1419c22b.png") repeat-y;
+    background-size: var(--spiral-width);
+    max-width: 80ch;
+    padding-left: calc(var(--spiral-width) + 15px);
+    border: 1px solid #000;
+    border-left: none;
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 25px;
+    padding-right: 25px;
+    display: flex;
+  }
+}
+
+h1 {
+  border: none;
+  border-bottom: 1px solid #000;
+  font-family: serif;
+}
+
+h1:focus {
+  outline: none;
+}
+
+.notebook-actions {
+  flex-direction: row;
+  gap: 15px;
+  display: flex;
+}
+
+button {
+  color: var(--ui-color);
+  background-color: var(--bg-color);
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
+  font-size: 20px;
+  font-size: var(--font-size);
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.cover {
+  border: 1px solid #fff;
+  width: 28px;
+  height: 0;
+  position: relative;
+  left: -92px;
+}
+
+.cover.top {
+  top: -1px;
+}
+
+.cover.bottom {
+  bottom: -26px;
+}
+
+notebook-actions:first-of-type {
+  margin-bottom: 15px;
+}
+
+notebook-actions:last-of-type {
+  margin-top: 15px;
+}
+/*# sourceMappingURL=notebook.440d5ae4.css.map */

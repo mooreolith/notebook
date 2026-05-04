@@ -1,0 +1,26 @@
+fieldset.cell-editor {
+  outline: none;
+  border: none;
+}
+
+.cell-outputs {
+  display: block;
+  width: content;
+  height: content;
+  overflow-wrap: anywhere;
+}
+
+.error {
+  color: red;
+}
+
+fieldset.cell-outputs {
+  outline: none;
+  border: none;
+}
+
+hr {
+  border: none;
+  height: 1px;
+  background-image: linear-gradient(to right, transparent, #000, transparent);
+}

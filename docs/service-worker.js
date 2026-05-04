@@ -207,15 +207,39 @@
       });
     }
   }
-})({"h3xVk":[function(require,module,exports,__globalThis) {
+})({"fFv16":[function(require,module,exports,__globalThis) {
 var _serviceWorker = require("@parcel/service-worker");
 const manifest = [
     "/notebook/index.html",
     "/notebook/manifest.webmanifest",
     "/notebook/notebook.880e8652.png",
+    "/notebook/notebook-512x512.5bfa4390.png",
+    "/notebook/notebook-192x192.af0a404a.png",
     "/notebook/favicon.543c5379.ico",
     "/notebook/notebook.fc7cabbb.css",
-    "/notebook/notebook.20379891.js"
+    "/notebook/notebook.20379891.js",
+    "/notebook/markdown-cell.e15247c0.css",
+    "/notebook/markdown-cell.f4ba5ab3.html",
+    "/notebook/markdown-cell.092d8ee6.js",
+    "/notebook/javascript-cell.170722e8.css",
+    "/notebook/javascript-cell.c4f993ae.html",
+    "/notebook/javascript-cell.63e3fcb3.js",
+    "/notebook/typescript-cell.97565652.css",
+    "/notebook/typescript-cell.b6800819.html",
+    "/notebook/typescript-cell.215410d8.js",
+    "/notebook/cell-type-selector.6df96e26.css",
+    "/notebook/cell-type-selector.c6a20d85.html",
+    "/notebook/cell-type-selector.4679d8d1.js",
+    "/notebook/notebook.440d5ae4.css",
+    "/notebook/spiral-small.1419c22b.png",
+    "/notebook/notebook.f3aaeb53.html",
+    "/notebook/notebook.3097adf3.js",
+    "/notebook/cell-actions.d707aa7d.css",
+    "/notebook/cell-actions.216f6534.html",
+    "/notebook/cell-actions.8fba0c85.js",
+    "/notebook/notebook-actions.2bdaaf54.css",
+    "/notebook/notebook-actions.ae140e23.html",
+    "/notebook/notebook-actions.128150c0.js"
 ];
 const version = "22826600";
 (0, _serviceWorker._register)(manifest, version);
@@ -797,6 +821,6 @@ self.addEventListener('fetch', (e)=>{
     }).catch((error)=>console.error(error)));
 });
 
-},{"@parcel/service-worker":"lUmb9"}]},["h3xVk","5YnFB","hW6Rl"], "hW6Rl", "parcelRequire6a0b", {})
+},{"@parcel/service-worker":"lUmb9"}]},["fFv16","5YnFB","hW6Rl"], "hW6Rl", "parcelRequire6a0b", {})
 
 //# sourceMappingURL=service-worker.js.map

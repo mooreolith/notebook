@@ -1,8 +1,8 @@
 {
-  "manifest_version": 9,
+  "manifest_version": 8,
   "short_name": "Notebook",
   "name": "Javascript Notebook",
-  "version": "1.0.9",
+  "version": "1.0.12",
   "author": "Joshua M. Moore <illogical.alliteration@gmail.com>",
   "developer": {
     "name": "Joshua M. Moore",
@@ -18,13 +18,19 @@
       "purpose": "maskable"
     },
     {
-      "src": "icon/notebook.png",
+      "src": "icon/notebook-512x512.png",
       "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon/notebook-192x192.png",
+      "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     }
   ],
-  "start_url": "https://apps.verticesandedges.net/notebook/",
+  "start_url": "http://localhost:8080/notebook/",
   "scope": "/notebook/",
   "display": "standalone",
   "orientation": "any",

@@ -1,0 +1,30 @@
+:root {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 20px;
+}
+
+:host {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  justify-content: flex-start;
+  outline: none;
+  border: none;
+  --font-size: 20px;
+}
+
+button {
+  margin: 0;
+  border: 0;
+  padding: 0;
+
+  color: var(--ui-color);
+  background-color: var(--bg-color);
+  font-size: var(--font-size);
+}
+
+@media not screen {
+  :host {
+    display: none;
+  }
+}
