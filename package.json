@@ -18,7 +18,8 @@
     "build:folder": "parcel src/index.html --dist-dir docs/notebook/ --public-url /notebook/",
     "copy:folder": "cp -r ./examples/ ./docs/notebook/. && cp src/notebook/spiral-small.png ./docs/notebook/.",
     "start:folder": "http-server docs/",
-    "build:github": "rm -rf .parcel-cache/ docs/* && cp src/notebook/spiral-small.png docs/. && cp -r examples/ docs/. && parcel src/index.html --dist-dir docs/ --public-url /notebook/"
+    "build:github": "rm -rf .parcel-cache/ docs/* && cp src/notebook/spiral-small.png docs/. && cp -r examples/ docs/. && parcel src/index.html --dist-dir docs/ --public-url /notebook/",
+    "build:vande": "rm -rf .parcel-cache/ /var/www/html/apps.verticesandedges.net/notebook/* && cp src/notebook/spiral-small.png docs/. && cp -r examples/ docs/. && parcel src/index.html --dist-dir /var/www/html/apps.verticesandedges.net/notebook/ --public-url /notebook/"
   },
   "devDependencies": {
     "@parcel/packager-raw-url": "^2.16.4",
