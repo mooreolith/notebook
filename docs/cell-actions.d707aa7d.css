@@ -1,0 +1,25 @@
+:host {
+  --font-size: 20px;
+  border: none;
+  outline: none;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 15px;
+  display: flex;
+}
+
+button {
+  color: var(--ui-color);
+  background-color: var(--bg-color);
+  font-size: var(--font-size);
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+@media not screen {
+  :host {
+    display: none;
+  }
+}
+/*# sourceMappingURL=cell-actions.d707aa7d.css.map */

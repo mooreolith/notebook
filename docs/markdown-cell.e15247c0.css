@@ -1,0 +1,66 @@
+:host {
+  --font-size: 20px;
+  --cell-border: 1px solid black;
+  --ui-color: 0x000000;
+  --bg-color: 0xffffff;
+}
+
+section.cell.markdown-cell {
+  flex-direction: column;
+  display: flex;
+  position: relative;
+}
+
+fieldset {
+  border: none;
+}
+
+fieldset.cell-actions {
+  font-size: var(--font-size);
+  flex-direction: row;
+  justify-content: flex-end;
+  display: flex;
+}
+
+.cell-actions button {
+  color: var(--ui-color);
+  background-color: var(--bg-color);
+  font-size: var(--font-size);
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+cell-type {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.cell-editor {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.cm-codeblock, .cm-codeblock-source {
+  font-family: monospace;
+}
+
+.cm-line {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
+  font-size: 20px;
+}
+
+hr {
+  background-image: linear-gradient(to right, #0000, #000, #0000);
+  border: none;
+  height: 1px;
+}
+/*# sourceMappingURL=markdown-cell.e15247c0.css.map */
