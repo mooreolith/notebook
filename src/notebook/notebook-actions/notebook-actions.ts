@@ -1,6 +1,6 @@
 import { JavascriptCellElement } from "../javascript-cell/javascript-cell";
 import { MarkdownCellElement } from "../markdown-cell/markdown-cell";
-import { NotebookElement } from "../notebook";
+import { NotebookElement } from "../notebook/notebook";
 import { TypescriptCellElement } from "../typescript-cell/typescript-cell";
 
 export class NotebookActionsElement extends HTMLElement {

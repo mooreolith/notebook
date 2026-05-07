@@ -15,6 +15,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "parcel src/index.html --dist-dir docs",
     "start": "http-server docs/",
+    "clean": "rm -rf .parcel-cache/ docs/",
     "build:folder": "parcel src/index.html --dist-dir docs/notebook/ --public-url /notebook/",
     "copy:folder": "cp -r ./examples/ ./docs/notebook/. && cp src/notebook/spiral-small.png ./docs/notebook/.",
     "start:folder": "http-server docs/",
