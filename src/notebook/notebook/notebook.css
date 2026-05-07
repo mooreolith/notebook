@@ -18,7 +18,7 @@
     flex-direction: column;
 
     --spiral-width: 75px;
-    background: url('spiral-small.png') left top repeat-y;
+    background: url('./spiral-small.png') left top repeat-y;
     background-size: var(--spiral-width);
     padding-left: calc(var(--spiral-width) + 15px);
     padding-right: 25px;

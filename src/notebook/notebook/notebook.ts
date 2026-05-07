@@ -1,16 +1,13 @@
-import { JavascriptCellElement } from "./javascript-cell/javascript-cell";
-import { MarkdownCellElement } from "./markdown-cell/markdown-cell";
-import { TypescriptCellElement } from "./typescript-cell/typescript-cell";
+import { JavascriptCellElement } from "../javascript-cell/javascript-cell";
+import { MarkdownCellElement } from "../markdown-cell/markdown-cell";
+import { TypescriptCellElement } from "../typescript-cell/typescript-cell";
 
 export class NotebookElement extends HTMLElement {
-  static template: string = `
-
-  `;
-
   //#region public properties
   qs: (query: string) => HTMLElement;
   qsa: (query: string) => NodeList;
   context: object = {};
+  ready: Promise<boolean>;
 
   get title(): string {
     return this.qs('h1')!.innerText;
@@ -26,8 +23,11 @@ export class NotebookElement extends HTMLElement {
     this.attachShadow({mode: "open"});
     this.qs = this.shadowRoot!.querySelector.bind(this.shadowRoot);
     this.qsa = this.shadowRoot!.querySelectorAll.bind(this.shadowRoot);
-    this.fetchStyle();
-    this.fetchTemplate();
+    this.ready = new Promise(async (resolve, reject) => {
+      await this.fetchStyle();
+      await this.fetchTemplate();
+      resolve(true);
+    });
   }
 
   async fetchStyle(): Promise<void> {
@@ -81,27 +81,31 @@ export class NotebookElement extends HTMLElement {
   static fromJSON(obj: any): NotebookElement {
     const notebook = new NotebookElement();
     notebook.qs('.cells').innerHTML = '';
-    notebook.fromJSON(obj);
+    notebook.fromJSON(obj, true);
     return notebook;
   }
 
   fromJSON(obj: any, clearFirst: boolean=false): void {
-    if(clearFirst){
-      this.qs('.cells').innerHTML = '';
-    }
+    this.ready.then(() => {
+      const cells = this.qs('.cells');
+      
+      if(clearFirst){
+        cells.innerHTML = '';
+      }
 
-    this.title = obj.metadata.title;
-    obj.cells.forEach((spec: any) => {
-      let cell;
-      if(spec.cell_type === 'markdown') 
-        cell = MarkdownCellElement.fromJSON(spec);
-      if(spec.metadata.language === 'javascript')
-        cell = JavascriptCellElement.fromJSON(spec);
-      if(spec.metadata.language === 'typescript')
-        cell = TypescriptCellElement.fromJSON(spec);
+      this.title = obj.metadata.title;
+      obj.cells.forEach((spec: any) => {
+        let cell;
+        if(spec.cell_type === 'markdown') 
+          cell = MarkdownCellElement.fromJSON(spec);
+        if(spec.metadata.language === 'javascript') 
+          cell = JavascriptCellElement.fromJSON(spec);
+        if(spec.metadata.language === 'typescript') 
+          cell = TypescriptCellElement.fromJSON(spec);
 
-      this.qs('.cells').appendChild(cell as HTMLElement);
-    })
+        cells.appendChild(cell as HTMLElement);
+      })
+    });
   }
 
   toString(): string {

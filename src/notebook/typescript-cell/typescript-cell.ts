@@ -3,7 +3,7 @@ import { EditorState, Compartment } from "@codemirror/state";
 import { keymap, placeholder } from "@codemirror/view";
 import { javascript } from "@codemirror/lang-javascript";
 import { indentWithTab } from "@codemirror/commands";
-import { NotebookElement } from "../notebook";
+import { NotebookElement } from "../notebook/notebook";
 import * as ts from "typescript"
 
 let language = new Compartment();
@@ -193,20 +193,22 @@ export class TypescriptCellElement extends HTMLElement {
   }
 
   fromJSON(incoming: any): void {
-    this.#execution_count = incoming.execution_count;
-    
-    if(typeof incoming.source === 'string'){
-      this.source = incoming.source;
-    }
-    if(Array.isArray(incoming.source)){
-      this.source = incoming.source.join('');
-    }
-    
-    for(let output of incoming.outputs){
-      if(output.name === 'stdout') this.log(output.text);
-      if(output.name === 'stderr') this.error(output.text);
-      if(output.output_type === 'execute_result') this.result = output.data["text/plain"];
-    }
+    this.ready.then(() => {
+      this.#execution_count = incoming.execution_count;
+      
+      if(typeof incoming.source === 'string'){
+        this.source = incoming.source;
+      }
+      if(Array.isArray(incoming.source)){
+        this.source = incoming.source.join('');
+      }
+      
+      for(let output of incoming.outputs){
+        if(output.name === 'stdout') this.log(output.text);
+        if(output.name === 'stderr') this.error(output.text);
+        if(output.output_type === 'execute_result') this.result = output.data["text/plain"];
+      }
+    });
   }
 
   toString(): string {

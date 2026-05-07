@@ -1,94 +1,30 @@
-import { NotebookElement } from "./notebook/notebook";
+import { NotebookElement } from "../notebook/notebook";
 
 export class NotebookAppElement extends HTMLElement {
-  static template: string = `
-<style>
-:root{
-}
-
-:host {
-  box-sizing: content-box;
-  display: block;
-  float: none;
-  padding-bottom: 100vh;
-
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 20px;
-}
-
-@media screen {
-  .notebook-app-actions {
-    display: flex;
-    flex-direction: row;
-    gap: 15px;
-    justify-content: center;
-    align-items: center;
-    outline: none;
-    border: none;
-    --font-size: 20px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-  }
-}
-
-@media not screen {
-  .notebook-app-actions {
-    display: none;
-  }
-}
-
-label {
-  font-weight: bold;
-
-}
-
-button {
-  margin: 0;
-  border: 0;
-  padding: 0;
-
-  color: var(--ui-color);
-  background-color: var(--bg-color);
-  font-size: var(--font-size);
-}
-</style>
-
-<div class="notebook-app-actions">
-  <label>Save:</label>
-  <div>
-    <button class="save-file">File</button>
-  </div>
-  <div>
-    <button class="save-url">URL</button>
-  </div>
-  <div>
-    <button class="save-browser">Browser</button>
-  </div>
-  <label>Open:</label>
-  <div>
-    <button class="open-file">File</button>
-  </div>
-  <div>
-    <button class="open-url">URL</button>
-  </div>
-  <div>
-    <button class="open-browser">Browser</button>
-  </div>
-</div>
-
-<notebook-el></notebook-el>
-  `;
-
   qs!: (query: string) => HTMLElement;
   qsa!: (query: string) => NodeList;
+  ready: Promise<boolean>;
 
   constructor(){
     super();
     this.attachShadow({mode: "open"});
-    this.shadowRoot!.innerHTML = NotebookAppElement.template;
     this.qs = this.shadowRoot!.querySelector.bind(this.shadowRoot);
     this.qsa = this.shadowRoot!.querySelectorAll.bind(this.shadowRoot);
 
+    this.ready = new Promise(async (resolve, reject) => {
+      await this.fetchStyle();
+      await this.fetchTemplate();
+      this.setupUI();
+
+      this.openURLParams();
+      this.openLaunchFile();
+    
+      resolve(true);
+    });
+    
+  }
+
+  setupUI(){
     this.qs('.save-file').addEventListener('click', () => this.onSaveToFileClick());
     this.qs('.save-url').addEventListener('click', () => this.onSaveToURLClick());
     this.qs('.save-browser').addEventListener('click', () => this.onSaveToBrowserClick());
@@ -96,9 +32,20 @@ button {
     this.qs('.open-file').addEventListener('click', () => this.onOpenFromFileClick());
     this.qs('.open-url').addEventListener('click', () => this.onOpenFromURLClick());
     this.qs('.open-browser').addEventListener('click', () => this.onOpenFromBrowserClick());
+  }
 
-    this.openURLParams();
-    this.openLaunchFile();
+  async fetchStyle(): Promise<void> {
+    const sheet = new CSSStyleSheet();
+    const file = await fetch(new URL(`./notebook-app.css`, import.meta.url));
+    const css = await file.text();
+    sheet.replaceSync(css);
+    this.shadowRoot!.adoptedStyleSheets = [sheet];
+  }
+
+  async fetchTemplate(): Promise<void> {
+    const file = await fetch(new URL(`./notebook-app.html`, import.meta.url));
+    const html = await file.text();
+    this.shadowRoot!.innerHTML = html;
   }
 
   async openURLParams(){
