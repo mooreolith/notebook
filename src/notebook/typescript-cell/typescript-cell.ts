@@ -12,8 +12,8 @@ let tabSize = new Compartment();
 export class TypescriptCellElement extends HTMLElement {
   //#region properties
   view!: EditorView;
-  qs!: (query: string) => HTMLElement;
-  qsa!: (query: string) => HTMLElement[];
+  qs!: (query: string) => HTMLElement | null | undefined;
+  qsa!: (query: string) => NodeListOf<Element> | undefined;
   ready: Promise<boolean>;
 
   #execution_count?: number = 0;
@@ -23,8 +23,8 @@ export class TypescriptCellElement extends HTMLElement {
   constructor(){
     super();
     this.attachShadow({ mode: "open" });
-    this.qs = this.shadowRoot!.querySelector.bind(this.shadowRoot);
-    this.qsa = this.shadowRoot!.querySelector.bind(this.shadowRoot);
+    this.qs = (query: string) => this.shadowRoot?.querySelector(query);;
+    this.qsa = (query: string) => this.shadowRoot!.querySelectorAll(query);
     
     this.ready = new Promise(async (resolve, reject) => {
       await this.setupUI();

@@ -98,12 +98,14 @@ export class MarkdownCellElement extends HTMLElement {
   }
 
   fromJSON(obj: {source: string | string[]}): void {
-    if(typeof obj.source === 'string'){
-      this.source = obj.source;
-    }
-    if(Array.isArray(obj.source)){
-      this.source = obj.source.join('')
-    }
+    this.ready.then(() => {
+      if(typeof obj.source === 'string'){
+        this.source = obj.source;
+      }
+      if(Array.isArray(obj.source)){
+        this.source = obj.source.join('')
+      }
+    })
   }
 
   static fromString(str: string): MarkdownCellElement {

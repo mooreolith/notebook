@@ -30,7 +30,7 @@
       "purpose": "any"
     }
   ],
-  "start_url": "http://localhost:8080/notebook/",
+  "start_url": "https://illogical-alliteration.github.io/notebook/",
   "scope": "/notebook/",
   "display": "standalone",
   "orientation": "any",
