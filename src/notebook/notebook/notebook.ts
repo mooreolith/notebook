@@ -13,8 +13,10 @@ export class NotebookElement extends HTMLElement {
     return this.qs('h1')!.innerText;
   }
 
-  set title(val: string){
-    this.qs('h1')!.innerText = val;
+  set title(val: string | undefined | null){
+    val = val?.replace('\n', '')
+    if(val === "") val = undefined;
+    this.qs('h1')!.innerText = val ?? "Untitled Notebook";
   }
   //#endregion
 
@@ -26,6 +28,7 @@ export class NotebookElement extends HTMLElement {
     this.ready = new Promise(async (resolve, reject) => {
       await this.fetchStyle();
       await this.fetchTemplate();
+      this.qs('.title').addEventListener('blur', (e) => this.title = e.target!.innerText);
       resolve(true);
     });
   }

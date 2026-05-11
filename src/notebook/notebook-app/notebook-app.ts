@@ -158,7 +158,7 @@ export class NotebookAppElement extends HTMLElement {
       const nb = this.qs('notebook-el') as NotebookElement;
       const object = JSON.parse(contents);
       nb.fromJSON(object, true);
-      nb.title = this.removeExt(file.name) ?? object.metadata.title;
+      nb.title = this.removeExt(file.name)?? object.metadata.title;
     }else{
       const input = document.createElement('input');
       input.type = 'file';

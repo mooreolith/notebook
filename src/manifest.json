@@ -1,8 +1,8 @@
 {
-  "manifest_version": 8,
+  "manifest_version": 9,
   "short_name": "Notebook",
   "name": "Javascript Notebook",
-  "version": "1.0.12",
+  "version": "1.0.14",
   "author": "Joshua M. Moore <illogical.alliteration@gmail.com>",
   "developer": {
     "name": "Joshua M. Moore",
