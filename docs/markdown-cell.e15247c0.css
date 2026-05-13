@@ -67,4 +67,8 @@ hr {
 .katex-html {
   display: none;
 }
+
+math {
+  font-size: 24px;
+}
 /*# sourceMappingURL=markdown-cell.e15247c0.css.map */
