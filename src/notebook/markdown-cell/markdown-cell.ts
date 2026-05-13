@@ -2,7 +2,7 @@ import { EditorState, Compartment } from '@codemirror/state';
 import { EditorView, keymap, placeholder} from '@codemirror/view';
 import { syntaxTree } from '@codemirror/language';
 import { markdown } from '@codemirror/lang-markdown';
-import { indentWithTab, history } from "@codemirror/commands";
+import { indentWithTab, history, insertNewline } from "@codemirror/commands";
 import {
   tableField,
   tableEditorPlugin,
@@ -146,12 +146,18 @@ export class MarkdownCellElement extends HTMLElement {
         doc: '',
         extensions: [
           markdown(),
+          keymap.of([
+            {
+              key: "Enter",
+              run: insertNewline
+            }, 
+            indentWithTab 
+          ]),
           linkPlugin(),
           imageField(),
           codeBlockField(),
           collapseOnSelectionFacet.of(true),
           mouseSelectingField,
-          keymap.of([ indentWithTab ]),
           tabSize.of(EditorState.tabSize.of(2)),
           clickableLinks,
           tableField,

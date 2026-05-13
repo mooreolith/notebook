@@ -6,9 +6,9 @@
   "author": "Joshua M. Moore <illogical.alliteration@gmail.com>",
   "developer": {
     "name": "Joshua M. Moore",
-    "url": "https://github.com/illogical-alliteration"
+    "url": "https://github.com/verticesandedges"
   },
-  "homepage_url": "https://github.com/illogical-alliteration/notebook",
+  "homepage_url": "https://github.com/verticesandedges/notebook",
   "lang": "en",
   "icons": [
     {
@@ -30,7 +30,7 @@
       "purpose": "any"
     }
   ],
-  "start_url": "https://illogical-alliteration.github.io/notebook/",
+  "start_url": "https://verticesandedges.github.io/notebook/",
   "scope": "/notebook/",
   "display": "standalone",
   "orientation": "any",
