@@ -1,1 +1,1 @@
-{"mappings":"","sources":[],"sourcesContent":[],"names":[],"version":3,"file":"notebook.fc7cabbb.css.map","sourceRoot":"/__parcel_source_root/"}
+{"mappings":"AAAA","sources":["src/index.css"],"sourcesContent":[".katex-html {\n  display: none;\n}"],"names":[],"version":3,"file":"notebook.fc7cabbb.css.map","sourceRoot":"/__parcel_source_root/"}

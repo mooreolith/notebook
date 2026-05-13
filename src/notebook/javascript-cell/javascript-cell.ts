@@ -128,7 +128,10 @@ export class JavascriptCellElement extends HTMLElement {
   }
 
   resetOutput(): void {
-    for(let p; p = this.qs('.messages>.error, .messages>.log'); p.remove());
+    this.qs('.cell-outputs')!.innerHTML = `
+      <output class="cell-output indicator"></output>
+      <output class="cell-output messages"></output>
+      <output class="cell-output result"></output>`;
     this.result = undefined;
   }
 
@@ -267,11 +270,12 @@ export class JavascriptCellElement extends HTMLElement {
 
   private createContext(): any {
     const outputs = this.qs('.cell-outputs') as HTMLOutputElement;
+    
     const indicator = this.qs('.cell-output.indicator') as HTMLOutputElement;
     const messages = this.qs('.cell-output.messages') as HTMLOutputElement;
     const result = this.qs('.cell-output.result') as HTMLOutputElement;
 
-    outputs.value = '';
+    // outputs.value = '';
     indicator.innerText = '';
     messages.value = '';
     result.value = '';
@@ -308,7 +312,7 @@ export class JavascriptCellElement extends HTMLElement {
         console.error(e.message);
         console.error(e.stack);
       }
-    `)
+    `);
 
     return func;
   }

@@ -67,3 +67,8 @@ hr {
   height: 1px;
   background-image: linear-gradient(to right, transparent, #000, transparent);
 }
+
+
+.katex-html {
+  display: none;
+}

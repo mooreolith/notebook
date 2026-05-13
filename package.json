@@ -35,6 +35,7 @@
     "@codemirror/language": "^6.12.3",
     "@codemirror/state": "^6.6.0",
     "@codemirror/view": "^6.41.1",
+    "@lezer/highlight": "^1.2.3",
     "@lezer/markdown": "^1.6.3",
     "@parcel/service-worker": "^2.16.4",
     "codemirror": "^6.0.2",

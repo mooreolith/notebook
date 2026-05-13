@@ -1,26 +1,25 @@
 import { EditorState, Compartment } from '@codemirror/state';
-import { EditorView, keymap, placeholder } from '@codemirror/view';
+import { EditorView, keymap, placeholder} from '@codemirror/view';
 import { syntaxTree } from '@codemirror/language';
 import { markdown } from '@codemirror/lang-markdown';
-import { indentWithTab } from "@codemirror/commands";
-
-let tabSize = new Compartment();
-
+import { indentWithTab, history } from "@codemirror/commands";
 import {
-  mathPlugin,
-  blockMathField,
   tableField,
   tableEditorPlugin,
   codeBlockField,
   imageField,
   linkPlugin,
-  livePreviewPlugin,
-  markdownStylePlugin,
   editorTheme,
   mouseSelectingField,
   collapseOnSelectionFacet,
   setMouseSelecting,
-} from 'codemirror-live-markdown'
+  livePreviewPlugin,
+  markdownStylePlugin,
+  mathPlugin,
+  blockMathField,
+} from 'codemirror-live-markdown';
+let tabSize = new Compartment();
+
 
 export class MarkdownCellElement extends HTMLElement {
   //#region public properties
@@ -140,37 +139,34 @@ export class MarkdownCellElement extends HTMLElement {
           return true;
         }
       }
-    })
-    
+    });
+
     this.view = new EditorView({
       state: EditorState.create({
         doc: '',
         extensions: [
-          mathPlugin,
-          blockMathField,
-          tableField,
-          tableEditorPlugin(),
-          codeBlockField({
-            copyButton: true,
-            lineNumbers: true,
-            defaultLanguage: 'text'
-          }),
-          imageField(),
-          linkPlugin(),
           markdown(),
+          linkPlugin(),
+          imageField(),
+          codeBlockField(),
           collapseOnSelectionFacet.of(true),
           mouseSelectingField,
+          keymap.of([ indentWithTab ]),
+          tabSize.of(EditorState.tabSize.of(2)),
+          clickableLinks,
+          tableField,
+          tableEditorPlugin(),
+          editorTheme,
+          EditorView.lineWrapping,
+          EditorView.theme({
+            "&.cm-focused": { outline: "none" }
+          }),
           livePreviewPlugin,
           markdownStylePlugin,
-          editorTheme,
-          EditorView.theme({
-            "&.cm-focused": { outline: 'none' }
-          }),
-          EditorView.lineWrapping,
-          keymap.of([ indentWithTab ]),
-          tabSize.of( EditorState.tabSize.of(2) ),
           placeholder("Write here..."),
-          clickableLinks
+          history(),
+          mathPlugin.extension,
+          blockMathField
         ]
       }),
       parent: this.qs('.cell-editor')!
@@ -185,6 +181,8 @@ export class MarkdownCellElement extends HTMLElement {
         this.view.dispatch({ effects: setMouseSelecting.of(false) });
       });
     });
+
+    this.view.focus();
   }
   //#endregion
 }

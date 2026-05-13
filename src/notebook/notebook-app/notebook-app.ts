@@ -84,9 +84,12 @@ export class NotebookAppElement extends HTMLElement {
   async onSaveToFileClick(): Promise<void> {
     const nb = this.qs('notebook-el') as NotebookElement;
     const contents = nb.toString();
+    const title = nb.title;
       
     if("showSaveFilePicker" in window){
-      const fileHandle = await window.showSaveFilePicker();
+      const fileHandle = await window.showSaveFilePicker({
+        suggestedName: `${nb.title}${nb.title.includes('.ipynb') ? '' : '.ipynb'}`
+      });
       const writable = await fileHandle.createWritable();
       await writable.write(contents);
       await writable.close();
@@ -180,15 +183,32 @@ export class NotebookAppElement extends HTMLElement {
     let previous = localStorage.getItem('notebook.previousURL') ?? '';
     const url = prompt("URL:", previous);
     if(!url) return;
-    const response = await fetch(url);
-    if(response.ok){
+    
+    // const response = await fetch(url);
+    // if(response.ok){
+    //   localStorage.setItem('notebook.previousURL', url);
+    //   const nb = this.qs('notebook-el') as NotebookElement;
+    //   const contents = await response.text();
+    //   nb.fromString(contents, true);
+    // }else{
+    //   alert(`Error loading Notebook from ${url}: ${response.status} ${response.statusText}`);
+    // }
+
+    fetch(url, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
       localStorage.setItem('notebook.previousURL', url);
-      const nb = this.qs('notebook-el') as NotebookElement;
-      const contents = await response.text();
-      nb.fromString(contents, true);
-    }else{
-      alert(`Error loading Notebook from ${url}: ${response.status} ${response.statusText}`);
-    }
+      const nb  = this.qs('notebook-el') as NotebookElement;
+      nb.fromJSON(data, true);
+    })
+    .catch(e => {
+      console.error(e);
+      alert(e);
+    })
   }
 
   onOpenFromBrowserClick(): void {

@@ -63,4 +63,8 @@ hr {
   border: none;
   height: 1px;
 }
+
+.katex-html {
+  display: none;
+}
 /*# sourceMappingURL=markdown-cell.e15247c0.css.map */

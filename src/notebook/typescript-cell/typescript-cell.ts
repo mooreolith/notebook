@@ -129,8 +129,10 @@ export class TypescriptCellElement extends HTMLElement {
   }
 
   resetOutput(): void {
-    let p;
-    while(p = this.qs('.messages>.error, .messages>.log')) p.remove();
+    this.qs('.cell-outputs')!.innerHTML = `
+      <output class="cell-output indicator"></output>
+      <output class="cell-output messages"></output>
+      <output class="cell-output result"></output>`;
     this.result = undefined;
   }
 
@@ -262,6 +264,7 @@ export class TypescriptCellElement extends HTMLElement {
 
   private createContext(): any {
     const outputs = this.qs('.cell-outputs') as HTMLOutputElement;
+    
     const indicator = this.qs('.cell-output.indicator') as HTMLOutputElement;
     const messages = this.qs('.cell-output.messages') as HTMLOutputElement;
     const result = this.qs('.cell-output.result') as HTMLOutputElement;
