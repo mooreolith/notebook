@@ -1,4 +1,4 @@
-import { EditorState, Compartment } from '@codemirror/state';
+import { EditorState, Compartment, Prec } from '@codemirror/state';
 import { EditorView, keymap, placeholder} from '@codemirror/view';
 import { syntaxTree } from '@codemirror/language';
 import { markdown } from '@codemirror/lang-markdown';
@@ -146,13 +146,8 @@ export class MarkdownCellElement extends HTMLElement {
         doc: '',
         extensions: [
           markdown(),
-          keymap.of([
-            {
-              key: "Enter",
-              run: insertNewline
-            }, 
-            indentWithTab 
-          ]),
+          Prec.highest(keymap.of([{ key: "Enter", run: insertNewline}])),
+          keymap.of([ indentWithTab ]),
           linkPlugin(),
           imageField(),
           codeBlockField(),
